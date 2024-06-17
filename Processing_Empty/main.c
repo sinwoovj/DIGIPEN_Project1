@@ -9,35 +9,45 @@
 // documentation link:
 // https://github.com/DigiPen-Faculty/CProcessing/wiki
 //
-// Copyright © 2020 DigiPen, All rights reserved.
+// Copyright ?2020 DigiPen, All rights reserved.
 //---------------------------------------------------------
-
 #include "cprocessing.h"
+#include "puzzle.h"
+void game_exit(void);
 
-// use CP_Engine_SetNextGameState to specify this function as the initialization function
-// this function will be called once at the beginning of the program
 void game_init(void)
 {
-	// initialize variables and CProcessing settings for this gamestate
+	Rect[0].x = 100.f, Rect[0].y = 100.f, Rect[0].size = 50.f, Rect[0].color = CP_Color_Create(0, 0, 255, 255);
+	Rect[1].x = 250.f, Rect[1].y = 100.f, Rect[1].size = 50.f, Rect[1].color = CP_Color_Create(0, 255, 0, 255);
+	cnt = 10;
+	velocity = 0.05f;
 }
 
-// use CP_Engine_SetNextGameState to specify this function as the update function
-// this function will be called repeatedly every frame
 void game_update(void)
 {
-	// check input, update simulation, render etc.
+	//Initialize Setting
+	CP_Color myColor = CP_Color_Create(0, 255, 255, 255);
+	CP_Graphics_ClearBackground(myColor);
+
+	Draw();
+	if(CP_Input_KeyDown(KEY_ANY))
+		Key();
+	
+	CountText();
+	distance = velocity * CP_System_GetDt();
+	Rect[0].y -= distance;
+	/*if (cnt == 0)
+	{
+		CP_Engine_SetNextGameStateForced(game_init, game_update, game_exit);
+
+	}*/
 }
 
-// use CP_Engine_SetNextGameState to specify this function as the exit function
-// this function will be called once just before leaving the current gamestate
 void game_exit(void)
 {
-	// shut down the gamestate and cleanup any dynamic memory
+
 }
 
-// main() the starting point for the program
-// CP_Engine_SetNextGameState() tells CProcessing which functions to use for init, update and exit
-// CP_Engine_Run() is the core function that starts the simulation
 int main(void)
 {
 	CP_Engine_SetNextGameState(game_init, game_update, game_exit);
