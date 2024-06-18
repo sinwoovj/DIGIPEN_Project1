@@ -1,16 +1,19 @@
 #pragma once
 #include "cprocessing.h"
 #include "Projectile.h"
+#include "Weapon.h"
 
-typedef struct Rect
+typedef struct Player
 {
-	float x;
-	float y;
+	CP_Vector coord;
 	float size;
 	CP_Color color;
-}R;
-
-R Rect;
+	float health;
+	float moveSpeed;
+	bool isAlive;
+	Weapon weapon;
+}Player;
+Player player;
 int aoc;
 float accel;
 float playerVelocity;
