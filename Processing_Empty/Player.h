@@ -1,14 +1,14 @@
 #pragma once
 #include "cprocessing.h"
-#include "Projectile.h"
 #include "Weapon.h"
+#include "Roughly.h"
 
 typedef struct Player
 {
 	CP_Vector coord;
 	float size;
-	float veloicity_x, veloicity_y;
-	float accel_x, accel_y;
+	CP_Vector velocity;
+	CP_Vector accel;
 	CP_Color color;
 	float health;
 	float moveSpeed;
@@ -16,9 +16,8 @@ typedef struct Player
 	Weapon weapon;
 }Player;
 Player player;
-int aoc;
-float accel;
-float friction;
-float max_speed;
+
 void PlayerMove();
-void PlayerAttack();
+void PlayerUpdatePosition();
+void CheckWallCollision();
+
