@@ -29,22 +29,7 @@ void Key()
 	}
 }
 
-void Create_Projectile(float x, float y, float velocity)
-{
-	for (int i = 0; i < MAX_PROJECTILES; i++)
-	{
-		if (!test[i].active)
-		{
-			test[i].projectile_position_x = x;
-			test[i].projectile_position_y = y;
-			test[i].projectile_size = 10;
-			test[i].projectile_velocity = velocity;
-			test[i].active = 1;
-			break;
-		}
-	}
 
-}
 
 //void CountText()
 //{
@@ -67,7 +52,7 @@ void Roughly_game_init(void)
 	//Active vs Deactive
 	for (int i = 0; i < MAX_PROJECTILES; i++)
 	{
-		test[i].active = 0;
+		projectile[i].active = 0;
 	}
 }
 
@@ -80,30 +65,21 @@ void Roughly_game_update(void)
 	Draw();
 	Key();
 
-
-	if (CP_Input_MouseClicked())
+	/*if (CP_Input_MouseClicked())
 	{
 		float velocity = 0.5f;
 		Create_Projectile(Rect.x + 20, Rect.y + 20, velocity);
+	}*/
+
+	if (CP_Input_KeyTriggered(KEY_RIGHT))
+	{
+		float velocity = 1.0f;
+		Create_Projectile(Rect.x + 20, Rect.y + 20, velocity);
+		if(!Right)
+			Right = !Right;
 	}
-	//클릭하고 나서 투사체가 바로 사라짐, 클릭하면 계속 맵에 남아있게 수정.
-
-	for (int i = 0; i < MAX_PROJECTILES; ++i) {
-		if (test[i].active) {
-			test[i].projectile_position_x += test[i].projectile_velocity;
-			test[i].projectile_position_y += test[i].projectile_velocity;
-
-			// 화면밖에 나가는 지 체크
-			if (test[i].projectile_position_y < 0 || test[i].projectile_position_y > CP_System_GetWindowHeight() || test[i].projectile_position_x < 0 || test[i].projectile_position_x > CP_System_GetWindowWidth()) {
-				test[i].active = 0;
-			}
-
-
-			CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
-			CP_Graphics_DrawCircle(test[i].projectile_position_x, test[i].projectile_position_y, test[i].projectile_size);
-		}
-	}
-
+	if(Right)
+		Draw_RightProjectile();
 
 	//distance = velocity * CP_System_GetDt();
 }

@@ -199,9 +199,11 @@ xcopy "$(ProjectDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.c" />
+    <ClCompile Include="Projectile.c" />
     <ClCompile Include="Roughly.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Projectile.h" />
     <ClInclude Include="Roughly.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
