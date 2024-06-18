@@ -6,7 +6,7 @@ const int WindowHeight = 1080;
 void Init()
 {
 	//Player size setting
-	Rect.x = 100.f, Rect.y = 100.f, Rect.size = 50.f;
+	player.coord.x = 100.f, player.coord.y = 100.f, player.size = 50.f;
 	
 	aoc = 10; //Move distance
 
@@ -29,7 +29,7 @@ void Roughly_game_update(void)
 {
 	CP_Color myColor = CP_Color_Create(0, 255, 255, 255);//Draw Background
 	CP_Graphics_ClearBackground(myColor);
-	CP_Graphics_DrawRect(Rect.x, Rect.y, Rect.size, Rect.size); //Draw Player
+	CP_Graphics_DrawRect(player.coord.x, player.coord.y, player.size, player.size); //Draw Player
 
 	PlayerMove();
 	PlayerAttack();
