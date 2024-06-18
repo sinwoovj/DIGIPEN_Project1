@@ -1,9 +1,46 @@
 #pragma once
+
 #include "cprocessing.h"
 #include<stdio.h>
 #include<stdlib.h>
 #include<stdbool.h>
+
 #define MAX_PROJECTILES 100
+
+// Enum
+
+typedef enum KindOfWeapon
+{
+	Sword = 1,
+	Arrow = 2,
+	Wand = 3
+}KindOfWeapon;
+
+// Struct
+
+typedef struct Weapon
+{
+	KindOfWeapon kind;
+	float range;
+	float damage;
+	bool isAttack;
+}Weapon;
+
+typedef struct Player
+{
+	float health;
+	float moveSpeed;
+	bool isAlive;
+	Weapon weapon;
+}Player;
+
+typedef struct Enemy
+{
+	float health;
+	int phase;
+	bool isInvincibility;
+	bool isAlive;
+};
 
 typedef struct Rect
 {
@@ -14,6 +51,7 @@ typedef struct Rect
 }R;
 R Rect;
 int aoc;
+
 
 typedef struct Projectile
 {
@@ -29,8 +67,11 @@ typedef struct Projectile
 
 	int active;
 }Proj;
+
+// Variable
 Proj test[MAX_PROJECTILES];
 
+// Function
 void Draw();
 void Key();
 
