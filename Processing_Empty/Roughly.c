@@ -41,10 +41,11 @@ void Roughly_game_update(void)
 	if (CP_Input_KeyDown(KEY_R))
 	{
 		// Initialize Data Code
+		Init();
 		CP_Engine_SetNextGameState(Roughly_game_init, Roughly_game_update, Roughly_game_exit);
 	}
-	float BossLocationX = WindowWidth / 2.0f;
-	float BossLocationY = WindowHeight / 2.0f;
+	const float BossLocationX = WindowWidth / 2;
+	const float BossLocationY = WindowHeight / 2;
 	CP_Image_Draw(BG, BossLocationX, BossLocationY, WindowWidth, WindowHeight, 255); //Draw BG
 	CP_Image_Draw(BossFace, BossLocationX, BossLocationY, 400, 400, 255); //Draw Boss
 
