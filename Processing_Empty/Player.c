@@ -2,9 +2,28 @@
 
 void PlayerMove()
 {
-	if (CP_Input_KeyDown(KEY_W))
+	if (CP_Input_KeyDown(KEY_W) && CP_Input_KeyDown(KEY_A))
 	{
-		//velocity += 0.5f;
+		Rect.y -= aoc;
+		Rect.x -= aoc;
+	}
+	else if (CP_Input_KeyDown(KEY_W) && CP_Input_KeyDown(KEY_D))
+	{
+		Rect.y -= aoc;
+		Rect.x += aoc;
+	}
+	else if (CP_Input_KeyDown(KEY_S) && CP_Input_KeyDown(KEY_D))
+	{
+		Rect.y += aoc;
+		Rect.x += aoc;
+	}
+	else if (CP_Input_KeyDown(KEY_S) && CP_Input_KeyDown(KEY_A))
+	{
+		Rect.y += aoc;
+		Rect.x -= aoc;
+	}
+	else if (CP_Input_KeyDown(KEY_W))
+	{
 		Rect.y -= aoc;
 	}
 	else if (CP_Input_KeyDown(KEY_S))

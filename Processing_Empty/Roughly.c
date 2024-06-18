@@ -1,7 +1,8 @@
 #include "Roughly.h"
 const int WindowWidth = 1920;
 const int WindowHeight = 1080;
-
+CP_Image BossFace = NULL;
+CP_Image BG = NULL;
 //Initialize Setting
 void Init()
 {
@@ -17,6 +18,9 @@ void Init()
 	}
 
 	CP_System_SetWindowSize(WindowWidth, WindowHeight);
+
+	BossFace = CP_Image_Load("./Assets/Boss.png");
+	BG = CP_Image_Load("./Assets/BG.png");
 }
 
 
@@ -27,15 +31,22 @@ void Roughly_game_init(void)
 
 void Roughly_game_update(void)
 {
-	CP_Color myColor = CP_Color_Create(0, 255, 255, 255);//Draw Background
+	CP_Color myColor = CP_Color_Create(0, 0, 0, 255);
 	CP_Graphics_ClearBackground(myColor);
-	CP_Graphics_DrawRect(Rect.x, Rect.y, Rect.size, Rect.size); //Draw Player
 
 	PlayerMove();
 	PlayerAttack();
 
-	Draw_Projectile();
 
+
+	float BossLocationX = WindowWidth / 2.0;
+	float BossLocationY = WindowHeight / 2.0;
+
+	CP_Image_Draw(BG, BossLocationX, BossLocationY, WindowWidth, WindowHeight, 255); //Draw BG
+	CP_Image_Draw(BossFace, BossLocationX, BossLocationY, 400, 400, 255); //Draw Boss
+
+	CP_Graphics_DrawRect(Rect.x, Rect.y, Rect.size, Rect.size); //Draw Player
+	Draw_Projectile();
 
 
 	//distance = velocity * CP_System_GetDt();
@@ -43,5 +54,6 @@ void Roughly_game_update(void)
 
 void Roughly_game_exit(void)
 {
-
+	CP_Image_Free(&BG);
+	CP_Image_Free(&BossFace);
 }

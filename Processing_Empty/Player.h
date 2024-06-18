@@ -9,8 +9,11 @@ typedef struct Rect
 	float size;
 	CP_Color color;
 }R;
+
 R Rect;
 int aoc;
-
+float accel;
+float playerVelocity;
+float playerDistance;
 void PlayerMove();
 void PlayerAttack();
