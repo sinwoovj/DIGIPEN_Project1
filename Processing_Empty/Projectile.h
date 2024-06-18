@@ -1,6 +1,5 @@
 #pragma once
 #include "cprocessing.h"
-#include "stdbool.h"
 #define MAX_PROJECTILES 100
 
 typedef struct Projectile
