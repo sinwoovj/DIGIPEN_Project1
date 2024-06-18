@@ -13,11 +13,15 @@ typedef struct Player
 	float health;
 	float moveSpeed;
 	bool isAlive;
+	int selectWeapon;
 	Weapon weapon;
 }Player;
 Player player;
+
 
 void PlayerMove();
 void PlayerUpdatePosition();
 void CheckWallCollision();
 
+void SelectWeapon();
+void PlayerAttack(int num);

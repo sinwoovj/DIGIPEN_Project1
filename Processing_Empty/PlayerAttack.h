@@ -7,6 +7,8 @@
 int CoolTime();
 //int LongAttackCoolTime();
 
+void SelectWeapon();
+
 void PlayerCloseAttack();
 void PlayerLongAttack();
-//void PlayerWandAttack();
+void PlayerWandAttack();

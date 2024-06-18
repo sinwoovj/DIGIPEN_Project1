@@ -1,4 +1,5 @@
 #include "PlayerAttack.h"
+#include "Weapon.h"
 
 int frameCount = 0;
 const int frameLimit = 10;
@@ -19,7 +20,7 @@ void PlayerCloseAttack()
 		if (CoolTime())
 		{
 			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-			CP_Graphics_DrawRect(player.coord.x + 25, player.coord.y, player.size, player.size + 25); //Draw Player
+			CP_Graphics_DrawRect(player.coord.x + 25, player.coord.y, player.size, player.size + 25); //Draw trajectory
 		}
 
 	}
@@ -28,7 +29,7 @@ void PlayerCloseAttack()
 		if (CoolTime())
 		{
 			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-			CP_Graphics_DrawRect(player.coord.x - 25, player.coord.y, player.size, player.size + 25); //Draw Player
+			CP_Graphics_DrawRect(player.coord.x - 25, player.coord.y, player.size, player.size + 25); //Draw trajectory
 		}
 	}
 	else if (CP_Input_KeyDown(KEY_UP))
@@ -36,7 +37,7 @@ void PlayerCloseAttack()
 		if (CoolTime())
 		{
 			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-			CP_Graphics_DrawRect(player.coord.x, player.coord.y - 25, player.size + 25, player.size); //Draw Player
+			CP_Graphics_DrawRect(player.coord.x, player.coord.y - 25, player.size + 25, player.size); //Draw trajectory
 		}
 	}
 	else if (CP_Input_KeyDown(KEY_DOWN))
@@ -44,7 +45,7 @@ void PlayerCloseAttack()
 		if (CoolTime())
 		{
 			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-			CP_Graphics_DrawRect(player.coord.x, player.coord.y + 25, player.size + 25, player.size); //Draw Player
+			CP_Graphics_DrawRect(player.coord.x, player.coord.y + 25, player.size + 25, player.size); //Draw trajectory
 		}
 	}
 }
@@ -91,6 +92,20 @@ void PlayerLongAttack()
 		if (LongAttackCoolTime())
 		{
 			Create_Projectile(player.coord.x + 20, player.coord.y + 20, velocity, 4);
+		}
+	}
+}
+
+void PlayerWandAttack()
+{
+	float wand_x = CP_Random_RangeFloat(860, 1060);
+	float wand_y = CP_Random_RangeFloat(440, 640);
+	if (CP_Input_KeyDown(KEY_RIGHT) || CP_Input_KeyDown(KEY_LEFT) || CP_Input_KeyDown(KEY_UP) || CP_Input_KeyDown(KEY_DOWN))
+	{
+		if (CoolTime())
+		{
+			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
+			CP_Graphics_DrawRect(wand_x, wand_y, player.size, player.size); //Draw Thunder
 		}
 	}
 }

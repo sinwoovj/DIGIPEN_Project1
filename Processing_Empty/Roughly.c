@@ -41,6 +41,7 @@ void Roughly_game_update(void)
 	if (CP_Input_KeyDown(KEY_R))
 	{
 		// Initialize Data Code
+		Init();
 		CP_Engine_SetNextGameState(Roughly_game_init, Roughly_game_update, Roughly_game_exit);
 	}
 	float BossLocationX = WindowWidth / 2.0f;
@@ -54,9 +55,9 @@ void Roughly_game_update(void)
 	PlayerMove();
 	PlayerUpdatePosition(); //Accel
 
-	//PlayerCloseAttack();
-	PlayerLongAttack();
-	Draw_Projectile();
+	SelectWeapon();
+	PlayerAttack(player.selectWeapon);
+	Draw_Projectile(); //투사체 출력
 
 }
 

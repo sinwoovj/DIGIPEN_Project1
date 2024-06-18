@@ -84,3 +84,22 @@ void CheckWallCollision()
 	}
 }
 
+void SelectWeapon()
+{
+	if (CP_Input_KeyTriggered(KEY_1))
+		player.selectWeapon = 1;
+	else if (CP_Input_KeyTriggered(KEY_2))
+		player.selectWeapon = 2;
+	else if (CP_Input_KeyTriggered(KEY_3))
+		player.selectWeapon = 3;
+}
+
+void PlayerAttack(int num)
+{
+	if (num == 1)
+		PlayerCloseAttack();
+	else if (num == 2)
+		PlayerLongAttack();
+	else if (num == 3)
+		PlayerWandAttack();
+}
