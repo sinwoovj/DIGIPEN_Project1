@@ -22,9 +22,9 @@ void PlayerMove()
 		Rect.y += aoc;
 		Rect.x -= aoc;
 	}
-	else if (CP_Input_KeyDown(KEY_W))
+	if (CP_Input_KeyDown(KEY_W))
 	{
-		Rect.y -= aoc;
+		Rect.accel_y = -0.5f;
 	}
 	else if (CP_Input_KeyDown(KEY_S))
 	{
