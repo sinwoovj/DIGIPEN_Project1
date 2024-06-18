@@ -2,7 +2,7 @@
 #include "Player.h"
 #include "Projectile.h"
 #include "PlayerAttack.h"
-
+#include <stdlib.h>
 const float WindowWidth = 1920;
 const float WindowHeight = 1080;
 CP_Image BossFace = NULL;
@@ -34,6 +34,15 @@ void Roughly_game_init(void)
 
 void Roughly_game_update(void)
 {
+	if (CP_Input_KeyDown(KEY_ESCAPE))
+	{
+		exit(0);
+	}
+	if (CP_Input_KeyDown(KEY_R))
+	{
+		// Initialize Data Code
+		CP_Engine_SetNextGameState(Roughly_game_init, Roughly_game_update, Roughly_game_exit);
+	}
 	float BossLocationX = WindowWidth / 2.0f;
 	float BossLocationY = WindowHeight / 2.0f;
 	CP_Image_Draw(BG, BossLocationX, BossLocationY, WindowWidth, WindowHeight, 255); //Draw BG
