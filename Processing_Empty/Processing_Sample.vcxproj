@@ -199,10 +199,12 @@ xcopy "$(ProjectDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.c" />
+    <ClCompile Include="Player.c" />
     <ClCompile Include="Projectile.c" />
     <ClCompile Include="Roughly.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="Roughly.h" />
   </ItemGroup>

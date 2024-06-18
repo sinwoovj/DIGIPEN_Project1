@@ -16,10 +16,9 @@ typedef struct Projectile
 	float velocity;
 
 	int active;
+	int direction; // 0: right, 1: left, 2: up, 3: down
 }Proj;
 Proj projectile[MAX_PROJECTILES];
 
-void Create_Projectile(float x, float y, float velocity);
+void Create_Projectile(float x, float y, float velocity, int direction);
 void Draw_Projectile();
-void Draw_RightProjectile();
-bool Right;
