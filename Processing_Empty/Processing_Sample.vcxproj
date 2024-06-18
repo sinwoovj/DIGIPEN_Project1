@@ -150,7 +150,7 @@ xcopy "$(ProjectDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <TreatWarningAsError>false</TreatWarningAsError>
       <CompileAs>CompileAsC</CompileAs>
       <PreprocessorDefinitions>_MBCS;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UndefinePreprocessorDefinitions>_CONSOLE</UndefinePreprocessorDefinitions>
@@ -199,10 +199,10 @@ xcopy "$(ProjectDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.c" />
-    <ClCompile Include="puzzle.c" />
+    <ClCompile Include="Roughly.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="puzzle.h" />
+    <ClInclude Include="Roughly.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
