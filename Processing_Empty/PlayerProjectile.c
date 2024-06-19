@@ -12,6 +12,7 @@ void Create_PlayerProjectile(float x, float y, float velocity, int direction)
 			projectile[i].size = 10;
 			projectile[i].velocity = velocity;
 			projectile[i].active = 1;
+			projectile[i].shape = Circle;
 			projectile[i].direction = direction;
 			break;
 		}

@@ -1,5 +1,7 @@
 #pragma once
+
 typedef enum Shape {
-    Rect,
-    Circle
+	Rect,
+	Circle
 }Shape;
+
