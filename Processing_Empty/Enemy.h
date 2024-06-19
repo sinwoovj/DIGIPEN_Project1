@@ -2,6 +2,9 @@
 
 #include <stdbool.h>
 #include "Player.h"
+#include "EnemyAttack.h"
+#include <stdlib.h>
+#include <time.h>
 
 typedef struct Enemy
 {

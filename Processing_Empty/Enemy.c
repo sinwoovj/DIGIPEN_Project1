@@ -1,12 +1,30 @@
 #include "Enemy.h"
-#include "EnemyAttack.h"
-#include <stdlib.h>
-#include <time.h>
 
 const float RecognizeRange = 50.0f;
 
-bool RangeTest(CP_Vector v1, float v1_size, CP_Vector v2, float v2_size) {
+bool RangeTest(CP_Vector v1, float v1_size, CP_Vector v2, float v2_size) { // v1¿Ã base, v2∞° target
+	bool res = false;
+	
+	CP_Vector coord[4];
 
+	coord[0] = v2;
+
+	coord[1].x = v2.x + v2_size;
+	coord[1].y = v2.y;
+
+	coord[2].x = v2.x;
+	coord[2].y = v2.y + v2_size;
+
+	coord[3].x = v2.x + v2_size;
+	coord[3].y = v2.y + v2_size;
+
+	for (int i = 0; i < 4; i++) {
+		if (coord[i].x >= v1.x && coord[i].x <= v1.x + v1_size &&
+			coord[i].y >= v1.y && coord[i].y <= v1.y + v1_size)
+			res = true;
+	}
+
+	return res;
 }
 
 void EnemyInit(float x, float y) {

@@ -1,8 +1,4 @@
 #include "Roughly.h"
-#include "Player.h"
-#include "Projectile.h"
-#include "PlayerAttack.h"
-#include <stdlib.h>
 const float WindowWidth = 1920;
 const float WindowHeight = 1080;
 CP_Image BossFace = NULL;
@@ -11,9 +7,6 @@ CP_Image BG = NULL;
 //Initialize Setting
 void Init()
 {
-	//Player size setting
-	player.coord.x = 100.f, player.coord.y = 100.f, player.size = 50.f;
-
 	//Active Projectile
 	for (int i = 0; i < MAX_PROJECTILES; i++)
 	{
@@ -21,7 +14,8 @@ void Init()
 	}
 
 	CP_System_SetWindowSize((int)WindowWidth, (int)WindowHeight);
-
+	EnemyInit();
+	PlayerInit();
 	BossFace = CP_Image_Load("./Assets/Boss.png");
 	BG = CP_Image_Load("./Assets/BG.png");
 }
@@ -55,6 +49,7 @@ void Roughly_game_update(void)
 	PlayerMove();
 	PlayerUpdatePosition(); //Accel
 
+	ShowUI();
 	//PlayerCloseAttack();
 	PlayerLongAttack();
 	Draw_Projectile();

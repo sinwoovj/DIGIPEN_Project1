@@ -11,12 +11,15 @@ typedef struct Player
 	CP_Vector accel;
 	CP_Color color;
 	float health;
+	float dashAccel;
 	float moveSpeed;
+	float maxSpeed;
 	bool isAlive;
 	Weapon weapon;
 }Player;
 Player player;
 
+void PlayerInit();
 void PlayerMove();
 void PlayerUpdatePosition();
 void CheckWallCollision();
