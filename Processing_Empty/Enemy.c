@@ -23,6 +23,28 @@ void EnemyInit(float x, float y) {
 	enemy.isHit = 0;
 	enemy.isInvincibility = 0;
 	enemy.isAlive = 1;
+
+	phaseTerm[0] = 30 * 6;
+	phaseTerm[1] = 30 * 4;
+	phaseTerm[2] = 30 * 2;
+
+	currentPhaseTerm = phaseTerm[0];
+	currentEnemyFrame = 0;
+}
+
+bool EnemyFrameCheck() {
+	if (currentEnemyFrame == currentPhaseTerm) {
+		currentEnemyFrame = 0;
+		return true;
+	}
+	currentEnemyFrame++;
+	return false;
+}
+
+void EnemyCheck()
+{
+	if (enemy.health <= 0)
+		EnemyPhaseSet();
 }
 
 void EnemyPhaseSet() {
@@ -32,6 +54,7 @@ void EnemyPhaseSet() {
 
 		enemy.projectileDamage = 10;
 		enemy.closeDamage = 20;
+
 		break;
 	case 3 :
 		enemy.health = 300;
@@ -44,6 +67,11 @@ void EnemyPhaseSet() {
 		isGameOver = true;
 		break;
 	}
+	currentPhaseTerm = phaseTerm[enemy.phase - 2];
+}
+
+void EnemyDraw(float BossLocationX, float BossLocationY) {
+	CP_Image_Draw(BossFace, BossLocationX, BossLocationY, enemy.size, enemy.size, 255); //Draw BG
 }
 
 void EnemyAttack() {
@@ -62,46 +90,64 @@ void EnemyAttack() {
 	CP_Vector enemyRange;
 	enemyRange.x = enemy.coord.x - RecognizeRange;
 	enemyRange.y = enemy.coord.y - RecognizeRange;
-
-	if (RangeTest(enemyRange, enemy.size + RecognizeRange * 2, Square, player.coord, player.size, player.shape, 0 ,0)) {
-		EnemyCloseAttack();
+	if (EnemyFrameCheck()) {
+		if (RangeTest(enemyRange, enemy.size + RecognizeRange * 2, Square, player.coord, player.size, player.shape, 0, 0))
+			EnemyRandomAttack(true);
+		else
+			EnemyRandomAttack(false);
 	}
-	EnemyRandomAttack();
 }
 
-void EnemyRandomAttack()
+void EnemyRandomAttack(bool isNear)
 {
 	srand(time(NULL));
-	int random = 0; // 정수형 변수 선언
-	random = rand() % (enemy.phase * 3); // 난수 생성
 
-	switch (random) {
-		case 1 :
-			EnemyProjectileRandomAttack1();
+	int random1 = 0, random2 = 0, random3 = 0; // 정수형 변수 선언
+
+	random1 = isNear ? (rand() % 3) + 1 : 0;
+
+	random2 = rand() % 3 + 1; // 난수 생성
+	
+	random3 = (rand() % (enemy.phase == 2 ? 2 : 3)) + 1; // 난수 생성
+
+	switch (random1) {
+		case 0:
+			break;
+		case 1:
+			EnemyCloseAttack1(); //한방향
 			break;
 		case 2:
-			EnemyProjectileRandomAttack2();
+			EnemyCloseAttack2(); //수직,수평
 			break;
 		case 3:
-			EnemyProjectileRandomAttack3();
+			EnemyCloseAttack3(); //전방향
 			break;
-		case 4:
-			EnemyCloseAttack1();
+	}
+
+	switch (random2)
+	{
+		case 1:
+			EnemyProjectileRandomAttack1(); // 원형
 			break;
-		case 5:
-			EnemyCloseAttack2();
+		case 2:
+			EnemyProjectileRandomAttack2(); // 수직, 수평
 			break;
-		case 6:
-			EnemyCloseAttack3();
+		case 3:
+			EnemyProjectileRandomAttack3(); // 유도
 			break;
-		case 7:
-			EnemyPatternAttack1();
+	}
+	if (enemy.phase >= 2) {
+		switch (random3)
+		{
+		case 1:
+			EnemyPatternAttack1(); // 맵 1/4
 			break;
-		case 8:
-			EnemyPatternAttack2();
+		case 2:
+			EnemyPatternAttack2(); // 맵 1/2
 			break;
-		case 9:
-			EnemyPatternAttack3();
+		case 3:
+			EnemyPatternAttack3(); // 체크
 			break;
+		}
 	}
 }

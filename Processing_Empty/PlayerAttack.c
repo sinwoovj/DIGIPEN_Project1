@@ -1,4 +1,5 @@
 #include "PlayerAttack.h"
+#include "Weapon.h"
 
 bool isReach(float* position_x, float* position_y, int* active)
 {
@@ -90,6 +91,7 @@ void PlayerCloseAttack()
 {
 	if (CP_Input_KeyDown(KEY_RIGHT))
 	{
+		player.direction = 1;
 		if (AttackCoolTime())
 		{
 			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
@@ -102,6 +104,7 @@ void PlayerCloseAttack()
 	}
 	else if (CP_Input_KeyDown(KEY_LEFT))
 	{
+		player.direction = 3;
 		if (AttackCoolTime())
 		{
 			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
@@ -113,6 +116,7 @@ void PlayerCloseAttack()
 	}
 	else if (CP_Input_KeyDown(KEY_UP))
 	{
+		player.direction = 2;
 		if (AttackCoolTime())
 		{
 			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
@@ -121,6 +125,7 @@ void PlayerCloseAttack()
 	}
 	else if (CP_Input_KeyDown(KEY_DOWN))
 	{
+		player.direction = 0;
 		if (AttackCoolTime())
 		{
 			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));

@@ -8,6 +8,7 @@
 #include "Weapon.h"
 #include "UI.h"
 #include <stdbool.h>
+#include "Image.h"
 
 void Roughly_game_init(void);
 void Roughly_game_update(void);
