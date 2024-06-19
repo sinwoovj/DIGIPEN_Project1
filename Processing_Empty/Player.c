@@ -13,6 +13,24 @@ int DashCoolTime()
 	return 0;
 }
 
+void PlayerInit()
+{
+	//Player size setting
+	player.coord.x = 100.f;
+	player.coord.y = 100.f;
+	player.size = 50.f;
+	player.accel.x = 0;
+	player.accel.y = 0;
+	player.velocity.x = 0;
+	player.velocity.y = 0;
+	player.dashAccel = 100.f;
+	player.health = 100.f;
+	player.moveSpeed = 0.5f;
+	player.maxSpeed = 10.f;
+	bool isAlive;
+	Weapon weapon;
+}
+
 void PlayerMove()
 {
 	if (DashCoolTime())

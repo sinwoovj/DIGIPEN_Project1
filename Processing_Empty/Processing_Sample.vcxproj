@@ -199,19 +199,23 @@ xcopy "$(ProjectDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Enemy.c" />
+    <ClCompile Include="EnemyAttack.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="Player.c" />
     <ClCompile Include="PlayerAttack.c" />
     <ClCompile Include="PlayerProjectile.c" />
     <ClCompile Include="Roughly.c" />
+    <ClCompile Include="UI.c" />
     <ClCompile Include="Weapon.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyAttack.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerAttack.h" />
     <ClInclude Include="PlayerProjectile.h" />
     <ClInclude Include="Roughly.h" />
+    <ClInclude Include="UI.h" />
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

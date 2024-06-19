@@ -2,10 +2,16 @@
 
 #include <stdbool.h>
 #include "Player.h"
+#include "EnemyAttack.h"
+#include <stdlib.h>
+#include <time.h>
 
 typedef struct Enemy
 {
+	CP_Vector coord;
+	float size;
 	float health;
+	float closeDamage;
 	int phase;
 	bool isAttack;
 	bool isHit;
@@ -14,6 +20,8 @@ typedef struct Enemy
 }Enemy;
 Enemy enemy;
 
-void EnemyAttack(Enemy enemy_, Player player);
+void EnemyInit();
 
-void EnemyRandomAttack(Enemy enemy_);
+void EnemyAttack();
+
+void EnemyRandomAttack();

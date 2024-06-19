@@ -19,7 +19,7 @@ typedef struct Player
 }Player;
 Player player;
 
-
+void PlayerInit();
 void PlayerMove();
 void PlayerUpdatePosition();
 void CheckWallCollision();
