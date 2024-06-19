@@ -30,6 +30,20 @@ void PlayerInit()
 	player.maxSpeed = 10.f;
 	player.isAlive = 1;
 	player.weapon = sword; // 1 > Sword // 2 > Arrow // 3 > Wand
+	player.direction = 0;
+}
+
+void PlayerDraw()
+{
+	if (CP_Input_KeyDown(KEY_RIGHT))
+		player.direction = 1;
+	else if (CP_Input_KeyDown(KEY_LEFT))
+		player.direction = 3;
+	else if (CP_Input_KeyDown(KEY_UP))
+		player.direction = 2;
+	else if (CP_Input_KeyDown(KEY_DOWN))
+		player.direction = 0;
+	CP_Image_Draw(PlayerDir[player.direction], player.coord.x + player.size / 2, player.coord.y + player.size / 2, player.size, player.size, 255); //Draw BG
 }
 
 void PlayerMove()
@@ -89,6 +103,12 @@ void PlayerMove()
 	}
 
 	CheckWallCollision();
+}
+
+void PlayerCheck()
+{
+	if (player.health <= 0)
+		player.isAlive = 0;
 }
 
 float friction = 0.95f;

@@ -2,11 +2,12 @@
 #include "Standard.h"
 #include <stdbool.h>
 #include "Player.h"
-#include "math.h"
+#include <math.h>
 #include "EnemyAttack.h"
 #include <stdlib.h>
 #include <time.h>
 #include "Calculate.h"
+#include "Image.h"
 
 typedef struct Enemy
 {
@@ -25,8 +26,25 @@ typedef struct Enemy
 }Enemy;
 Enemy enemy;
 
+bool isEnemyCloseAttack;
+bool isEnemyProjectailAttack;
+bool isEnemyPatternAttack;
+
+int phaseTerm[3]; // 1 > 6s : 2 > 4s : 3 > 2s
+int currentPhaseTerm;
+
+int currentEnemyFrame;
+int limitEnemyFrame;
+
+
 void EnemyInit(float x, float y);
 
 void EnemyAttack();
 
-void EnemyRandomAttack();
+void EnemyDraw(float BossLocationX, float BossLocationY);
+
+void EnemyPhaseSet();
+
+void EnemyCheck();
+
+void EnemyRandomAttack(bool isNear);

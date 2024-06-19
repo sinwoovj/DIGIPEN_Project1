@@ -3,6 +3,7 @@
 #include "Weapon.h"
 #include "Roughly.h"
 #include "Standard.h"
+#include "Image.h"
 
 typedef struct Player
 {
@@ -16,14 +17,16 @@ typedef struct Player
 	float dashAccel;
 	float moveSpeed;
 	float maxSpeed;
-	Shape shape;
 	bool isAlive;
 	Weapon weapon;
+	int direction; // 0 => down, 1 => right, 2 => up, 3 => left
 }Player;
 Player player;
 
 void PlayerInit();
 void PlayerMove();
+void PlayerCheck();
+void PlayerDraw();
 void PlayerUpdatePosition();
 void CheckWallCollision();
 
