@@ -2,12 +2,16 @@
 
 const float WindowWidth = 1920;
 const float WindowHeight = 1080;
+float BossLocationX;
+float BossLocationY;
 CP_Image BossFace = NULL;
 CP_Image BG = NULL;
 
 //Initialize Setting
 void Init()
 {
+	BossLocationX = WindowWidth / 2;
+	BossLocationY = WindowHeight / 2;
 	//Active Projectile
 	for (int i = 0; i < MAX_PROJECTILES; i++)
 	{
@@ -15,7 +19,9 @@ void Init()
 	}
 
 	CP_System_SetWindowSize((int)WindowWidth, (int)WindowHeight);
-	EnemyInit();
+
+	InitWeaponData();
+	EnemyInit(BossLocationX, BossLocationY);
 	PlayerInit();
 	BossFace = CP_Image_Load("./Assets/Boss.png");
 	BG = CP_Image_Load("./Assets/BG.png");
@@ -39,8 +45,7 @@ void Roughly_game_update(void)
 		Init();
 		CP_Engine_SetNextGameState(Roughly_game_init, Roughly_game_update, Roughly_game_exit);
 	}
-	const float BossLocationX = WindowWidth / 2;
-	const float BossLocationY = WindowHeight / 2;
+	
 	CP_Image_Draw(BG, BossLocationX, BossLocationY, WindowWidth, WindowHeight, 255); //Draw BG
 	CP_Image_Draw(BossFace, BossLocationX, BossLocationY, 400, 400, 255); //Draw Boss
 
@@ -52,8 +57,10 @@ void Roughly_game_update(void)
 
 	ShowUI();
 	SelectWeapon();
+
 	PlayerAttack(player.weapon.num);
 	Draw_PlayerProjectile(); //투사체 출력
+
 
 }
 

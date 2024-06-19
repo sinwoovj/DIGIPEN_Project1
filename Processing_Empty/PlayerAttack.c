@@ -1,5 +1,33 @@
 #include "PlayerAttack.h"
 
+void PlayerAttack(int num)
+{
+	if (num == 1)
+		PlayerCloseAttack();
+	else if (num == 2)
+		PlayerLongAttack();
+	else if (num == 3)
+		PlayerWandAttack();
+
+	for (int i = 0; i < MAX_PROJECTILES; i++)
+	{
+		if (isReach(&projectile[i].position_x, &projectile[i].position_y, &projectile[i].active))
+		{
+			SuccessAttack(player.weapon.num);
+		}
+	}
+}
+void SuccessAttack(int num)
+{
+	if (num == 2)
+		enemy.health -= arrow.damage;
+	else if (num == 3)
+		enemy.health -= wand.damage;
+}
+
+/// <summary>
+/// Short Range Attack
+/// </summary>
 int frameCount = 0;
 const int frameLimit = 10;
 int AttackCoolTime() 
@@ -11,7 +39,6 @@ int AttackCoolTime()
 	}
 	return 0;
 }
-
 void PlayerCloseAttack()
 {
 	if (CP_Input_KeyDown(KEY_RIGHT))
@@ -49,6 +76,9 @@ void PlayerCloseAttack()
 	}
 }
 
+/// <summary>
+/// Long Range Attack
+/// </summary>
 int LAframeCount = 0;
 int LAframeLimit = 10;
 int LongAttackCoolTime()
@@ -60,6 +90,20 @@ int LongAttackCoolTime()
 	}
 	LAframeCount++;
 	return 0;
+}
+
+bool isReach(float* position_x, float* position_y, int* active)
+{
+	float distance = sqrtf(powf((enemy.coord.x - *position_x), 2.0) + powf((enemy.coord.y - *position_y), 2.0));
+	if(distance <= (enemy.size / 2.0f))
+	{
+		*position_x = 0;
+		*position_y = 0;
+		*active = 0;
+		return true;
+	}
+	else
+		return false;
 }
 
 void PlayerLongAttack()
@@ -93,8 +137,13 @@ void PlayerLongAttack()
 			Create_PlayerProjectile(player.coord.x + 20, player.coord.y + 20, velocity, 4);
 		}
 	}
+
 }
 
+
+/// <summary>
+/// Wand(Magical) Attack
+/// </summary>
 void PlayerWandAttack()
 {
 	float wand_x = CP_Random_RangeFloat(860, 1060);
@@ -105,6 +154,7 @@ void PlayerWandAttack()
 		{
 			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
 			CP_Graphics_DrawRect(wand_x, wand_y, player.size, player.size); //Draw Thunder
+			SuccessAttack(player.weapon.num);
 		}
 	}
 }

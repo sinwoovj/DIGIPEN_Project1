@@ -20,7 +20,9 @@ typedef struct Enemy
 }Enemy;
 Enemy enemy;
 
-void EnemyInit();
+bool RangeTest(CP_Vector v1, float v1_size, CP_Vector v2, float v2_size); // v1¿Ã base, v2∞° target
+
+void EnemyInit(float x, float y);
 
 void EnemyAttack();
 

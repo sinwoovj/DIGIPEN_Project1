@@ -2,6 +2,7 @@
 #include "cprocessing.h"
 #include "Weapon.h"
 #include "Roughly.h"
+#include "Standard.h"
 
 typedef struct Player
 {
@@ -10,6 +11,7 @@ typedef struct Player
 	CP_Vector velocity;
 	CP_Vector accel;
 	CP_Color color;
+	Shape shape;
 	float health;
 	float dashAccel;
 	float moveSpeed;
@@ -27,4 +29,3 @@ void CheckWallCollision();
 int DashCoolTime();
 
 void SelectWeapon();
-void PlayerAttack(int num);

@@ -28,6 +28,7 @@ bool RangeTest(CP_Vector v1, float v1_size, CP_Vector v2, float v2_size) { // v1
 }
 
 void EnemyInit(float x, float y) {
+
 	enemy.coord.x = x;
 	enemy.coord.y = y;
 	enemy.size = 400;

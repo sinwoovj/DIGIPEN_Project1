@@ -24,11 +24,12 @@ void PlayerInit()
 	player.velocity.x = 0;
 	player.velocity.y = 0;
 	player.dashAccel = 100.f;
+	player.shape = Circle;
 	player.health = 100.f;
 	player.moveSpeed = 0.5f;
 	player.maxSpeed = 10.f;
-	bool isAlive;
-	Weapon weapon;
+	player.isAlive = 1;
+	player.weapon = sword; // 1 > Sword // 2 > Arrow // 3 > Wand
 }
 
 void PlayerMove()
@@ -152,14 +153,4 @@ void SelectWeapon()
 		player.weapon.num = 2;
 	else if (CP_Input_KeyTriggered(KEY_3))
 		player.weapon.num = 3;
-}
-
-void PlayerAttack(int num)
-{
-	if (num == 1)
-		PlayerCloseAttack();
-	else if (num == 2)
-		PlayerLongAttack();
-	else if (num == 3)
-		PlayerWandAttack();
 }

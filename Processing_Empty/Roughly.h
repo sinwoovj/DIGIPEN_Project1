@@ -6,6 +6,7 @@
 #include "PlayerAttack.h"
 #include <stdlib.h>
 #include "UI.h"
+#include "Weapon.h"
 
 void Roughly_game_init(void);
 void Roughly_game_update(void);

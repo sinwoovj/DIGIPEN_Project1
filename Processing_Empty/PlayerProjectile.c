@@ -17,6 +17,7 @@ void Create_PlayerProjectile(float x, float y, float velocity, int direction)
 		}
 	}
 }
+
 void Draw_PlayerProjectile()
 {
 	for (int i = 0; i < MAX_PROJECTILES; ++i) {
@@ -46,8 +47,8 @@ void Draw_PlayerProjectile()
 			}
 			CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
 			CP_Graphics_DrawCircle(projectile[i].position_x, projectile[i].position_y, projectile[i].size);
+
+			
 		}
 	}
 }
-
-
