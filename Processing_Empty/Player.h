@@ -16,7 +16,6 @@ typedef struct Player
 	float dashAccel;
 	float moveSpeed;
 	float maxSpeed;
-	Shape shape;
 	bool isAlive;
 	Weapon weapon;
 }Player;

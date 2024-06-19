@@ -1,7 +1,7 @@
 #pragma once
-
+#include "cprocessing.h"
+#include "Standard.h"
 #include <stdbool.h>
-
 
 // Struct
 
@@ -11,8 +11,8 @@ typedef struct Weapon
 	float range;
 	float damage;
 	bool isAttack;
-}Weapon;
 
+}Weapon;
 
 // Const
 Weapon sword, arrow, wand;

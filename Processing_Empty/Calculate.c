@@ -1,9 +1,9 @@
 #include "Calculate.h"
 
-bool RangeTest(CP_Vector v1, float v1_size, Shape v1_shape, CP_Vector v2, float v2_size, Shape v2_shape) { // v1이 base, v2가 target
+bool RangeTest(CP_Vector v1, float v1_size, Shape v1_shape, CP_Vector v2, float v2_size, Shape v2_shape, float w, float h) { // v1이 base, v2가 target
 	bool res = false;
 
-	if (v1_shape == Rect && v2_shape == Rect)
+	if (v1_shape == Square && v2_shape == Square)
 	{
 		CP_Vector coord[4];
 
@@ -24,18 +24,21 @@ bool RangeTest(CP_Vector v1, float v1_size, Shape v1_shape, CP_Vector v2, float 
 				res = true;
 		}
 	}
-	else if (v1_shape == Rect && v2_shape == Circle)
+	else if (v1_shape == Square && v2_shape == Circle)
 	{
 		float x = abs(v1.x - v2.x) <= abs((v1.x + v1_size) - v2.x) ? v1.x : v1.x + v1_size;
 		float y = abs(v1.y - v2.y) <= abs((v1.y + v1_size) - v2.y) ? v1.y : v1.y + v1_size;
-		if (x <= v2_size && y <= v2_size)
+		if (x <= v2_size / 2 && y <= v2_size / 2)
 			res = true;
 	}
 	else if (v1_shape == Circle && v2_shape == Rect)
 	{
-		float x = abs(v2.x - v1.x) <= abs((v2.x + v2_size) - v1.x) ? v2.x : v2.x + v2_size;
-		float y = abs(v2.y - v1.y) <= abs((v2.y + v2_size) - v1.y) ? v2.y : v2.y + v2_size;
-		if (x <= v1_size && y <= v1_size)
+		float x = abs(v1.x - v2.x) <= abs(v1.x - (v2.x + w)) ? v2.x : v2.x + w;
+		float y = abs(v1.y - v2.y) <= abs(v1.y - (v2.y + h)) ? v2.y : v2.y + h;
+		float diffX = v1.x >= x ? v1.x - x : x - v1.x;
+		float diffy = v1.y >= y ? v1.y - y : y - v1.y;
+		float diffF = sqrtf((diffX * diffX) + (diffy * diffy));
+		if (v1_size / 2 >= diffF)
 			res = true;
 	}
 	else if (v1_shape == Circle && v2_shape == Circle)

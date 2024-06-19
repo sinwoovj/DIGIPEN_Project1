@@ -2,7 +2,7 @@
 
 void InitWeaponData() {
 	sword.num = 1;
-	sword.range = 5;
+	sword.range = 50;
 	sword.damage = 5;
 	sword.isAttack = false;
 

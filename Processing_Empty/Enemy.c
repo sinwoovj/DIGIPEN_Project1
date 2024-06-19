@@ -49,7 +49,7 @@ void EnemyPhaseSet() {
 void EnemyAttack() {
 	// Condition Check
 	// 보스와 완전히 부딫히면 확정 딜을 입음.
-	if (RangeTest(enemy.coord, enemy.size, enemy.shape, player.coord, player.size, player.shape)) {
+	if (RangeTest(enemy.coord, enemy.size, enemy.shape, player.coord, player.size, player.shape, 0, 0)) {
 		if (!isReached) {
 			player.health -= enemy.closeDamage;
 			isReached = true;
@@ -63,7 +63,7 @@ void EnemyAttack() {
 	enemyRange.x = enemy.coord.x - RecognizeRange;
 	enemyRange.y = enemy.coord.y - RecognizeRange;
 
-	if (RangeTest(enemyRange, enemy.size + RecognizeRange * 2, Rect, player.coord, player.size, player.shape)) {
+	if (RangeTest(enemyRange, enemy.size + RecognizeRange * 2, Square, player.coord, player.size, player.shape, 0 ,0)) {
 		EnemyCloseAttack();
 	}
 	EnemyRandomAttack();

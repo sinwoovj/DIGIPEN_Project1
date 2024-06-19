@@ -5,6 +5,7 @@
 #include "Weapon.h"
 #include "Enemy.h"
 #include <math.h>
+#include "Calculate.h"
 
 void PlayerAttack(int num);
 
@@ -19,3 +20,4 @@ void PlayerWandAttack();
 
 bool isReach(float* position_x, float* position_y, int* active);
 void SuccessAttack(int num);
+
