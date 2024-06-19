@@ -1,7 +1,7 @@
 #pragma once
-#include "Projectile.h"
+#include "PlayerProjectile.h"
 
-void Create_Projectile(float x, float y, float velocity, int direction)
+void Create_PlayerProjectile(float x, float y, float velocity, int direction)
 {
 	for (int i = 0; i < MAX_PROJECTILES; i++)
 	{
@@ -17,7 +17,7 @@ void Create_Projectile(float x, float y, float velocity, int direction)
 		}
 	}
 }
-void Draw_Projectile()
+void Draw_PlayerProjectile()
 {
 	for (int i = 0; i < MAX_PROJECTILES; ++i) {
 		if (projectile[i].active) {

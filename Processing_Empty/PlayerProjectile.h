@@ -19,5 +19,5 @@ typedef struct Projectile
 }Proj;
 Proj projectile[MAX_PROJECTILES];
 
-void Create_Projectile(float x, float y, float velocity, int direction);
-void Draw_Projectile();
+void Create_PlayerProjectile(float x, float y, float velocity, int direction);
+void Draw_PlayerProjectile();

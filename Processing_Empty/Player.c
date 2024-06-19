@@ -1,15 +1,42 @@
 #include "Player.h"
 
+int dashframeCount = 0;
+const int dashframeLimit = 90;
+bool isDash;
+int DashCoolTime()
+{
+	if (++dashframeCount == dashframeLimit)
+	{
+		dashframeCount = 0;
+		return 1;
+	}
+	return 0;
+}
+
 void PlayerMove()
 {
+	if (DashCoolTime())
+		isDash = true;
 	//Up & Down
 	if (CP_Input_KeyDown(KEY_W))
 	{
-		player.accel.y = -0.5f;
+		if (CP_Input_KeyTriggered(KEY_SPACE) && isDash)
+		{
+			isDash = false;
+			player.accel.y = -player.dashAccel;
+		}
+		else
+			player.accel.y = -player.moveSpeed;
 	}
 	else if (CP_Input_KeyDown(KEY_S))
 	{
-		player.accel.y = 0.5f;
+		if (CP_Input_KeyTriggered(KEY_SPACE) && isDash)
+		{
+			isDash = false;
+			player.accel.y = player.dashAccel;
+		}
+		else
+			player.accel.y = player.moveSpeed;
 	}
 	else
 	{
@@ -19,11 +46,23 @@ void PlayerMove()
 	//Right & Left
 	if (CP_Input_KeyDown(KEY_D))
 	{
-		player.accel.x = 0.5f;
+		if (CP_Input_KeyTriggered(KEY_SPACE) && isDash)
+		{
+			isDash = false;
+			player.accel.x = player.dashAccel;
+		}
+		else
+			player.accel.x = player.moveSpeed;
 	}
 	else if (CP_Input_KeyDown(KEY_A))
 	{
-		player.accel.x = -0.5f;
+		if (CP_Input_KeyTriggered(KEY_SPACE) && isDash)
+		{
+			isDash = false;
+			player.accel.x = -player.dashAccel;
+		}
+		else
+			player.accel.x = -player.moveSpeed;
 	}
 	else
 	{
@@ -34,7 +73,6 @@ void PlayerMove()
 }
 
 float friction = 0.95f;
-float max_speed = 10.0f;
 void PlayerUpdatePosition()
 {
 	//속도에 가속도를 더함
@@ -50,48 +88,52 @@ void PlayerUpdatePosition()
 	player.coord.y += player.velocity.y;
 
 	//최대 속도 제한
-	if (player.velocity.x > max_speed) player.velocity.x = max_speed;
-	if (player.velocity.x < -max_speed) player.velocity.x = -max_speed;
-	if (player.velocity.y > max_speed) player.velocity.y = max_speed;
-	if (player.velocity.y < -max_speed) player.velocity.y = -max_speed;
+	
+	if (player.velocity.x > player.maxSpeed) player.velocity.x = player.maxSpeed;
+	if (player.velocity.x < -player.maxSpeed) player.velocity.x = -player.maxSpeed;
+	if (player.velocity.y > player.maxSpeed) player.velocity.y = player.maxSpeed;
+	if (player.velocity.y < -player.maxSpeed) player.velocity.y = -player.maxSpeed;
 }
+
+
 void CheckWallCollision()
 {
 	if (player.coord.x <= 0)
 	{
 		player.coord.x = 0.0f;
-		player.velocity.x = -player.velocity.x * 0.5f;
+		player.velocity.x = -player.velocity.x * player.moveSpeed;
 		player.accel.x = 0;
 	}
 	else if (player.coord.x + player.size >= CP_System_GetWindowWidth())
 	{
 		player.coord.x = CP_System_GetWindowWidth() - player.size;
-		player.velocity.x = -player.velocity.x * 0.5f;
+		player.velocity.x = -player.velocity.x * player.moveSpeed;
 		player.accel.x = 0;
 	}
 
 	if (player.coord.y <= 0)
 	{
 		player.coord.y = 0;
-		player.velocity.y = -player.velocity.y * 0.5f;
+		player.velocity.y = -player.velocity.y * player.moveSpeed;
 		player.accel.y = 0;
 	}
 	else if (player.coord.y + player.size >= CP_System_GetWindowHeight())
 	{
 		player.coord.y = CP_System_GetWindowHeight() - player.size;
-		player.velocity.y = -player.velocity.y * 0.5f;
+		player.velocity.y = -player.velocity.y * player.moveSpeed;
 		player.accel.y = 0;
 	}
 }
 
+
 void SelectWeapon()
 {
 	if (CP_Input_KeyTriggered(KEY_1))
-		player.selectWeapon = 1;
+		player.weapon.num = 1;
 	else if (CP_Input_KeyTriggered(KEY_2))
-		player.selectWeapon = 2;
+		player.weapon.num = 2;
 	else if (CP_Input_KeyTriggered(KEY_3))
-		player.selectWeapon = 3;
+		player.weapon.num = 3;
 }
 
 void PlayerAttack(int num)

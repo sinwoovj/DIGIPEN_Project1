@@ -1,8 +1,5 @@
 #include "Roughly.h"
-#include "Player.h"
-#include "Projectile.h"
-#include "PlayerAttack.h"
-#include <stdlib.h>
+
 const float WindowWidth = 1920;
 const float WindowHeight = 1080;
 CP_Image BossFace = NULL;
@@ -55,9 +52,10 @@ void Roughly_game_update(void)
 	PlayerMove();
 	PlayerUpdatePosition(); //Accel
 
+
 	SelectWeapon();
-	PlayerAttack(player.selectWeapon);
-	Draw_Projectile(); //투사체 출력
+	PlayerAttack(player.weapon.num);
+	Draw_PlayerProjectile(); //투사체 출력
 
 }
 
