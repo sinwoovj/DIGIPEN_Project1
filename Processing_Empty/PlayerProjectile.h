@@ -1,6 +1,9 @@
 #pragma once
 #include "cprocessing.h"
+#include "Standard.h"
+
 #define MAX_PROJECTILES 100
+
 
 typedef struct Projectile
 {
@@ -13,6 +16,7 @@ typedef struct Projectile
 
 	//투사체 속도
 	float velocity;
+	Shape shape;
 
 	int active;
 	int direction; // 0: right, 1: left, 2: up, 3: down

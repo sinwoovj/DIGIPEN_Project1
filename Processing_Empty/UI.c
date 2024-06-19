@@ -11,7 +11,7 @@ void ShowPlayerHP() {
 	Text(str, 10, 10);
 }
 
-void ShowPlayerEnemy() {
+void ShowEnemyHP() {
 	char str[100];
 	sprintf_s(str, 50, "Enemy.HP : %5.2f", enemy.health);
 	Text(str, 1520, 10);
@@ -19,5 +19,5 @@ void ShowPlayerEnemy() {
 
 void ShowUI() {
 	ShowPlayerHP();
-	ShowPlayerEnemy();
+	ShowEnemyHP();
 }

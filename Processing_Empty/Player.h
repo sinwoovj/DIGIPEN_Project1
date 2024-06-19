@@ -2,6 +2,7 @@
 #include "cprocessing.h"
 #include "Weapon.h"
 #include "Roughly.h"
+#include "Standard.h"
 
 typedef struct Player
 {
@@ -14,6 +15,7 @@ typedef struct Player
 	float dashAccel;
 	float moveSpeed;
 	float maxSpeed;
+	Shape shape;
 	bool isAlive;
 	Weapon weapon;
 }Player;

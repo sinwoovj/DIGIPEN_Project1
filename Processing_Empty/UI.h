@@ -7,5 +7,5 @@
 
 void Text(char* text, float x, float y);
 void ShowPlayerHP();
-void ShowPlayerEnemy();
+void ShowEnemyHP();
 void ShowUI();

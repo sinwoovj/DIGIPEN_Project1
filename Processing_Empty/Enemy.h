@@ -1,10 +1,12 @@
 #pragma once
-
+#include "Standard.h"
 #include <stdbool.h>
 #include "Player.h"
+#include "math.h"
 #include "EnemyAttack.h"
 #include <stdlib.h>
 #include <time.h>
+#include "Calculate.h"
 
 typedef struct Enemy
 {
@@ -12,7 +14,10 @@ typedef struct Enemy
 	float size;
 	float health;
 	float closeDamage;
+	float reachDamage;
+	float projectileDamage;
 	int phase;
+	Shape shape;
 	bool isAttack;
 	bool isHit;
 	bool isInvincibility;
@@ -20,7 +25,7 @@ typedef struct Enemy
 }Enemy;
 Enemy enemy;
 
-void EnemyInit();
+void EnemyInit(float x, float y);
 
 void EnemyAttack();
 
