@@ -1,13 +1,20 @@
 #include "Enemy.h"
+#include "Standard.h"
 
-const float RecognizeRange = 50.0f;
 bool isReached = false;
+bool isRecognize = false;
+bool isCloseAttack = false;
+
+int enemyAttackRandom = 0;
+int enemyCloseAttackRandom = 0;
 
 void EnemyInit(float x, float y) {
 
 	enemy.coord.x = x;
 	enemy.coord.y = y;
 	enemy.size = 400;
+	enemy.range.x = x - enemy.size / 2;
+	enemy.range.y = y - enemy.size / 2;
 
 	enemy.health = 100; // 100 200 300
 
@@ -24,20 +31,29 @@ void EnemyInit(float x, float y) {
 	enemy.isInvincibility = 0;
 	enemy.isAlive = 1;
 
-	phaseTerm[0] = 30 * 6;
-	phaseTerm[1] = 30 * 4;
-	phaseTerm[2] = 30 * 2;
+	enemy.closeAttackNum = 0;
+	enemy.recognizeRange = 100.0f;
+	enemy.closeAttackCoolTime = FRAME * 3;
 
-	currentPhaseTerm = phaseTerm[0];
-	currentEnemyFrame = 0;
+	currentPhaseTerm = FRAME * 6;
+	currentEnemyFrame1 = 0;
+	currentEnemyFrame2 = 0;
 }
 
-bool EnemyFrameCheck() {
-	if (currentEnemyFrame == currentPhaseTerm) {
-		currentEnemyFrame = 0;
+bool EnemyFrameCheck1() {
+	if (currentEnemyFrame1 >= currentPhaseTerm) {
+		currentEnemyFrame1 = 0;
 		return true;
 	}
-	currentEnemyFrame++;
+	currentEnemyFrame1++;
+	return false;
+}
+bool EnemyFrameCheck2() {
+	if (currentEnemyFrame2 >= currentPhaseTerm) {
+		currentEnemyFrame2 = 0;
+		return true;
+	}
+	currentEnemyFrame2++;
 	return false;
 }
 
@@ -51,14 +67,12 @@ void EnemyPhaseSet() {
 	switch (++enemy.phase) {
 	case 2 :
 		enemy.health = 200;
-
 		enemy.projectileDamage = 10;
 		enemy.closeDamage = 20;
 
 		break;
 	case 3 :
 		enemy.health = 300;
-
 		enemy.projectileDamage = 15;
 		enemy.closeDamage = 30;
 		break;
@@ -67,7 +81,9 @@ void EnemyPhaseSet() {
 		isGameOver = true;
 		break;
 	}
-	currentPhaseTerm = phaseTerm[enemy.phase - 2];
+	enemy.recognizeRange += 50;
+	enemy.closeAttackCoolTime -= FRAME;
+	currentPhaseTerm -= FRAME * 2;
 }
 
 void EnemyDraw(float BossLocationX, float BossLocationY) {
@@ -88,43 +104,62 @@ void EnemyAttack() {
 	}
 	// 보스와 플레이어의 위치가 일정 범위 내로 가까우면 근접공격, 아니면 랜덤으로 공격함.
 	CP_Vector enemyRange;
-	enemyRange.x = enemy.coord.x - RecognizeRange;
-	enemyRange.y = enemy.coord.y - RecognizeRange;
-	if (EnemyFrameCheck()) {
-		if (RangeTest(enemyRange, enemy.size + RecognizeRange * 2, Square, player.coord, player.size, player.shape, 0, 0))
-			EnemyRandomAttack(true);
+	enemyRange.x = enemy.range.x - enemy.recognizeRange;
+	enemyRange.y = enemy.range.y - enemy.recognizeRange;
+
+	if (EnemyFrameCheck1())
+		EnemyRandomAttack();
+	if (RangeTest(enemyRange, enemy.size + enemy.recognizeRange * 2, Square, player.coord, player.size, player.shape, 0, 0))
+	{
+		if (!isRecognize)
+		{
+			srand(time(NULL));
+			enemy.closeAttackNum = (rand() % 3) + 1;
+			isRecognize = true;
+		}
+	}
+	if (isRecognize)
+	{
+		if (EnemyFrameCheck2())
+		{
+			isRecognize = false;
+			enemy.closeAttackNum = 0; // 범위 내 없음
+		}
 		else
-			EnemyRandomAttack(false);
+		{
+			EnemyRandomCloseAttack();
+		}
 	}
 }
 
-void EnemyRandomAttack(bool isNear)
+void EnemyRandomCloseAttack()
+{
+	switch (enemy.closeAttackNum) {
+	case 1:
+		// 한방향
+		EnemyCloseAttack1();
+		break;
+	case 2:
+		// 수직, 수평
+		EnemyCloseAttack2();
+		break;
+	case 3:
+		// 전방향
+		EnemyCloseAttack3();
+		break;
+	}
+}
+
+void EnemyRandomAttack()
 {
 	srand(time(NULL));
 
-	int random1 = 0, random2 = 0, random3 = 0; // 정수형 변수 선언
+	int random1 = 0, random2 = 0; // 정수형 변수 선언
 
-	random1 = isNear ? (rand() % 3) + 1 : 0;
-
-	random2 = rand() % 3 + 1; // 난수 생성
+	random1 = rand() % 3 + 1; // 난수 생성
 	
-	random3 = (rand() % (enemy.phase == 2 ? 2 : 3)) + 1; // 난수 생성
-
-	switch (random1) {
-		case 0:
-			break;
-		case 1:
-			EnemyCloseAttack1(); //한방향
-			break;
-		case 2:
-			EnemyCloseAttack2(); //수직,수평
-			break;
-		case 3:
-			EnemyCloseAttack3(); //전방향
-			break;
-	}
-
-	switch (random2)
+	random2 = (rand() % (enemy.phase == 2 ? 2 : 3)) + 1; // 난수 생성
+	switch (random1)
 	{
 		case 1:
 			EnemyProjectileRandomAttack1(); // 원형
@@ -137,7 +172,7 @@ void EnemyRandomAttack(bool isNear)
 			break;
 	}
 	if (enemy.phase >= 2) {
-		switch (random3)
+		switch (random2)
 		{
 		case 1:
 			EnemyPatternAttack1(); // 맵 1/4

@@ -1,4 +1,5 @@
 #include "Calculate.h"
+#include "math.h"
 
 bool RangeTest(CP_Vector v1, float v1_size, Shape v1_shape, CP_Vector v2, float v2_size, Shape v2_shape, float w, float h) { // v1이 base, v2가 target
 	bool res = false;
@@ -26,10 +27,21 @@ bool RangeTest(CP_Vector v1, float v1_size, Shape v1_shape, CP_Vector v2, float 
 	}
 	else if (v1_shape == Square && v2_shape == Circle)
 	{
-		float x = abs(v1.x - v2.x) <= abs((v1.x + v1_size) - v2.x) ? v1.x : v1.x + v1_size;
-		float y = abs(v1.y - v2.y) <= abs((v1.y + v1_size) - v2.y) ? v1.y : v1.y + v1_size;
-		if (x <= v2_size / 2 && y <= v2_size / 2)
+		// 사각형의 가장 가까운 점 찾기
+		float closestX = fmax(v1.x, fmin(v2.x, v1.x + v1_size));
+		float closestY = fmax(v1.y, fmin(v2.y, v1.y + v1_size));
+
+		// 가장 가까운 점과 원의 중심 사이의 거리 계산
+		float distanceX = v2.x - closestX;
+		float distanceY = v2.y - closestY;
+
+		// 유클리드 거리 계산
+		float distance = sqrt((distanceX * distanceX) + (distanceY * distanceY));
+
+		// 거리가 원의 반지름보다 작거나 같으면 충돌
+		if (distance <= v2_size / 2) {
 			res = true;
+		}
 	}
 	else if (v1_shape == Circle && v2_shape == Rect)
 	{

@@ -13,6 +13,7 @@ typedef struct Enemy
 {
 	CP_Vector coord;
 	float size;
+	CP_Vector range;
 	float health;
 	float closeDamage;
 	float reachDamage;
@@ -23,6 +24,9 @@ typedef struct Enemy
 	bool isHit;
 	bool isInvincibility;
 	bool isAlive;
+	int closeAttackNum;
+	float recognizeRange;
+	float closeAttackCoolTime;
 }Enemy;
 Enemy enemy;
 
@@ -30,10 +34,10 @@ bool isEnemyCloseAttack;
 bool isEnemyProjectailAttack;
 bool isEnemyPatternAttack;
 
-int phaseTerm[3]; // 1 > 6s : 2 > 4s : 3 > 2s
 int currentPhaseTerm;
 
-int currentEnemyFrame;
+int currentEnemyFrame1;
+int currentEnemyFrame2;
 int limitEnemyFrame;
 
 
@@ -47,4 +51,6 @@ void EnemyPhaseSet();
 
 void EnemyCheck();
 
-void EnemyRandomAttack(bool isNear);
+void EnemyRandomAttack();
+
+void EnemyRandomCloseAttack();
