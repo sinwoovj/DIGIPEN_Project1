@@ -1,14 +1,22 @@
 #include "Enemy.h"
 #include "UI.h"
 #include "Standard.h"
+#include "EnemyAttack.h"
+#include <math.h>
+#include <stdlib.h>
+#include <time.h>
+#include "Calculate.h"
+#include "Image.h"
+#include <stdbool.h>
 
 const float RecognizeRange = 50.0f;
-bool isReached = false;
-bool isRecognize = false;
-bool isCloseAttack = false;
+bool isReached;
+bool isRecognize;
+bool isCloseAttackCool;
+bool isCloseAttack;
 
-int enemyAttackRandom = 0;
-int enemyCloseAttackRandom = 0;
+int enemyAttackRandom;
+int enemyCloseAttackRandom;
 
 void EnemyInit(float x, float y) {
 
@@ -42,6 +50,16 @@ void EnemyInit(float x, float y) {
 	currentPhaseTerm = FRAME * 6;
 	currentEnemyFrame1 = 0;
 	currentEnemyFrame2 = 0;
+
+	isReached = false;
+	isRecognize = false;
+	isCloseAttackCool = false;
+	isCloseAttack = false;
+	isPlayerInsideRange = false;
+
+	enemyAttackRandom = 0;
+	enemyCloseAttackRandom = 0;
+
 }
 
 bool EnemyFrameCheck1() {
@@ -53,9 +71,17 @@ bool EnemyFrameCheck1() {
 	return false;
 }
 bool EnemyFrameCheck2() {
-	if (currentEnemyFrame2 >= currentPhaseTerm) {
+	if (currentEnemyFrame2 >= currentPhaseTerm + FRAME) {
+		if (currentEnemyFrame2 == currentPhaseTerm)
+			isCloseAttackCool = true;
+		if (isPlayerIncludeRange()) {
+			player.health -= enemy.closeDamage;
+		}
 		currentEnemyFrame2 = 0;
 		return true;
+	}
+	else {
+		isCloseAttackCool = false;
 	}
 	currentEnemyFrame2++;
 	return false;
@@ -66,7 +92,6 @@ void EnemyCheck()
 	if (enemy.health <= 0)
 		EnemyPhaseSet();
 }
-
 
 void EnemyPhaseSet() {
 	switch (++enemy.phase)
@@ -114,11 +139,11 @@ bool InvincibleTime()
 }
 void EnemyAttack() {
 	// Condition Check
-	// 보스와 완전히 부딫히면 확정 딜을 입음.
+	// 보스와 완전히 부딪히면 확정 딜을 입음.
 
 	if (RangeTest(enemy.coord, enemy.size, enemy.shape, player.coord, player.size, player.shape, 0, 0)) {
 		if (InvincibleTime()) {
-			player.health -= enemy.closeDamage;
+			player.health -= enemy.reachDamage;
 		}
 	}
 	// 보스와 플레이어의 위치가 일정 범위 내로 가까우면 근접공격, 아니면 랜덤으로 공격함.
@@ -128,14 +153,19 @@ void EnemyAttack() {
 
 	if (EnemyFrameCheck1())
 		EnemyRandomAttack();
+	// 쿨타임 만큼 쉬었다가 판정
 	if (RangeTest(enemyRange, enemy.size + enemy.recognizeRange * 2, Square, player.coord, player.size, player.shape, 0, 0))
 	{
+		isPlayerInsideRange = true;
 		if (!isRecognize)
 		{
 			srand(time(NULL));
 			enemy.closeAttackNum = (rand() % 3) + 1;
 			isRecognize = true;
 		}
+	}
+	else {
+		isPlayerInsideRange = false;
 	}
 	if (isRecognize)
 	{

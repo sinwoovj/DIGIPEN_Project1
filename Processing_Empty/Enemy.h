@@ -1,13 +1,6 @@
 #pragma once
 #include "Standard.h"
-#include <stdbool.h>
 #include "Player.h"
-#include <math.h>
-#include "EnemyAttack.h"
-#include <stdlib.h>
-#include <time.h>
-#include "Calculate.h"
-#include "Image.h"
 
 typedef struct Enemy
 {
@@ -35,6 +28,7 @@ Enemy enemy;
 bool isEnemyCloseAttack;
 bool isEnemyProjectailAttack;
 bool isEnemyPatternAttack;
+bool isPlayerInsideRange;
 
 int currentPhaseTerm;
 
@@ -42,6 +36,7 @@ int currentEnemyFrame1;
 int currentEnemyFrame2;
 int limitEnemyFrame;
 
+int EnemyCloseAttackNum;
 
 void EnemyInit(float x, float y);
 

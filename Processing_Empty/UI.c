@@ -1,4 +1,8 @@
 #include "UI.h"
+
+#include <stdio.h>
+#include <time.h>
+
 const float HpSize = 30.f;
 
 const float windowX = 1920 / 2.0;

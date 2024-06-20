@@ -18,12 +18,13 @@ typedef enum EnemyPattern {
 }EnemyPattern;
 
 // Function
-void SignDanagerZone(CP_Vector coord, float w, float h, CP_Color color);
+void SignDanagerZone(float x, float y, float w, float h);
 
 void EnemyCloseAttack1();
 void EnemyCloseAttack2();
 void EnemyCloseAttack3();
 
+bool isPlayerIncludeRange();
 
 
 void EnemyProjectileRandomAttack1();
