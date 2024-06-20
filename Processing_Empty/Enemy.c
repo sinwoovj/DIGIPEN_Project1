@@ -137,19 +137,6 @@ bool InvincibleTime()
 	else
 		return false;
 }
-bool isBulletReach(float *position_x, float *position_y, int *active)
-{
-	float distance = sqrtf(powf((player.coord.x - *position_x), 2.0) + powf((player.coord.y - *position_y), 2.0));
-	if (distance <= (player.size / 2.0f))
-	{
-		*position_x = 0;
-		*position_y = 0;
-		*active = 0;
-		return true;
-	}
-	else
-		return false;
-}
 
 void EnemyAttack() {
 	// Condition Check
@@ -169,8 +156,11 @@ void EnemyAttack() {
 		EnemyRandomAttack();
 	for (int i = 0; i < MAX_ENEMYPROJECTIES; i++)
 	{
-		if (isBulletReach(&enemyProjectile[i].position_x, &enemyProjectile[i].position_y, &enemyProjectile[i].active))
+		if(RangeTest(enemyProjectile[i].position, enemyProjectile[i].size, enemyProjectile[i].shape, player.coord, player.size, player.shape, 0, 0))
 		{
+			enemyProjectile[i].position.x = 0;
+			enemyProjectile[i].position.y = 0;
+			enemyProjectile[i].active = 0;
 			player.health -= enemy.projectileDamage;
 		}
 	}

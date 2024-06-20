@@ -1,5 +1,5 @@
 #pragma once
-#define MAX_ENEMYPROJECTIES 100
+#define MAX_ENEMYPROJECTIES 50
 #include "cprocessing.h"
 #include "Standard.h"
 
@@ -9,9 +9,7 @@ typedef struct EnemyProjectile
 	float size;
 
 	//투사체 위치 (처음 위치는 플레이어 위치일 예정)
-	float position_x;
-	float position_y;
-
+	CP_Vector position;
 	//투사체 속도
 	float velocity;
 	Shape shape;
