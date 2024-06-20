@@ -74,8 +74,11 @@ void UpdateEnemyHp()
 		if (enemy.health != enemy.maxHP && enemy.isPhase1Full)
 		{
 			enemy.health += 10;
-			if (enemy.health == enemy.maxHP)
+			if (enemy.health >= enemy.maxHP)
+			{
+				enemy.health = enemy.maxHP;
 				enemy.isPhase1Full = false;
+			}
 		}
 	}
 	else if (enemy.phase == 2)
@@ -84,8 +87,11 @@ void UpdateEnemyHp()
 		if (enemy.health != enemy.maxHP && isPhase2Full)
 		{
 			enemy.health += 10;
-			if (enemy.health == enemy.maxHP)
+			if (enemy.health >= enemy.maxHP)
+			{
+				enemy.health = enemy.maxHP;
 				isPhase2Full = false;
+			}
 		}
 		
 	}
@@ -95,8 +101,11 @@ void UpdateEnemyHp()
 		if (enemy.health != enemy.maxHP && isPhase3Full)
 		{
 			enemy.health += 10;
-			if (enemy.health == enemy.maxHP)
+			if (enemy.health >= enemy.maxHP)
+			{
+				enemy.health = enemy.maxHP;
 				isPhase3Full = false;
+			}
 		}
 	}
 

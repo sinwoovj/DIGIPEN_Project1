@@ -72,7 +72,7 @@ void EnemyPhaseSet() {
 	switch (++enemy.phase)
 	{
 	case 2:
-		enemy.health = 10;
+		enemy.health = 20;
 
 		enemy.projectileDamage = 10;
 		enemy.closeDamage = 20;
@@ -80,7 +80,7 @@ void EnemyPhaseSet() {
 		break;
 
 	case 3 :
-		enemy.health = 10;
+		enemy.health = 20;
 
 		enemy.projectileDamage = 15;
 		enemy.closeDamage = 30;
