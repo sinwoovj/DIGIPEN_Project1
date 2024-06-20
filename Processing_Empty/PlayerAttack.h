@@ -6,6 +6,7 @@
 #include "Enemy.h"
 #include <math.h>
 #include "Calculate.h"
+#include "EnemyProjectile.h"
 
 void PlayerAttack(int num);
 

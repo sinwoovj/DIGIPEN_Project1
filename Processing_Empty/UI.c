@@ -12,10 +12,13 @@ void Text(char* text, float x, float y)
 
 void ShowPlayerHP() 
 {
-	CP_Settings_TextSize(HpSize);
-	char str[100];
-	sprintf_s(str, 50, "Player.HP : %5.2f", player.health);
-	Text(str, 10, 30);
+	if(player.isAlive)
+	{
+		CP_Settings_TextSize(HpSize);
+		char str[100];
+		sprintf_s(str, 50, "Player.HP : %5.2f", player.health);
+		Text(str, 10, 30);
+	}
 }
 
 void ShowEnemyHP() 
@@ -118,11 +121,14 @@ void UpdateEnemyHp()
 
 void UpdatePlayerHp()
 {
-	float playerHP = player.health;
-	float playerHP_X = player.coord.x - (player.size / 2.0);
-	float playerHP_Y = player.coord.y - (player.size / 2.0);
-	CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-	CP_Graphics_DrawRectAdvanced(playerHP_X, playerHP_Y, playerHP, 10, 0.f, 10.f);
-	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 0));
-	CP_Graphics_DrawRect(playerHP_X, playerHP_Y, playerHP, 10.f);
+	if(player.isAlive)
+	{
+		float playerHP = player.health;
+		float playerHP_X = player.coord.x - (player.size / 2.0);
+		float playerHP_Y = player.coord.y - (player.size / 2.0);
+		CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
+		CP_Graphics_DrawRectAdvanced(playerHP_X, playerHP_Y, playerHP, 10, 0.f, 10.f);
+		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 0));
+		CP_Graphics_DrawRect(playerHP_X, playerHP_Y, playerHP, 10.f);
+	}
 }

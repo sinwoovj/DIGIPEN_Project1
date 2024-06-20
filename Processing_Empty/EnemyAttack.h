@@ -1,5 +1,6 @@
 #pragma once
 #include "Roughly.h"
+#include "EnemyProjectile.h"
 
 // Enum
 typedef enum TypeOfAttack {
@@ -26,9 +27,11 @@ void EnemyCloseAttack3();
 
 
 
-void EnemyProjectileRandomAttack1();
-void EnemyProjectileRandomAttack2();
-void EnemyProjectileRandomAttack3();
+
+
+void EnemyProjectileRandomAttack1();// 원형
+void EnemyProjectileRandomAttack2();// 수평 수직
+void EnemyProjectileRandomAttack3();// 유도
 
 
 

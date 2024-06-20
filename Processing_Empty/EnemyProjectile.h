@@ -1,12 +1,9 @@
 #pragma once
+#define MAX_ENEMYPROJECTIES 100
 #include "cprocessing.h"
-#include "PlayerAttack.h"
 #include "Standard.h"
-#include <stdbool.h>
-#define MAX_PROJECTILES 100
 
-
-typedef struct Projectile
+typedef struct EnemyProjectile
 {
 	//투사체 사이즈
 	float size;
@@ -21,8 +18,9 @@ typedef struct Projectile
 
 	int active;
 	int direction; // 0: right, 1: left, 2: up, 3: down
-}Proj;
-Proj projectile[MAX_PROJECTILES];
+}EnemyProject;
+EnemyProject enemyProjectile[MAX_ENEMYPROJECTIES];
 
-void Create_PlayerProjectile(float x, float y, float velocity, int direction);
-void Draw_PlayerProjectile();
+
+void CreateEnemyProjectile(float x, float y, float velocity, int direction);
+void DrawEnemyProjectile();

@@ -112,13 +112,27 @@ bool InvincibleTime()
 	else
 		return false;
 }
+bool isBulletReach(float *position_x, float *position_y, int *active)
+{
+	float distance = sqrtf(powf((player.coord.x - *position_x), 2.0) + powf((player.coord.y - *position_y), 2.0));
+	if (distance <= (player.size / 2.0f))
+	{
+		*position_x = 0;
+		*position_y = 0;
+		*active = 0;
+		return true;
+	}
+	else
+		return false;
+}
+
 void EnemyAttack() {
 	// Condition Check
 	// 보스와 완전히 부딫히면 확정 딜을 입음.
 
 	if (RangeTest(enemy.coord, enemy.size, enemy.shape, player.coord, player.size, player.shape, 0, 0)) {
 		if (InvincibleTime()) {
-			player.health -= enemy.closeDamage;
+			player.health -= enemy.reachDamage;
 		}
 	}
 	// 보스와 플레이어의 위치가 일정 범위 내로 가까우면 근접공격, 아니면 랜덤으로 공격함.
@@ -128,6 +142,13 @@ void EnemyAttack() {
 
 	if (EnemyFrameCheck1())
 		EnemyRandomAttack();
+	for (int i = 0; i < MAX_ENEMYPROJECTIES; i++)
+	{
+		if (isBulletReach(&enemyProjectile[i].position_x, &enemyProjectile[i].position_y, &enemyProjectile[i].active))
+		{
+			player.health -= enemy.projectileDamage;
+		}
+	}
 	if (RangeTest(enemyRange, enemy.size + enemy.recognizeRange * 2, Square, player.coord, player.size, player.shape, 0, 0))
 	{
 		if (!isRecognize)

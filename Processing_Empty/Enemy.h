@@ -58,3 +58,5 @@ void EnemyRandomAttack(ds);
 bool InvincibleTime();
 
 void EnemyRandomCloseAttack();
+
+bool isBulletReach(float *position_x, float *position_y, int *active);

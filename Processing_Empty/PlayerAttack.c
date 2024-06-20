@@ -104,7 +104,7 @@ void PlayerCloseAttack()
 	float swordWidth = (sword.range * 2.0);
 	float swordHeight = (sword.range * 3 / 2.0);
 	float swordHand = (sword.range / 2.0);
-	if (CP_Input_KeyDown(KEY_RIGHT))
+	if (CP_Input_KeyDown(KEY_RIGHT) && player.isAlive)
 	{
 		player.direction = 1;
 		if (AttackCoolTime())
@@ -117,7 +117,7 @@ void PlayerCloseAttack()
 		}
 
 	}
-	else if (CP_Input_KeyDown(KEY_LEFT))
+	else if (CP_Input_KeyDown(KEY_LEFT) && player.isAlive)
 	{
 		player.direction = 3;
 		if (AttackCoolTime())
@@ -129,7 +129,7 @@ void PlayerCloseAttack()
 				SuccessAttack(player.weapon.num);
 		}
 	}
-	else if (CP_Input_KeyDown(KEY_UP))
+	else if (CP_Input_KeyDown(KEY_UP) && player.isAlive)
 	{
 		player.direction = 2;
 		if (AttackCoolTime())
@@ -141,7 +141,7 @@ void PlayerCloseAttack()
 				SuccessAttack(player.weapon.num);
 		}
 	}
-	else if (CP_Input_KeyDown(KEY_DOWN))
+	else if (CP_Input_KeyDown(KEY_DOWN) && player.isAlive)
 	{
 		player.direction = 0;
 		if (AttackCoolTime())
@@ -154,8 +154,6 @@ void PlayerCloseAttack()
 		}
 	}
 }
-
-
 
 
 /// <summary>
@@ -189,28 +187,28 @@ int LongAttackCoolTime()
 void PlayerLongAttack()
 {
 	float velocity = 10.0f;
-	if (CP_Input_KeyDown(KEY_RIGHT))
+	if (CP_Input_KeyDown(KEY_RIGHT) && player.isAlive)
 	{
 		if (LongAttackCoolTime())
 		{
 			Create_PlayerProjectile(player.coord.x + 20, player.coord.y + 20, velocity, 1);
 		}
 	}
-	else if (CP_Input_KeyDown(KEY_LEFT))
+	else if (CP_Input_KeyDown(KEY_LEFT) && player.isAlive)
 	{
 		if (LongAttackCoolTime())
 		{
 			Create_PlayerProjectile(player.coord.x + 20, player.coord.y + 20, velocity, 2);
 		}
 	}
-	else if (CP_Input_KeyDown(KEY_UP))
+	else if (CP_Input_KeyDown(KEY_UP) && player.isAlive)
 	{
 		if (LongAttackCoolTime())
 		{
 			Create_PlayerProjectile(player.coord.x + 20, player.coord.y + 20, velocity, 3);
 		}
 	}
-	else if (CP_Input_KeyDown(KEY_DOWN))
+	else if (CP_Input_KeyDown(KEY_DOWN) && player.isAlive)
 	{
 		if (LongAttackCoolTime())
 		{
@@ -227,7 +225,7 @@ void PlayerWandAttack()
 {
 	float wand_x = CP_Random_RangeFloat(860, 1060);
 	float wand_y = CP_Random_RangeFloat(440, 640);
-	if (CP_Input_KeyDown(KEY_RIGHT) || CP_Input_KeyDown(KEY_LEFT) || CP_Input_KeyDown(KEY_UP) || CP_Input_KeyDown(KEY_DOWN))
+	if ((CP_Input_KeyDown(KEY_RIGHT) || CP_Input_KeyDown(KEY_LEFT) || CP_Input_KeyDown(KEY_UP) || CP_Input_KeyDown(KEY_DOWN)) && player.isAlive)
 	{
 		if (AttackCoolTime())
 		{

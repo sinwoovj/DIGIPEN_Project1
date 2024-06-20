@@ -35,13 +35,13 @@ void PlayerInit()
 
 void PlayerDraw()
 {
-	if (CP_Input_KeyDown(KEY_RIGHT))
+	if (CP_Input_KeyDown(KEY_RIGHT) && player.isAlive)
 		player.direction = 1;
-	else if (CP_Input_KeyDown(KEY_LEFT))
+	else if (CP_Input_KeyDown(KEY_LEFT) && player.isAlive)
 		player.direction = 3;
-	else if (CP_Input_KeyDown(KEY_UP))
+	else if (CP_Input_KeyDown(KEY_UP) && player.isAlive)
 		player.direction = 2;
-	else if (CP_Input_KeyDown(KEY_DOWN))
+	else if (CP_Input_KeyDown(KEY_DOWN) && player.isAlive)
 		player.direction = 0;
 	CP_Image_Draw(PlayerDir[player.direction], player.coord.x + player.size / 2, player.coord.y + player.size / 2, player.size, player.size, 255); //Draw BG
 }
@@ -51,7 +51,7 @@ void PlayerMove()
 	if (DashCoolTime())
 		isDash = true;
 	//Up & Down
-	if (CP_Input_KeyDown(KEY_W))
+	if (CP_Input_KeyDown(KEY_W) && player.isAlive)
 	{
 		if (CP_Input_KeyTriggered(KEY_SPACE) && isDash)
 		{
@@ -61,7 +61,7 @@ void PlayerMove()
 		else
 			player.accel.y = -player.moveSpeed;
 	}
-	else if (CP_Input_KeyDown(KEY_S))
+	else if (CP_Input_KeyDown(KEY_S) && player.isAlive)
 	{
 		if (CP_Input_KeyTriggered(KEY_SPACE) && isDash)
 		{
@@ -77,7 +77,7 @@ void PlayerMove()
 	}
 
 	//Right & Left
-	if (CP_Input_KeyDown(KEY_D))
+	if (CP_Input_KeyDown(KEY_D) && player.isAlive)
 	{
 		if (CP_Input_KeyTriggered(KEY_SPACE) && isDash)
 		{
@@ -87,7 +87,7 @@ void PlayerMove()
 		else
 			player.accel.x = player.moveSpeed;
 	}
-	else if (CP_Input_KeyDown(KEY_A))
+	else if (CP_Input_KeyDown(KEY_A) && player.isAlive)
 	{
 		if (CP_Input_KeyTriggered(KEY_SPACE) && isDash)
 		{
@@ -105,10 +105,23 @@ void PlayerMove()
 	CheckWallCollision();
 }
 
+
 void PlayerCheck()
 {
+	float dieX = (1920 / 2.0) - 300;
+	float dieY = 1080 / 2.0;
+	float restartX = 1920 / 2.0 - 300;
+	float restartY = 1080 / 2.0 + 200;
 	if (player.health <= 0)
+	{
 		player.isAlive = 0;
+		CP_Settings_TextSize(200.f);
+		CP_Font_DrawText("You Died", dieX, dieY);
+
+		CP_Settings_TextSize(100.f);
+		CP_Font_DrawText("Press R to Restart", restartX, restartY);
+
+	}
 }
 
 float friction = 0.95f;
@@ -133,8 +146,6 @@ void PlayerUpdatePosition()
 	if (player.velocity.y > player.maxSpeed) player.velocity.y = player.maxSpeed;
 	if (player.velocity.y < -player.maxSpeed) player.velocity.y = -player.maxSpeed;
 }
-
-
 void CheckWallCollision()
 {
 	if (player.coord.x <= 0)
@@ -163,8 +174,6 @@ void CheckWallCollision()
 		player.accel.y = 0;
 	}
 }
-
-
 void SelectWeapon()
 {
 	if (CP_Input_KeyTriggered(KEY_1))

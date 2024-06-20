@@ -87,7 +87,19 @@ void EnemyCloseAttack3() // Àü¹æÇâ
 
 void EnemyProjectileRandomAttack1()
 {
-
+	float degree = 0.f;
+	float velocity = 10.0f;
+	int direction = 0;
+	for (int i = 0; i < MAX_ENEMYPROJECTIES; i++)
+	{
+		CreateEnemyProjectile(WindowWidthHalf + (enemy.size / 2.0) * cosf(CP_Math_Radians(degree)), WindowHeightHalf + (enemy.size / 2.0) * sinf(CP_Math_Radians(degree)), velocity, direction);
+		direction++;
+		if (direction == 8) direction = 0;
+		degree -= 45;
+		if (degree == -405) degree = 0;
+	}
+	/*degree -= 90;
+	CreateEnemyProjectile(WindowWidthHalf + 50 * (float)cos(degree), WindowHeightHalf + 50 * (float)sin(degree), velocity, 2);*/
 }
 void EnemyProjectileRandomAttack2()
 {
