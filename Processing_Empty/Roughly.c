@@ -18,10 +18,12 @@ void Init()
 
 	CP_System_SetWindowSize((int)WindowWidth, (int)WindowHeight);
 
+
 	InitWeaponData();
 	EnemyInit(BossLocationX, BossLocationY);
 	PlayerInit();
-	
+	UpdatePlayerHp();
+	UpdateEnemyHp();
 	isGameOver = 0;
 
 	ImageLoad();
@@ -66,6 +68,12 @@ void Roughly_game_update(void)
 	
 	EnemyCheck();
 	PlayerCheck();
+	UpdatePhase();
+	UpdatePlayerHp();
+	UpdateEnemyHp();
+
+	//CP_Graphics_DrawCircle(BossLocationX, BossLocationY, 400);
+
 }
 
 void Roughly_game_exit(void)

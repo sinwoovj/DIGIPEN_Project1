@@ -18,7 +18,9 @@ typedef struct Enemy
 	float reachDamage;
 	float projectileDamage;
 	int phase;
+	int maxHP;
 	Shape shape;
+	bool isPhase1Full;
 	bool isAttack;
 	bool isHit;
 	bool isInvincibility;
@@ -48,3 +50,6 @@ void EnemyPhaseSet();
 void EnemyCheck();
 
 void EnemyRandomAttack(bool isNear);
+
+bool InvincibleTime();
+bool HelathTime();

@@ -13,13 +13,14 @@ void EnemyCloseAttack3()
 
 }
 
+
 void EnemyProjectileRandomAttack1()
 {
 
 }
 void EnemyProjectileRandomAttack2()
 {
-
+	
 }
 void EnemyProjectileRandomAttack3()
 {

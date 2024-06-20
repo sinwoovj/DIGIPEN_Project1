@@ -1,7 +1,7 @@
 #include "Enemy.h"
+#include "UI.h"
 
 const float RecognizeRange = 50.0f;
-bool isReached = false;
 
 void EnemyInit(float x, float y) {
 
@@ -9,13 +9,15 @@ void EnemyInit(float x, float y) {
 	enemy.coord.y = y;
 	enemy.size = 400;
 
-	enemy.health = 100; // 100 200 300
+	enemy.health = 10; // 100 200 300
 
 	enemy.projectileDamage = 5;
 	enemy.reachDamage = 10;
 	enemy.closeDamage = 10;
 
 	enemy.phase = 1;
+	enemy.maxHP = 100;
+	enemy.isPhase1Full = true;
 
 	enemy.shape = Circle;
 
@@ -47,21 +49,25 @@ void EnemyCheck()
 		EnemyPhaseSet();
 }
 
+
 void EnemyPhaseSet() {
-	switch (++enemy.phase) {
-	case 2 :
-		enemy.health = 200;
+	switch (++enemy.phase)
+	{
+	case 2:
+		enemy.health = 10;
 
 		enemy.projectileDamage = 10;
 		enemy.closeDamage = 20;
 
 		break;
+
 	case 3 :
-		enemy.health = 300;
+		enemy.health = 10;
 
 		enemy.projectileDamage = 15;
 		enemy.closeDamage = 30;
 		break;
+
 	case 4 : 
 		enemy.isAlive = 0;
 		isGameOver = true;
@@ -74,17 +80,26 @@ void EnemyDraw(float BossLocationX, float BossLocationY) {
 	CP_Image_Draw(BossFace, BossLocationX, BossLocationY, enemy.size, enemy.size, 255); //Draw BG
 }
 
+int invincibleCount = 0;
+const int invincibleLimit = 30;
+bool InvincibleTime()
+{
+	if (++invincibleCount == invincibleLimit)
+	{
+		invincibleCount = 0;
+		return true;
+	}
+	else
+		return false;
+}
 void EnemyAttack() {
 	// Condition Check
 	// 보스와 완전히 부딫히면 확정 딜을 입음.
+
 	if (RangeTest(enemy.coord, enemy.size, enemy.shape, player.coord, player.size, player.shape, 0, 0)) {
-		if (!isReached) {
+		if (InvincibleTime()) {
 			player.health -= enemy.closeDamage;
-			isReached = true;
 		}
-	}
-	else {
-		isReached = false;
 	}
 	// 보스와 플레이어의 위치가 일정 범위 내로 가까우면 근접공격, 아니면 랜덤으로 공격함.
 	CP_Vector enemyRange;
