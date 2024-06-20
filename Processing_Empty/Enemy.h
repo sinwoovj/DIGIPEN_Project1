@@ -53,7 +53,7 @@ void EnemyPhaseSet();
 
 void EnemyCheck();
 
-void EnemyRandomAttack(bool isNear);
+void EnemyRandomAttack(ds);
 
 bool InvincibleTime();
 
