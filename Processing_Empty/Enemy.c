@@ -72,13 +72,13 @@ bool EnemyFrameCheck1() {
 }
 bool EnemyFrameCheck2() {
 	if (currentEnemyFrame2 >= currentPhaseTerm + FRAME) {
-		if (currentEnemyFrame2 == currentPhaseTerm)
-			isCloseAttackCool = true;
-		if (isPlayerIncludeRange()) {
-			player.health -= enemy.closeDamage;
-		}
 		currentEnemyFrame2 = 0;
 		return true;
+	}
+	if (currentEnemyFrame2 == currentPhaseTerm) {
+		isCloseAttackCool = true;
+		if (isPlayerIncludeRange())
+			player.health -= enemy.closeDamage;
 	}
 	else {
 		isCloseAttackCool = false;
