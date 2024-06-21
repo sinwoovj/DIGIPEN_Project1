@@ -46,7 +46,7 @@ void Draw_PlayerProjectile()
 			{
 				projectile[i].active = 0;
 			}
-			CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
+			CP_Settings_Fill(CP_Color_Create(0, 255, 255, 255));
 			CP_Graphics_DrawCircle(projectile[i].position_x, projectile[i].position_y, projectile[i].size);
 		}
 	}

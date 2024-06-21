@@ -18,7 +18,10 @@ typedef struct EnemyProjectile
 	int direction; // 0: right, 1: left, 2: up, 3: down
 }EnemyProject;
 EnemyProject enemyProjectile[MAX_ENEMYPROJECTIES];
+EnemyProject enemyProjectile_2[MAX_ENEMYPROJECTIES];
 
 
-void CreateEnemyProjectile(float x, float y, float velocity, int direction);
-void DrawEnemyProjectile();
+void CreateEnemyProjectile(float x, float y, float velocity, int direction); // 원형 수평 수직
+void CreateEnemyProjectile_2(float x, float y, float velocity, int direction); // 유도
+void DrawEnemyProjectile(); // 원형 수평 수직
+void DrawEnemyProjectile_2(); // 유도

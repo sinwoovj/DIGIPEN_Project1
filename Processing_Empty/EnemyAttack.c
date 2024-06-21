@@ -113,7 +113,7 @@ bool isPlayerIncludeRange()
 	return 0;
 }
 
-void EnemyProjectileRandomAttack1()
+void EnemyProjectileRandomAttack1() // 원형
 {
 	float degree = 0.f;
 	float velocity = 10.0f;
@@ -129,7 +129,7 @@ void EnemyProjectileRandomAttack1()
 	/*degree -= 90;
 	CreateEnemyProjectile(WindowWidthHalf + 50 * (float)cos(degree), WindowHeightHalf + 50 * (float)sin(degree), velocity, 2);*/
 }
-void EnemyProjectileRandomAttack2()
+void EnemyProjectileRandomAttack2() // 수평 수직
 {
 	float degree = 0.f;
 	float velocity = 10.0f;
@@ -143,9 +143,19 @@ void EnemyProjectileRandomAttack2()
 		if (degree == -450) degree = 0;
 	}
 }
-void EnemyProjectileRandomAttack3()
+void EnemyProjectileRandomAttack3() // 유도
 {
-
+	float degree = 0.f;
+	float velocity = 10.0f;
+	int direction = 0;
+	for (int i = 0; i < 4; i++)
+	{
+		CreateEnemyProjectile_2(WindowWidthHalf + (enemy.size / 2.0) * cosf(CP_Math_Radians(degree)), WindowHeightHalf + (enemy.size / 2.0) * sinf(CP_Math_Radians(degree)), velocity, direction);
+		direction += 2;
+		if (direction == 4) direction = 0;
+		degree -= 90;
+		if (degree == -450) degree = 0;
+	}
 }
 
 void EnemyPatternAttack1()

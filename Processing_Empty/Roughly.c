@@ -58,6 +58,7 @@ void Roughly_game_update(void)
 	SelectWeapon();
 	EnemyAttack();
 	DrawEnemyProjectile(); //보스 투사체 출력
+	DrawEnemyProjectile_2();
 	PlayerAttack(player.weapon.num);
 
 	EnemyDraw(BossLocationX, BossLocationY); //Draw Boss
