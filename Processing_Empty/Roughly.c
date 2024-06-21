@@ -1,22 +1,33 @@
 #include "Roughly.h"
+#include "Standard.h"
+#include "UI.h"
+#include "cprocessing.h"
+#include "Player.h"
+#include "PlayerProjectile.h"
+#include "PlayerAttack.h"
+#include <stdlib.h>
+#include "Weapon.h"
+#include "Image.h"
+#include "EnemyAttack.h"
+#include "Enemy.h"
 
-const float WindowWidth = 1920;
-const float WindowHeight = 1080;
+
 float BossLocationX;
 float BossLocationY;
 
 //Initialize Setting
 void Init()
 {
-	BossLocationX = WindowWidth / 2 ;
-	BossLocationY = WindowHeight / 2;
+	StandardInit();
+	BossLocationX = WindowWidthSize / 2 ;
+	BossLocationY = WindowHeightSize / 2;
 	//Active Projectile
 	for (int i = 0; i < MAX_PROJECTILES; i++)
 	{
 		projectile[i].active = 0;
 	}
 
-	CP_System_SetWindowSize((int)WindowWidth, (int)WindowHeight);
+	CP_System_SetWindowSize((int)WindowWidthSize, (int)WindowHeightSize);
 
 
 	InitWeaponData();
@@ -50,7 +61,7 @@ void Roughly_game_update(void)
 		Init();
 		CP_Engine_SetNextGameState(Roughly_game_init, Roughly_game_update, Roughly_game_exit);
 	}
-	CP_Image_Draw(BG, BossLocationX, BossLocationY, WindowWidth, WindowHeight, 255); //Draw BG
+	CP_Image_Draw(BG, BossLocationX, BossLocationY, WindowWidthSize, WindowHeightSize, 255); //Draw BG
 	
 	PlayerMove();
 	PlayerUpdatePosition(); //Accel

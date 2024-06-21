@@ -1,4 +1,6 @@
 #include "Player.h"
+#include "Roughly.h"
+#include "Image.h"
 
 int dashframeCount = 0;
 const int dashframeLimit = 90;

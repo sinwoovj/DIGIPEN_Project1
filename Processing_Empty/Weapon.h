@@ -1,6 +1,4 @@
 #pragma once
-#include "cprocessing.h"
-#include "Standard.h"
 #include <stdbool.h>
 
 // Struct

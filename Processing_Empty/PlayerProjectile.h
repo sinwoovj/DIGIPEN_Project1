@@ -1,6 +1,4 @@
 #pragma once
-#include "cprocessing.h"
-#include "PlayerAttack.h"
 #include "Standard.h"
 #include <stdbool.h>
 #define MAX_PROJECTILES 100

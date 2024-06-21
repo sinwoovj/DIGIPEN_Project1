@@ -1,6 +1,13 @@
 #include "PlayerAttack.h"
 #include "Weapon.h"
-
+#include "cprocessing.h"
+#include "Player.h"
+#include "PlayerProjectile.h"
+#include "Weapon.h"
+#include "Enemy.h"
+#include <math.h>
+#include "Calculate.h"
+#include "EnemyProjectile.h"
 
 
 void PlayerAttack(int num)

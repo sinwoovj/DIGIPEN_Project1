@@ -1,5 +1,5 @@
 #include "Calculate.h"
-#include "math.h"
+#include <math.h>
 
 bool isWithinBoundary(float v1_x, float v1_y, float v2_x, float v2_y, float w, float h) {
 	return (v1_x >= v2_x && v1_x <= v2_x + w) && (v1_y >= v2_y && v1_y <= v2_y + h);
