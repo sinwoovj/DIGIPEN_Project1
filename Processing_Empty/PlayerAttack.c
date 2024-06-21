@@ -2,7 +2,6 @@
 #include "Weapon.h"
 
 
-
 void PlayerAttack(int num)
 {
 	if (num == 1)
@@ -28,6 +27,8 @@ void SuccessAttack(int num)
 		enemy.health -= arrow.damage;
 	else if (num == 3)
 		enemy.health -= wand.damage;
+
+	CP_Sound_PlayAdvanced(bossHurt, 0.2f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 }
 
 /// <summary>
@@ -109,6 +110,7 @@ void PlayerCloseAttack()
 		player.direction = 1;
 		if (AttackCoolTime())
 		{
+			CP_Sound_PlayAdvanced(swordSound, 0.5f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
 			CP_Graphics_DrawRect(player.coord.x + player.size, player.coord.y - swordHand, swordHeight, swordWidth); //Draw trajectory
 			int right = 0;
@@ -122,6 +124,7 @@ void PlayerCloseAttack()
 		player.direction = 3;
 		if (AttackCoolTime())
 		{
+			CP_Sound_PlayAdvanced(swordSound, 0.5f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
 			CP_Graphics_DrawRect(player.coord.x - swordHeight, player.coord.y - swordHand, swordHeight, swordWidth); //Draw trajectory
 			int left = 1;
@@ -134,6 +137,7 @@ void PlayerCloseAttack()
 		player.direction = 2;
 		if (AttackCoolTime())
 		{
+			CP_Sound_PlayAdvanced(swordSound, 0.5f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
 			CP_Graphics_DrawRect(player.coord.x - swordHand, player.coord.y - swordHeight, swordWidth, swordHeight); //Draw trajectory
 			int up = 2;
@@ -146,6 +150,7 @@ void PlayerCloseAttack()
 		player.direction = 0;
 		if (AttackCoolTime())
 		{
+			CP_Sound_PlayAdvanced(swordSound, 0.5f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
 			CP_Graphics_DrawRect(player.coord.x - swordHand, player.coord.y + sword.range, swordWidth, swordHeight); //Draw trajectory
 			int up = 3;
@@ -186,12 +191,14 @@ int LongAttackCoolTime()
 }
 void PlayerLongAttack()
 {
+	
 	float velocity = 10.0f;
 	if (CP_Input_KeyDown(KEY_RIGHT) && player.isAlive)
 	{
 		if (LongAttackCoolTime())
 		{
 			Create_PlayerProjectile(player.coord.x + 20, player.coord.y + 20, velocity, 1);
+			CP_Sound_PlayAdvanced(arrowSound, 0.3f, 0.8f, FALSE, CP_SOUND_GROUP_1);
 		}
 	}
 	else if (CP_Input_KeyDown(KEY_LEFT) && player.isAlive)
@@ -199,6 +206,7 @@ void PlayerLongAttack()
 		if (LongAttackCoolTime())
 		{
 			Create_PlayerProjectile(player.coord.x + 20, player.coord.y + 20, velocity, 2);
+			CP_Sound_PlayAdvanced(arrowSound, 0.3f, 0.8f, FALSE, CP_SOUND_GROUP_1);
 		}
 	}
 	else if (CP_Input_KeyDown(KEY_UP) && player.isAlive)
@@ -206,6 +214,7 @@ void PlayerLongAttack()
 		if (LongAttackCoolTime())
 		{
 			Create_PlayerProjectile(player.coord.x + 20, player.coord.y + 20, velocity, 3);
+			CP_Sound_PlayAdvanced(arrowSound, 0.3f, 0.8f, FALSE, CP_SOUND_GROUP_1);
 		}
 	}
 	else if (CP_Input_KeyDown(KEY_DOWN) && player.isAlive)
@@ -213,8 +222,10 @@ void PlayerLongAttack()
 		if (LongAttackCoolTime())
 		{
 			Create_PlayerProjectile(player.coord.x + 20, player.coord.y + 20, velocity, 4);
+			CP_Sound_PlayAdvanced(arrowSound, 0.3f, 0.8f, FALSE, CP_SOUND_GROUP_1);
 		}
 	}
+
 
 }
 
@@ -229,6 +240,7 @@ void PlayerWandAttack()
 	{
 		if (AttackCoolTime())
 		{
+			CP_Sound_PlayAdvanced(wandSound, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
 			CP_Graphics_DrawRect(wand_x, wand_y, player.size, player.size); //Draw Thunder
 			SuccessAttack(player.weapon.num);

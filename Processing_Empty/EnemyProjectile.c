@@ -1,5 +1,5 @@
 #include "EnemyProjectile.h"
-
+#include "Player.h"
 void CreateEnemyProjectile(float x, float y, float velocity, int direction)
 {
 	for (int i = 0; i < MAX_ENEMYPROJECTIES; i++)
@@ -31,6 +31,8 @@ void CreateEnemyProjectile_2(float x, float y, float velocity, int direction)
 			enemyProjectile_2[i].active = 1;
 			enemyProjectile_2[i].shape = Circle;
 			enemyProjectile_2[i].direction = direction;
+
+			enemyProjectile_2[i].target = player.coord;
 			break;
 		}
 	}
@@ -85,15 +87,49 @@ void DrawEnemyProjectile() // 원형 수평 수직
 	}
 }
 
+CP_Vector CP_VectorSubtract(CP_Vector a, CP_Vector b)
+{
+	CP_Vector result = { a.x - b.x, a.y - b.y };
+	return result;
+}
+CP_Vector CP_VectorNormalize(CP_Vector v)
+{
+	float length = sqrtf(v.x * v.x + v.y * v.y);
+	CP_Vector result = { v.x / length, v.y / length };
+	return result;
+}
+CP_Vector CP_VectorScale(CP_Vector v, float scale)
+{
+	CP_Vector result = { v.x * scale, v.y * scale };
+	return result;
+}
+float CP_VectorDistance(CP_Vector a, CP_Vector b)
+{
+	float dx = a.x - b.x;
+	float dy = a.y - b.y;
+	return sqrtf(dx * dx + dy * dy);
+}
+
 void DrawEnemyProjectile_2() // 유도
 {
 	for (int i = 0; i < MAX_ENEMYPROJECTIES; ++i) {
 		if (enemyProjectile_2[i].active) {
-			switch (enemyProjectile_2[i].direction)
+			// 현재 탄환의 목표 방향 계산
+			CP_Vector direction = CP_VectorSubtract(enemyProjectile_2[i].target, enemyProjectile_2[i].position);
+			direction = CP_VectorNormalize(direction);
+			direction = CP_VectorScale(direction, enemyProjectile_2[i].velocity * CP_System_GetDt());
+
+			// 탄환의 위치 업데이트
+			enemyProjectile_2[i].position.x += direction.x;
+			enemyProjectile_2[i].position.y += direction.y;
+
+			// 목표 지점에 도달했는지 체크
+			float threshold = enemyProjectile_2[i].velocity * CP_System_GetDt(); // 속도에 비례한 임계값
+			if (CP_VectorDistance(enemyProjectile_2[i].position, enemyProjectile_2[i].target) < threshold) // 1.0f는 임계값
 			{
-			case 0:
-				enemyProjectile_2[i].position.x += enemyProjectile_2[i].velocity * CP_System_GetDt();
-				break;
+				enemyProjectile_2[i].position.x = 0;
+				enemyProjectile_2[i].position.y = 0;
+				enemyProjectile_2[i].active = 0;
 			}
 
 			// 화면밖에 나가는 지 체크

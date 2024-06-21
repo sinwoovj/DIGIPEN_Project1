@@ -80,7 +80,10 @@ bool EnemyFrameCheck2() {
 	if (currentEnemyFrame2 == currentPhaseTerm) {
 		isCloseAttackCool = true;
 		if (isPlayerIncludeRange())
+		{
 			player.health -= enemy.closeDamage;
+			CP_Sound_PlayAdvanced(dashSound, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
+		}
 	}
 	dangerZoneOpacity = (int)((currentEnemyFrame2 * MaxDangerZoneOpacity) / currentPhaseTerm);
 	currentEnemyFrame2++;
@@ -97,6 +100,7 @@ void EnemyPhaseSet() {
 	switch (++enemy.phase)
 	{
 	case 2:
+		CP_Sound_PlayAdvanced(changePhase, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 		enemy.health = 20;
 
 		enemy.projectileDamage = 10;
@@ -109,6 +113,7 @@ void EnemyPhaseSet() {
 		break;
 
 	case 3 :
+		CP_Sound_PlayAdvanced(changePhase, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 		enemy.health = 20;
 
 		enemy.projectileDamage = 15;
@@ -122,9 +127,11 @@ void EnemyPhaseSet() {
 
 		enemy.recognizeRange += 50;
 	case 4 : 
+		player.isAlive = 0;
 		enemy.isAlive = 0;
-		isGameOver = true;
 		break;
+	default:
+		enemy.phase = 4;
 	}
 }
 
@@ -152,23 +159,36 @@ void EnemyAttack() {
 	if (RangeTest(enemy.coord, enemy.size, enemy.shape, player.coord, player.size, player.shape, 0, 0)) {
 		if (InvincibleTime()) {
 			player.health -= enemy.reachDamage;
+			CP_Sound_PlayAdvanced(dashSound, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 		}
 	}
 	// 보스와 플레이어의 위치가 일정 범위 내로 가까우면 근접공격, 아니면 랜덤으로 공격함.
 	CP_Vector enemyRange;
 	enemyRange.x = enemy.range.x - enemy.recognizeRange;
 	enemyRange.y = enemy.range.y - enemy.recognizeRange;
-
+	CP_Vector playerRange;
+	playerRange.x = player.coord.x + player.size / 2;
+	playerRange.y = player.coord.y + player.size / 2;
+	
 	if (EnemyFrameCheck1())
 		EnemyRandomAttack();
 	for (int i = 0; i < MAX_ENEMYPROJECTIES; i++)
 	{
-		if(RangeTest(enemyProjectile[i].position, enemyProjectile[i].size, enemyProjectile[i].shape, player.coord, player.size, player.shape, 0, 0))
+		if(RangeTest(enemyProjectile[i].position, enemyProjectile[i].size, enemyProjectile[i].shape, playerRange, player.size, player.shape, 0, 0))
 		{
 			enemyProjectile[i].position.x = 0;
 			enemyProjectile[i].position.y = 0;
 			enemyProjectile[i].active = 0;
 			player.health -= enemy.projectileDamage;
+			CP_Sound_PlayAdvanced(dashSound, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
+		}
+		if (RangeTest(enemyProjectile_2[i].position, enemyProjectile_2[i].size, enemyProjectile_2[i].shape, playerRange, player.size, player.shape, 0, 0))
+		{
+			enemyProjectile_2[i].position.x = 0;
+			enemyProjectile_2[i].position.y = 0;
+			enemyProjectile_2[i].active = 0;
+			player.health -= enemy.projectileDamage;
+			CP_Sound_PlayAdvanced(dashSound, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 		}
 	}
 	if (RangeTest(enemyRange, enemy.size + enemy.recognizeRange * 2, Square, player.coord, player.size, player.shape, 0, 0))

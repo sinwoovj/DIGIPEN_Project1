@@ -14,6 +14,8 @@ typedef struct Player
 	CP_Color color;
 	Shape shape;
 	float health;
+	float dashCoolTime;
+	float dashCoolTimeLimit;
 	float dashAccel;
 	float moveSpeed;
 	float maxSpeed;

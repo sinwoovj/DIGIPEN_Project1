@@ -13,7 +13,6 @@ void SignDanagerZone(float x, float y, float w, float h)
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, dangerZoneOpacity >= MaxDangerZoneOpacity ? MaxDangerZoneOpacity : dangerZoneOpacity));
 	CP_Graphics_DrawRect(x, y, w, h);
 }
-
 // 기본적으로 근접공격은 3초에서 1초 사이에 빨간색으로 공격 범위만큼 표시하고 공격한다.
 // 그냥 정,직사각형을 
 void EnemyCloseAttack1() // 한방향
@@ -170,7 +169,7 @@ void EnemyProjectileRandomAttack1() // 원형
 	float degree = 0.f;
 	float velocity = 10.0f;
 	int direction = 0;
-	for (int i = 0; i < MAX_ENEMYPROJECTIES; i++)
+	for (int i = 0; i < 16; i++)
 	{
 		CreateEnemyProjectile(WindowWidthHalf + (enemy.size / 2.0) * cosf(CP_Math_Radians(degree)), WindowHeightHalf + (enemy.size / 2.0) * sinf(CP_Math_Radians(degree)), velocity, direction);
 		direction++;
@@ -186,7 +185,7 @@ void EnemyProjectileRandomAttack2() // 수평 수직
 	float degree = 0.f;
 	float velocity = 10.0f;
 	int direction = 0;
-	for (int i = 0; i < MAX_ENEMYPROJECTIES; i++)
+	for (int i = 0; i < 8; i++)
 	{
 		CreateEnemyProjectile(WindowWidthHalf + (enemy.size / 2.0) * cosf(CP_Math_Radians(degree)), WindowHeightHalf + (enemy.size / 2.0) * sinf(CP_Math_Radians(degree)), velocity, direction);
 		direction += 2;
@@ -198,7 +197,7 @@ void EnemyProjectileRandomAttack2() // 수평 수직
 void EnemyProjectileRandomAttack3() // 유도
 {
 	float degree = 0.f;
-	float velocity = 10.0f;
+	float velocity = 200.0f * enemy.phase ;
 	int direction = 0;
 	for (int i = 0; i < 4; i++)
 	{

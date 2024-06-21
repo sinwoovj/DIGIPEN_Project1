@@ -9,7 +9,7 @@
 #include "UI.h"
 #include <stdbool.h>
 #include "Image.h"
-
+#include "Sound.h"
 #include "EnemyAttack.h"
 
 void Roughly_game_init(void);

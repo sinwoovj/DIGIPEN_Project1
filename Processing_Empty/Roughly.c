@@ -15,18 +15,24 @@ void Init()
 	{
 		projectile[i].active = 0;
 	}
-
+	for (int i = 0; i < MAX_ENEMYPROJECTIES; i++)
+	{
+		enemyProjectile[i].active = 0;
+		enemyProjectile_2[i].active = 0;
+	}
 	CP_System_SetWindowSize((int)WindowWidth, (int)WindowHeight);
-
 
 	InitWeaponData();
 	EnemyInit(BossLocationX, BossLocationY);
 	PlayerInit();
 	UpdatePlayerHp();
 	UpdateEnemyHp();
+	UpdatePlayerDash();
 	isGameOver = 0;
-
+	isPhase2Full = 1;
+	isPhase3Full = 1;
 	ImageLoad();
+	SoundLoad();
 }
 
 void Roughly_game_init(void)
@@ -37,9 +43,6 @@ void Roughly_game_init(void)
 
 void Roughly_game_update(void)
 {
-	if (isGameOver) {
-		exit(0);
-	}
 	if (CP_Input_KeyDown(KEY_ESCAPE))
 	{
 		exit(0);
@@ -51,34 +54,37 @@ void Roughly_game_update(void)
 		CP_Engine_SetNextGameState(Roughly_game_init, Roughly_game_update, Roughly_game_exit);
 	}
 	CP_Image_Draw(BG, BossLocationX, BossLocationY, WindowWidth, WindowHeight, 255); //Draw BG
-	
-	PlayerMove();
-	PlayerUpdatePosition(); //Accel
-
-	SelectWeapon();
-	EnemyAttack();
-	DrawEnemyProjectile(); //보스 투사체 출력
-	DrawEnemyProjectile_2();
-	PlayerAttack(player.weapon.num);
 
 	EnemyDraw(BossLocationX, BossLocationY); //Draw Boss
 	PlayerDraw();
-	
+
+	PlayerMove();
+	PlayerUpdatePosition(); //Accel
+	SelectWeapon();
+
+	if(enemy.isAlive)
+	{
+		EnemyAttack();
+		DrawEnemyProjectile(); //보스 투사체 출력
+		DrawEnemyProjectile_2();
+	}
+
+	PlayerAttack(player.weapon.num);
 	Draw_PlayerProjectile(); //플레이어 투사체 출력
-	
+
 	ShowUI();
 	
 	EnemyCheck();
 	PlayerCheck();
+
 	UpdatePhase();
 	UpdatePlayerHp();
 	UpdateEnemyHp();
-
-	//CP_Graphics_DrawCircle(BossLocationX, BossLocationY, 400);
-
+	UpdatePlayerDash();
 }
 
 void Roughly_game_exit(void)
 {
 	ImageFree();
+	SoundFree();
 }

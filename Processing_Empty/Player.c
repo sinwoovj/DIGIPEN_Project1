@@ -1,17 +1,5 @@
+#include <time.h>
 #include "Player.h"
-
-int dashframeCount = 0;
-const int dashframeLimit = 90;
-bool isDash;
-int DashCoolTime()
-{
-	if (++dashframeCount == dashframeLimit)
-	{
-		dashframeCount = 0;
-		return 1;
-	}
-	return 0;
-}
 
 void PlayerInit()
 {
@@ -24,6 +12,7 @@ void PlayerInit()
 	player.velocity.x = 0;
 	player.velocity.y = 0;
 	player.dashAccel = 100.f;
+	player.dashCoolTimeLimit = 3.f;
 	player.shape = Circle;
 	player.health = 100.f;
 	player.moveSpeed = 0.5f;
@@ -32,7 +21,6 @@ void PlayerInit()
 	player.weapon = sword; // 1 > Sword // 2 > Arrow // 3 > Wand
 	player.direction = 0;
 }
-
 void PlayerDraw()
 {
 	if (CP_Input_KeyDown(KEY_RIGHT) && player.isAlive)
@@ -46,17 +34,34 @@ void PlayerDraw()
 	CP_Image_Draw(PlayerDir[player.direction], player.coord.x + player.size / 2, player.coord.y + player.size / 2, player.size, player.size, 255); //Draw BG
 }
 
+bool isDash;
+time_t dashStartTime;
+int DashCoolTime()
+{
+	time_t currentTime = clock();
+	player.dashCoolTime = (float)(currentTime - dashStartTime) / CLOCKS_PER_SEC;
+
+	if (player.dashCoolTime >= player.dashCoolTimeLimit)
+	{
+		return 1;
+	}
+	return 0;
+}
 void PlayerMove()
 {
-	if (DashCoolTime())
+	if (!isDash && DashCoolTime())
+	{
 		isDash = true;
+	}
 	//Up & Down
 	if (CP_Input_KeyDown(KEY_W) && player.isAlive)
 	{
 		if (CP_Input_KeyTriggered(KEY_SPACE) && isDash)
 		{
+			CP_Sound_PlayAdvanced(dashSound, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 			isDash = false;
 			player.accel.y = -player.dashAccel;
+			dashStartTime = clock();
 		}
 		else
 			player.accel.y = -player.moveSpeed;
@@ -65,8 +70,10 @@ void PlayerMove()
 	{
 		if (CP_Input_KeyTriggered(KEY_SPACE) && isDash)
 		{
+			CP_Sound_PlayAdvanced(dashSound, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 			isDash = false;
 			player.accel.y = player.dashAccel;
+			dashStartTime = clock();
 		}
 		else
 			player.accel.y = player.moveSpeed;
@@ -81,8 +88,10 @@ void PlayerMove()
 	{
 		if (CP_Input_KeyTriggered(KEY_SPACE) && isDash)
 		{
+			CP_Sound_PlayAdvanced(dashSound, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 			isDash = false;
 			player.accel.x = player.dashAccel;
+			dashStartTime = clock();
 		}
 		else
 			player.accel.x = player.moveSpeed;
@@ -91,8 +100,10 @@ void PlayerMove()
 	{
 		if (CP_Input_KeyTriggered(KEY_SPACE) && isDash)
 		{
+			CP_Sound_PlayAdvanced(dashSound, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 			isDash = false;
 			player.accel.x = -player.dashAccel;
+			dashStartTime = clock();
 		}
 		else
 			player.accel.x = -player.moveSpeed;
@@ -112,8 +123,11 @@ void PlayerCheck()
 	float dieY = 1080 / 2.0;
 	float restartX = 1920 / 2.0 - 300;
 	float restartY = 1080 / 2.0 + 200;
+	bool playonce = true;
 	if (player.health <= 0)
 	{
+		//여러번 울리는 상황 해결
+		//CP_Sound_PlayAdvanced(gameOver, 0.1f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 		player.isAlive = 0;
 		CP_Settings_TextSize(200.f);
 		CP_Font_DrawText("You Died", dieX, dieY);
@@ -176,10 +190,32 @@ void CheckWallCollision()
 }
 void SelectWeapon()
 {
-	if (CP_Input_KeyTriggered(KEY_1))
+	if (enemy.phase == 1)
+	{
+		if (CP_Input_KeyTriggered(KEY_1))
+			player.weapon.num = 1;
+	}
+	else if (enemy.phase == 2)
+	{
+		if (CP_Input_KeyTriggered(KEY_1))
+			player.weapon.num = 1;
+		else if (CP_Input_KeyTriggered(KEY_2))
+			player.weapon.num = 2;
+	}
+	else if (enemy.phase == 3)
+	{
+		if (CP_Input_KeyTriggered(KEY_1))
+			player.weapon.num = 1;
+		else if (CP_Input_KeyTriggered(KEY_2))
+			player.weapon.num = 2;
+		else if (CP_Input_KeyTriggered(KEY_3))
+			player.weapon.num = 3;
+	}
+
+	if (CP_Input_KeyTriggered(KEY_1) && CP_Input_KeyDown(KEY_LEFT_SHIFT))
 		player.weapon.num = 1;
-	else if (CP_Input_KeyTriggered(KEY_2))
+	else if (CP_Input_KeyTriggered(KEY_2) && CP_Input_KeyDown(KEY_LEFT_SHIFT))
 		player.weapon.num = 2;
-	else if (CP_Input_KeyTriggered(KEY_3))
+	else if (CP_Input_KeyTriggered(KEY_3) && CP_Input_KeyDown(KEY_LEFT_SHIFT))
 		player.weapon.num = 3;
 }

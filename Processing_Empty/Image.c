@@ -22,5 +22,4 @@ void ImageFree()
 
 	for(int i = 0; i < 4; i++)
 		CP_Image_Free(&PlayerDir[i]);
-	
 }
