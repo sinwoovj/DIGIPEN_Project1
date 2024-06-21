@@ -12,7 +12,6 @@
 const float RecognizeRange = 50.0f;
 bool isReached;
 bool isRecognize;
-bool isCloseAttackCool;
 bool isCloseAttack;
 
 int enemyAttackRandom;
@@ -45,9 +44,9 @@ void EnemyInit(float x, float y) {
 
 	enemy.closeAttackNum = 0;
 	enemy.recognizeRange = 100.0f;
-	enemy.closeAttackCoolTime = FRAME * 3;
+	enemy.closeAttackCoolTime = FRAME * 2;
 
-	currentPhaseTerm = FRAME * 6;
+	currentPhaseTerm = FRAME * 3;
 	currentEnemyFrame1 = 0;
 	currentEnemyFrame2 = 0;
 
@@ -60,6 +59,7 @@ void EnemyInit(float x, float y) {
 	enemyAttackRandom = 0;
 	enemyCloseAttackRandom = 0;
 
+	dangerZoneOpacity = 0;
 }
 
 bool EnemyFrameCheck1() {
@@ -73,6 +73,8 @@ bool EnemyFrameCheck1() {
 bool EnemyFrameCheck2() {
 	if (currentEnemyFrame2 >= currentPhaseTerm + FRAME) {
 		currentEnemyFrame2 = 0;
+		dangerZoneOpacity = 0;
+		isCloseAttackCool = false;
 		return true;
 	}
 	if (currentEnemyFrame2 == currentPhaseTerm) {
@@ -80,9 +82,7 @@ bool EnemyFrameCheck2() {
 		if (isPlayerIncludeRange())
 			player.health -= enemy.closeDamage;
 	}
-	else {
-		isCloseAttackCool = false;
-	}
+	dangerZoneOpacity = (int)((currentEnemyFrame2 * MaxDangerZoneOpacity) / currentPhaseTerm);
 	currentEnemyFrame2++;
 	return false;
 }
@@ -100,25 +100,32 @@ void EnemyPhaseSet() {
 		enemy.health = 20;
 
 		enemy.projectileDamage = 10;
-		enemy.closeDamage = 20;
+		enemy.closeDamage += 10;
+		enemy.reachDamage += 10;
 
+		enemy.closeAttackCoolTime -= FRAME / 2;
+		currentPhaseTerm -= FRAME;
+		enemy.recognizeRange += 50;
 		break;
 
 	case 3 :
 		enemy.health = 20;
 
 		enemy.projectileDamage = 15;
-		enemy.closeDamage = 30;
+		enemy.closeDamage += 10;
+		enemy.reachDamage += 10;
+
+		enemy.closeAttackCoolTime -= FRAME / 2;
+		currentPhaseTerm -= FRAME;
+		enemy.recognizeRange += 50;
 		break;
 
+		enemy.recognizeRange += 50;
 	case 4 : 
 		enemy.isAlive = 0;
 		isGameOver = true;
 		break;
 	}
-	enemy.recognizeRange += 50;
-	enemy.closeAttackCoolTime -= FRAME;
-	currentPhaseTerm -= FRAME * 2;
 }
 
 void EnemyDraw(float BossLocationX, float BossLocationY) {

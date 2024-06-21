@@ -2,6 +2,8 @@
 #include "Standard.h"
 #include "Player.h"
 
+#define MaxDangerZoneOpacity 60
+
 typedef struct Enemy
 {
 	CP_Vector coord;
@@ -29,6 +31,7 @@ bool isEnemyCloseAttack;
 bool isEnemyProjectailAttack;
 bool isEnemyPatternAttack;
 bool isPlayerInsideRange;
+bool isCloseAttackCool;
 
 int currentPhaseTerm;
 
@@ -37,6 +40,8 @@ int currentEnemyFrame2;
 int limitEnemyFrame;
 
 int EnemyCloseAttackNum;
+
+int dangerZoneOpacity;
 
 void EnemyInit(float x, float y);
 
