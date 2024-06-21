@@ -10,7 +10,7 @@ const float WindowHeightHalf = 540; // windowHeight / 2
 void SignDanagerZone(float x, float y, float w, float h)
 {
 	CP_Settings_NoStroke();
-	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 40));
+	CP_Settings_Fill(CP_Color_Create(255, 0, 0, dangerZoneOpacity >= MaxDangerZoneOpacity ? MaxDangerZoneOpacity : dangerZoneOpacity));
 	CP_Graphics_DrawRect(x, y, w, h);
 }
 
@@ -23,28 +23,32 @@ void EnemyCloseAttack1() // 한방향
 	if (currentEnemyFrame2 <= FRAME) {
 		if (player.coord.x >= WindowWidthHalf)
 		{
-			if (player.coord.y >= WindowHeightHalf)  EnemyCloseAttackNum = 1;
-			else EnemyCloseAttackNum = 2;
+			if (player.coord.y >= WindowHeightHalf)  EnemyCloseAttackNum = 1; // 우하
+			else EnemyCloseAttackNum = 2; // 우상
 		}
 		else {
-			if (player.coord.y >= WindowHeightHalf) EnemyCloseAttackNum = 3;
-			else EnemyCloseAttackNum = 4;
+			if (player.coord.y >= WindowHeightHalf) EnemyCloseAttackNum = 3; // 좌하
+			else EnemyCloseAttackNum = 4; // 좌상
 		}
 	}
 	
 	switch (EnemyCloseAttackNum)
 	{
 		case 1 :
-			SignDanagerZone(WindowWidthHalf, WindowHeightHalf, enemy.size / 2 + enemy.recognizeRange, enemy.size / 2 + enemy.recognizeRange);
+			if (!isCloseAttackCool)
+				SignDanagerZone(WindowWidthHalf, WindowHeightHalf, enemy.size / 2 + enemy.recognizeRange, enemy.size / 2 + enemy.recognizeRange);
 			break;
 		case 2 :
-			SignDanagerZone(WindowWidthHalf, enemy.range.y - enemy.recognizeRange, enemy.size / 2 + enemy.recognizeRange, enemy.size / 2 + enemy.recognizeRange);
+			if (!isCloseAttackCool)
+				SignDanagerZone(WindowWidthHalf, enemy.range.y - enemy.recognizeRange, enemy.size / 2 + enemy.recognizeRange, enemy.size / 2 + enemy.recognizeRange);
 			break;
 		case 3 :
-			SignDanagerZone(enemy.range.x - enemy.recognizeRange, WindowHeightHalf, enemy.size / 2 + enemy.recognizeRange, enemy.size / 2 + enemy.recognizeRange);
+			if (!isCloseAttackCool)
+				SignDanagerZone(enemy.range.x - enemy.recognizeRange, WindowHeightHalf, enemy.size / 2 + enemy.recognizeRange, enemy.size / 2 + enemy.recognizeRange);
 			break;
-		case 4 :
-			SignDanagerZone(enemy.range.x - enemy.recognizeRange, enemy.range.y - enemy.recognizeRange, enemy.size / 2 + enemy.recognizeRange, enemy.size / 2 + enemy.recognizeRange);
+		case 4:
+			if (!isCloseAttackCool)
+				SignDanagerZone(enemy.range.x - enemy.recognizeRange, enemy.range.y - enemy.recognizeRange, enemy.size / 2 + enemy.recognizeRange, enemy.size / 2 + enemy.recognizeRange);
 			break;
 	}
 }
@@ -57,14 +61,17 @@ void EnemyCloseAttack2() // 수직 수평
 	}
 	switch (EnemyCloseAttackNum)
 	{
-		case 5:
-
-			SignDanagerZone(enemy.range.x - enemy.recognizeRange, enemy.range.y - enemy.recognizeRange, enemy.size + enemy.recognizeRange * 2, enemy.recognizeRange);
-			SignDanagerZone(enemy.range.x - enemy.recognizeRange, enemy.range.y + enemy.size, enemy.size + enemy.recognizeRange * 2, enemy.recognizeRange);
+		case 5:	// 수평
+			if (!isCloseAttackCool) {
+				SignDanagerZone(enemy.range.x - enemy.recognizeRange, enemy.range.y - enemy.recognizeRange, enemy.size + enemy.recognizeRange * 2, enemy.recognizeRange);
+				SignDanagerZone(enemy.range.x - enemy.recognizeRange, enemy.range.y + enemy.size, enemy.size + enemy.recognizeRange * 2, enemy.recognizeRange);
+			}
 			break;
-		case 6:
-			SignDanagerZone(enemy.range.x - enemy.recognizeRange, enemy.range.y - enemy.recognizeRange, enemy.recognizeRange, enemy.size + enemy.recognizeRange * 2);
-			SignDanagerZone(enemy.range.x + enemy.size, enemy.range.y - enemy.recognizeRange, enemy.recognizeRange, enemy.size + enemy.recognizeRange * 2);
+		case 6: // 수직
+			if (!isCloseAttackCool) {
+				SignDanagerZone(enemy.range.x - enemy.recognizeRange, enemy.range.y - enemy.recognizeRange, enemy.recognizeRange, enemy.size + enemy.recognizeRange * 2);
+				SignDanagerZone(enemy.range.x + enemy.size, enemy.range.y - enemy.recognizeRange, enemy.recognizeRange, enemy.size + enemy.recognizeRange * 2);
+			}
 			break;
 	}
 }
@@ -73,7 +80,8 @@ void EnemyCloseAttack3() // 전방향
 	// 전방향
 	// 표시 n초간
 	EnemyCloseAttackNum = 7;
-	SignDanagerZone(enemy.range.x - enemy.recognizeRange, enemy.range.y - enemy.recognizeRange, enemy.size + enemy.recognizeRange * 2, enemy.size + enemy.recognizeRange * 2);
+	if (!isCloseAttackCool)
+		SignDanagerZone(enemy.range.x - enemy.recognizeRange, enemy.range.y - enemy.recognizeRange, enemy.size + enemy.recognizeRange * 2, enemy.size + enemy.recognizeRange * 2);
 	// 이후 공격
 }
 
@@ -81,28 +89,72 @@ bool isPlayerIncludeRange()
 {
 	switch (EnemyCloseAttackNum)
 	{
+		CP_Vector rangeRect;
+		float rangeSize = 0;
+		float rectX = 0;
+		float rectY = 0;
 		case 1:
-			if (player.coord.x >= WindowWidthHalf && player.coord.y >= WindowHeightHalf)
+			rangeRect = enemy.coord;
+			rectX = enemy.coord.x;
+			rectY = enemy.size / 2 + enemy.recognizeRange;
+			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
 				return 1;
-			break;
+			if (player.coord.x < WindowWidthHalf && player.coord.y < WindowHeightHalf)
+				return 1;
 		case 2:
+			rangeRect.x = enemy.coord.x;
+			rangeRect.y = enemy.range.y - enemy.recognizeRange;
+			rectX = enemy.size / 2 + enemy.recognizeRange;
+			rectY = enemy.size / 2 + enemy.recognizeRange;
+			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
+				return 1;
 			if (player.coord.x >= WindowWidthHalf && player.coord.y < WindowHeightHalf)
 				return 1;
 			break;
 		case 3:
+			rangeRect.x = enemy.range.x - enemy.recognizeRange;
+			rangeRect.y = enemy.coord.y;
+			rectX = enemy.size / 2 + enemy.recognizeRange;
+			rectY = enemy.size / 2 + enemy.recognizeRange;
+			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
+				return 1;
 			if (player.coord.x < WindowWidthHalf && player.coord.y >= WindowHeightHalf)
 				return 1;
 			break;
 		 case 4:
-			if (player.coord.x < WindowWidthHalf && player.coord.y < WindowHeightHalf)
+			rangeRect.x = enemy.range.x - enemy.recognizeRange;
+			rangeRect.y = enemy.range.y - enemy.recognizeRange;
+			rectX = enemy.size / 2 + enemy.recognizeRange;
+			rectY = enemy.size / 2 + enemy.recognizeRange;
+			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
 				return 1;
 			break;
 		case 5:
-			if (player.coord.x >= WindowWidthHalf - enemy.size / 2 && player.coord.x <= WindowWidthHalf + enemy.size)
+			rangeRect.x = enemy.range.x - enemy.recognizeRange;
+			rangeRect.y = enemy.range.y - enemy.recognizeRange;
+			rectX = enemy.size + enemy.recognizeRange * 2;
+			rectY = enemy.recognizeRange;
+			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
+				return 1;
+			rangeRect.x = enemy.range.x - enemy.recognizeRange;
+			rangeRect.y = enemy.range.y + enemy.size;
+			rectX = enemy.size + enemy.recognizeRange * 2;
+			rectY = enemy.recognizeRange;
+			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
 				return 1;
 			break;
 		case 6:
-			if (player.coord.x < WindowWidthHalf - enemy.size / 2 || player.coord.x > WindowWidthHalf + enemy.size)
+			rangeRect.x = enemy.range.x - enemy.recognizeRange;
+			rangeRect.y = enemy.range.y - enemy.recognizeRange;
+			rectX = enemy.recognizeRange;
+			rectY = enemy.size + enemy.recognizeRange * 2;
+			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
+				return 1;
+			rangeRect.x = enemy.range.x + enemy.size;
+			rangeRect.y = enemy.range.y - enemy.recognizeRange;
+			rectX = enemy.recognizeRange; 
+			rectY = enemy.size + enemy.recognizeRange * 2;
+			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
 				return 1;
 			break;
 		case 7:

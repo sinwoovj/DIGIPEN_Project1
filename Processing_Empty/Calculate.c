@@ -1,6 +1,10 @@
 #include "Calculate.h"
 #include "math.h"
 
+bool isWithinBoundary(float v1_x, float v1_y, float v2_x, float v2_y, float w, float h) {
+	return (v1_x >= v2_x && v1_x <= v2_x + w) && (v1_y >= v2_y && v1_y <= v2_y + h);
+}
+
 bool RangeTest(CP_Vector v1, float v1_size, Shape v1_shape, CP_Vector v2, float v2_size, Shape v2_shape, float w, float h) { // v1이 base, v2가 target
 	bool res = false;
 
@@ -45,12 +49,15 @@ bool RangeTest(CP_Vector v1, float v1_size, Shape v1_shape, CP_Vector v2, float 
 	}
 	else if (v1_shape == Circle && v2_shape == Rect)
 	{
+		// 기존 코드 유지
 		float x = abs(v1.x - v2.x) <= abs(v1.x - (v2.x + w)) ? v2.x : v2.x + w;
 		float y = abs(v1.y - v2.y) <= abs(v1.y - (v2.y + h)) ? v2.y : v2.y + h;
 		float diffX = v1.x >= x ? v1.x - x : x - v1.x;
 		float diffy = v1.y >= y ? v1.y - y : y - v1.y;
 		float diffF = sqrtf((diffX * diffX) + (diffy * diffy));
-		if (v1_size / 2 >= diffF)
+
+		// 새로운 조건 추가
+		if (v1_size / 2 >= diffF || isWithinBoundary(v1.x, v1.y, v2.x, v2.y, w, h))
 			res = true;
 	}
 	else if (v1_shape == Circle && v2_shape == Circle)
