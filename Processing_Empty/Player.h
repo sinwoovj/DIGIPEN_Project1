@@ -1,9 +1,9 @@
 #pragma once
-#include "cprocessing.h"
-#include "Weapon.h"
-#include "Roughly.h"
+
+#include <stdbool.h>
 #include "Standard.h"
-#include "Image.h"
+#include "Weapon.h"
+#include "cprocessing.h"
 
 typedef struct Player
 {

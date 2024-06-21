@@ -1,5 +1,7 @@
 #include <time.h>
 #include "Player.h"
+#include "Roughly.h"
+#include "Image.h"
 
 void PlayerInit()
 {

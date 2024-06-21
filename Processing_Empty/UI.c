@@ -1,12 +1,12 @@
 #include "UI.h"
-#include "Player.h"
+
 #include <stdio.h>
 #include <time.h>
+#include "Player.h"
+#include "Enemy.h"
+#include "Standard.h"
 
 const float HpSize = 30.f;
-
-const float windowX = 1920 / 2.0;
-const float windowY = 1080 / 2.0;
 
 void Text(char* text, float x, float y) 
 {
@@ -47,18 +47,18 @@ void UpdatePhase()
 		phaseStartTime = currentTime;
 	}
 
-	float phaseX = windowX - 200;
+	float phaseX = WindowWidthHalf - 200;
 	float textSize = 200.f;
 
 	if (currentTime - phaseStartTime < displayDuration) {
 		CP_Settings_TextSize(textSize);
 		if (enemy.phase == 2)
 		{
-			CP_Font_DrawText("Phase 2", phaseX, windowY);
+			CP_Font_DrawText("Phase 2", phaseX, WindowHeightHalf);
 		}
 		else if (enemy.phase == 3)
 		{
-			CP_Font_DrawText("Phase 3", phaseX, windowY);
+			CP_Font_DrawText("Phase 3", phaseX, WindowHeightHalf);
 		}
 		
 	}
@@ -93,8 +93,8 @@ void UpdateEnemyHp()
 			enemy.health += 10;
 			if (enemy.health >= enemy.maxHP)
 			{
-				enemy.health = enemy.maxHP;
-				enemy.isPhase1Full = 0;
+				enemy.health = (float)enemy.maxHP;
+				enemy.isPhase1Full = false;
 			}
 		}
 	}
@@ -106,8 +106,8 @@ void UpdateEnemyHp()
 			enemy.health += 10;
 			if (enemy.health >= enemy.maxHP)
 			{
-				enemy.health = enemy.maxHP;
-				isPhase2Full = 0;
+				enemy.health = (float)enemy.maxHP;
+				isPhase2Full = false;
 			}
 		}
 		
@@ -120,7 +120,7 @@ void UpdateEnemyHp()
 			enemy.health += 10;
 			if (enemy.health >= enemy.maxHP)
 			{
-				enemy.health = enemy.maxHP;
+				enemy.health = (float)enemy.maxHP;
 				isPhase3Full = false;
 			}
 		}
@@ -128,7 +128,7 @@ void UpdateEnemyHp()
 
 
 	float enemyHP = enemy.health * (9.8f / enemy.phase);
-	float enemyHP_X = windowX / 2.0;
+	float enemyHP_X = WindowWidthHalf / 2.0f;
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
 	CP_Graphics_DrawRectAdvanced(enemyHP_X, 30, enemyHP, 30, 0.f, 10.f);
 }
@@ -138,8 +138,8 @@ void UpdatePlayerHp()
 	if(player.isAlive)
 	{
 		float playerHP = player.health;
-		float playerHP_X = player.coord.x - (player.size / 2.0);
-		float playerHP_Y = player.coord.y - (player.size / 2.0);
+		float playerHP_X = player.coord.x - (player.size / 2.0f);
+		float playerHP_Y = player.coord.y - (player.size / 2.0f);
 		CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
 		CP_Graphics_DrawRectAdvanced(playerHP_X, playerHP_Y, playerHP, 10, 0.f, 10.f);
 		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 0));

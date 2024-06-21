@@ -1,6 +1,7 @@
 #pragma once
-#include "Roughly.h"
+
 #include "EnemyProjectile.h"
+#include <stdbool.h>
 
 // Enum
 typedef enum TypeOfAttack {
@@ -20,13 +21,14 @@ typedef enum EnemyPattern {
 
 // Function
 void SignDanagerZone(float x, float y, float w, float h);
+void SignDanagerPatternZone(float x, float y, float w, float h);
 
 void EnemyCloseAttack1();
 void EnemyCloseAttack2();
 void EnemyCloseAttack3();
 
 bool isPlayerIncludeRange();
-
+bool isPlayerIncludePatternRange();
 
 
 
@@ -37,8 +39,10 @@ void EnemyProjectileRandomAttack3();// À¯µµ
 
 
 
-void EnemyPatternAttack1();
-void EnemyPatternAttack2();
-void EnemyPatternAttack3();
+void EnemyPatternAttack1(); // 1/4
+void EnemyPatternAttack2(); // 1/2
+void EnemyPatternAttack3(); // check
+void EnemyPatternAttack4(); // slide linear
+void EnemyPatternAttack5(); // slide diagonal
 
 // Variable

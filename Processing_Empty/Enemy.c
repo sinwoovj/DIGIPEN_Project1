@@ -1,21 +1,22 @@
+#include <math.h>
+#include <stdlib.h>
+#include <time.h>
+#include <stdbool.h>
 #include "Enemy.h"
 #include "UI.h"
 #include "Standard.h"
 #include "EnemyAttack.h"
-#include <math.h>
-#include <stdlib.h>
-#include <time.h>
 #include "Calculate.h"
 #include "Image.h"
-#include <stdbool.h>
+#include "Player.h"
 
-const float RecognizeRange = 50.0f;
 bool isReached;
 bool isRecognize;
 bool isCloseAttack;
 
 int enemyAttackRandom;
 int enemyCloseAttackRandom;
+int enemyRandomPatternNum;
 
 void EnemyInit(float x, float y) {
 
@@ -30,6 +31,7 @@ void EnemyInit(float x, float y) {
 	enemy.projectileDamage = 5;
 	enemy.reachDamage = 10;
 	enemy.closeDamage = 10;
+	enemy.patternDamage = 10;
 
 	enemy.phase = 1;
 	enemy.maxHP = 100;
@@ -43,6 +45,10 @@ void EnemyInit(float x, float y) {
 	enemy.isAlive = 1;
 
 	enemy.closeAttackNum = 0;
+	enemy.patternAttackNum = 0;
+
+	enemy.patternRandomNum = 0;
+
 	enemy.recognizeRange = 100.0f;
 	enemy.closeAttackCoolTime = FRAME * 2;
 
@@ -52,13 +58,20 @@ void EnemyInit(float x, float y) {
 
 	isReached = false;
 	isRecognize = false;
+
 	isCloseAttackCool = false;
 	isCloseAttack = false;
+
+	isPatternAttackCool = false;
+
 	isPlayerInsideRange = false;
 
 	enemyAttackRandom = 0;
 	enemyCloseAttackRandom = 0;
 
+	EnemyPatternAttackNum = 0;
+	EnemyCloseAttackNum = 0;
+	
 	dangerZoneOpacity = 0;
 }
 
@@ -89,6 +102,23 @@ bool EnemyFrameCheck2() {
 	currentEnemyFrame2++;
 	return false;
 }
+bool EnemyFrameCheck3() {
+	if (currentEnemyFrame3 >= (currentPhaseTerm * 2) + (FRAME * 2)) {
+		currentEnemyFrame3 = 0;
+		dangerZonePatternOpacity = 0;
+		isPatternAttackCool = false;
+		return true;
+	}
+	if (currentEnemyFrame3 == currentPhaseTerm * 2) {
+		isPatternAttackCool = true;
+		if (isPlayerIncludePatternRange())
+			player.health -= enemy.patternDamage;
+	}
+	dangerZonePatternOpacity = (int)((currentEnemyFrame3 * MaxDangerZoneOpacity) / (currentPhaseTerm * 2));
+	currentEnemyFrame3++;
+	return false;
+}
+
 
 void EnemyCheck()
 {
@@ -106,7 +136,7 @@ void EnemyPhaseSet() {
 		enemy.projectileDamage = 10;
 		enemy.closeDamage += 10;
 		enemy.reachDamage += 10;
-
+		enemy.patternDamage = 15;
 		enemy.closeAttackCoolTime -= FRAME / 2;
 		currentPhaseTerm -= FRAME;
 		enemy.recognizeRange += 50;
@@ -119,13 +149,11 @@ void EnemyPhaseSet() {
 		enemy.projectileDamage = 15;
 		enemy.closeDamage += 10;
 		enemy.reachDamage += 10;
-
+		enemy.patternDamage = 20;
 		enemy.closeAttackCoolTime -= FRAME / 2;
 		currentPhaseTerm -= FRAME;
 		enemy.recognizeRange += 50;
 		break;
-
-		enemy.recognizeRange += 50;
 	case 4 : 
 		player.isAlive = 0;
 		enemy.isAlive = 0;
@@ -191,12 +219,12 @@ void EnemyAttack() {
 			CP_Sound_PlayAdvanced(dashSound, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 		}
 	}
-	if (RangeTest(enemyRange, enemy.size + enemy.recognizeRange * 2, Square, player.coord, player.size, player.shape, 0, 0))
+	if (RangeTest(enemyRange, enemy.size + enemy.recognizeRange * 2, Square, player.coord , player.size, player.shape, 0, 0))
 	{
 		isPlayerInsideRange = true;
 		if (!isRecognize)
 		{
-			srand(time(NULL));
+			srand((unsigned int)(time(NULL)));
 			enemy.closeAttackNum = (rand() % 3) + 1;
 			isRecognize = true;
 		}
@@ -215,6 +243,16 @@ void EnemyAttack() {
 		{
 			EnemyRandomCloseAttack();
 		}
+	}
+	if (EnemyFrameCheck3())
+	{
+		srand((unsigned int)(time(NULL)));
+		enemyRandomPatternNum = enemy.phase == 2 ? (rand() % 3) + 1 : (rand() % 5) + 1;
+		enemy.patternRandomNum = (rand() % 2) + 1; // 1 > 수직 / 2 > 수평
+		enemy.patternAttackNum = 0;
+	}
+	else {
+		EnemyRandomPatternAttack();
 	}
 }
 
@@ -238,13 +276,12 @@ void EnemyRandomCloseAttack()
 
 void EnemyRandomAttack()
 {
-	srand(time(NULL));
+	srand((unsigned int)(time(NULL)));
 
-	int random1 = 0, random2 = 0; // 정수형 변수 선언
+	int random1 = 0; // 정수형 변수 선언
 
 	random1 = rand() % 3 + 1; // 난수 생성
 	
-	random2 = (rand() % (enemy.phase == 2 ? 2 : 3)) + 1; // 난수 생성
 	switch (random1)
 	{
 		case 1:
@@ -257,18 +294,28 @@ void EnemyRandomAttack()
 			EnemyProjectileRandomAttack3(); // 유도
 			break;
 	}
+}
+
+void EnemyRandomPatternAttack()
+{
 	if (enemy.phase >= 2) {
-		switch (random2)
+		switch (enemyRandomPatternNum)
 		{
-		case 1:
-			EnemyPatternAttack1(); // 맵 1/4
-			break;
-		case 2:
-			EnemyPatternAttack2(); // 맵 1/2
-			break;
-		case 3:
-			EnemyPatternAttack3(); // 체크
-			break;
+			case 1:
+				EnemyPatternAttack1(); // 맵 1/4
+				break;
+			case 2:
+				EnemyPatternAttack2(); // 맵 1/2
+				break;
+			case 3:
+				EnemyPatternAttack3(); // 체크
+				break;
+			case 4:
+				EnemyPatternAttack4(); // 가로 또는 세로로 8등분 하여 순차, 광역 공격
+				break;
+			case 5:
+				EnemyPatternAttack5(); // 체크 순차,광역 공격
+				break;
 		}
 	}
 }

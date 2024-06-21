@@ -1,12 +1,6 @@
 #pragma once
-#include "cprocessing.h"
-#include "Player.h"
-#include "PlayerProjectile.h"
-#include "Weapon.h"
-#include "Enemy.h"
-#include <math.h>
-#include "Calculate.h"
-#include "EnemyProjectile.h"
+
+#include <stdbool.h>
 
 void PlayerAttack(int num);
 
