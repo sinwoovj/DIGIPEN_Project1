@@ -8,6 +8,7 @@
 #include <math.h>
 #include "Calculate.h"
 #include "EnemyProjectile.h"
+#include "Sound.h"
 
 void PlayerAttack(int num)
 {
@@ -98,7 +99,7 @@ bool isSwordReach(int direction, float swordWidth, float swordHeight, float swor
 }
 int frameCount = 0;
 const int frameLimit = 10;
-int AttackCoolTime() 
+int CloseAttackCoolTime() 
 {
 	if (++frameCount == frameLimit) 
 	{

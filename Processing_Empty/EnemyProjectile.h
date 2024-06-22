@@ -18,13 +18,17 @@ typedef struct EnemyProjectile
 EnemyProject enemyProjectile[MAX_ENEMYPROJECTIES];
 EnemyProject enemyProjectile_2[MAX_ENEMYPROJECTIES];
 
-
-void CreateEnemyProjectile(float x, float y, float velocity, int direction); // 원형 수평 수직
-void CreateEnemyProjectile_2(float x, float y, float velocity, int direction); // 유도
-void DrawEnemyProjectile(); // 원형 수평 수직
-void DrawEnemyProjectile_2(); // 유도
-
 CP_Vector CP_VectorSubtract(CP_Vector a, CP_Vector b);
 CP_Vector CP_VectorNormalize(CP_Vector v);
 CP_Vector CP_VectorScale(CP_Vector v, float scale);
 float CP_VectorDistance(CP_Vector a, CP_Vector b);
+
+//Circle, Horizon, Vertical
+void CreateEnemyProjectile(float x, float y, float velocity, int direction);
+void DrawEnemyProjectile();
+
+//Guided
+void CreateEnemyProjectile_2(float x, float y, float velocity, int direction);
+void DrawEnemyProjectile_2();
+
+

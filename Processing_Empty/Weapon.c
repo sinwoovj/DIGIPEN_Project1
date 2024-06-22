@@ -1,5 +1,6 @@
 #include "Weapon.h"
 
+//Initialize WeaponData
 void InitWeaponData() {
 	sword.num = 1;
 	sword.range = 50;

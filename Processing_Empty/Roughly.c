@@ -11,17 +11,14 @@
 #include "EnemyAttack.h"
 #include "Enemy.h"
 #include "Sound.h"
-
-float BossLocationX;
-float BossLocationY;
+#include "Standard.h"
 
 //Initialize Setting
 void Init()
 {
 	StandardInit();
-	BossLocationX = WindowWidthSize / 2 ;
-	BossLocationY = WindowHeightSize / 2;
-	//Active Projectile
+
+	//inactive Projectile
 	for (int i = 0; i < MAX_PROJECTILES; i++)
 	{
 		projectile[i].active = 0;
@@ -31,15 +28,14 @@ void Init()
 		enemyProjectile[i].active = 0;
 		enemyProjectile_2[i].active = 0;
 	}
-	CP_System_SetWindowSize((int)WindowWidth, (int)WindowHeight);
+	CP_System_SetWindowSize((int)WindowWidthSize, (int)WindowHeightSize);
 
 	InitWeaponData();
-	EnemyInit(BossLocationX, BossLocationY);
+	EnemyInit(WindowWidthHalf, WindowHeightHalf);
 	PlayerInit();
 	UpdatePlayerHp();
 	UpdateEnemyHp();
 	UpdatePlayerDash();
-	isGameOver = 0;
 	isPhase2Full = 1;
 	isPhase3Full = 1;
 	ImageLoad();
@@ -48,50 +44,54 @@ void Init()
 
 void Roughly_game_init(void)
 {
-	//Initialize
 	Init();
 }
 
 void Roughly_game_update(void)
 {
 	if (CP_Input_KeyDown(KEY_ESCAPE))
-	{
 		exit(0);
-	}
 	if (CP_Input_KeyDown(KEY_R))
 	{
-		// Initialize Data Code
 		Init();
 		CP_Engine_SetNextGameState(Roughly_game_init, Roughly_game_update, Roughly_game_exit);
 	}
-	CP_Image_Draw(BG, BossLocationX, BossLocationY, WindowWidth, WindowHeight, 255); //Draw BG
-
-	EnemyDraw(BossLocationX, BossLocationY); //Draw Boss
+	
+	//****About the Draw****//
+	//Background
+	CP_Image_Draw(BG, WindowWidthHalf, WindowHeightHalf, WindowWidthSize, WindowHeightSize, 255);
+	//Player, Enemy
 	PlayerDraw();
+	EnemyDraw(WindowWidthHalf, WindowHeightHalf);
+	//=============================================
 
+
+	//****About the Player****//
 	PlayerMove();
-	PlayerUpdatePosition(); //Accel
+	PlayerUpdatePosition();
 	SelectWeapon();
 
+	PlayerAttack(player.weapon.num);
+	Draw_PlayerProjectile(); //플레이어 투사체 출력
+	PlayerCheck();
+	//=============================================
+	
+
+	//****About the Enemy****//
 	if(enemy.isAlive)
 	{
 		EnemyAttack();
 		DrawEnemyProjectile(); //보스 투사체 출력
 		DrawEnemyProjectile_2();
 	}
-
-	PlayerAttack(player.weapon.num);
-	Draw_PlayerProjectile(); //플레이어 투사체 출력
-
-	ShowUI();
-	
 	EnemyCheck();
-	PlayerCheck();
-
 	UpdatePhase();
-	UpdatePlayerHp();
 	UpdateEnemyHp();
-	UpdatePlayerDash();
+	//==============================================
+
+
+	//Show UI
+	ShowUI();
 }
 
 void Roughly_game_exit(void)

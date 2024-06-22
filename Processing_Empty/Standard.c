@@ -1,5 +1,6 @@
 #include "Standard.h"
 
+//Initialize WindowSize
 void StandardInit()
 {
 	WindowWidthSize = 1920.f;

@@ -5,15 +5,15 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Standard.h"
+#include "Roughly.h"
 
+//Player HP, Enemy HP Text
 const float HpSize = 30.f;
-
 void Text(char* text, float x, float y) 
 {
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 	CP_Font_DrawText(text, x, y);
 }
-
 void ShowPlayerHP()
 {
 	CP_Settings_TextSize(HpSize);
@@ -21,7 +21,6 @@ void ShowPlayerHP()
 	sprintf_s(str, 50, "Player.HP : %5.2f", player.health);
 	Text(str, 10, 30);
 }
-
 void ShowEnemyHP() 
 {
 	CP_Settings_TextSize(HpSize);
@@ -29,13 +28,14 @@ void ShowEnemyHP()
 	sprintf_s(str, 50, "Enemy.HP : %5.2f", enemy.health);
 	Text(str, 1520, 30);
 }
-
 void ShowUI() 
 {
 	ShowPlayerHP();
 	ShowEnemyHP();
 }
+//=========================
 
+//Change Enemy Phase
 float phaseStartTime = 0.0f;
 int currentPhase = 0;
 const float displayDuration = 2.0f;
@@ -72,13 +72,15 @@ void UpdatePhase()
 			CP_Engine_SetNextGameState(Roughly_game_init, Roughly_game_update, Roughly_game_exit);
 		}
 		CP_Settings_TextSize(200.f);
-		CP_Font_DrawText("The End", phaseX, windowY);
+		CP_Font_DrawText("The End", phaseX, WindowHeightHalf);
 		CP_Settings_TextSize(100.f);
-		CP_Font_DrawText("Press R to Restart", phaseX, windowY + 100);
+		CP_Font_DrawText("Press R to Restart", phaseX, WindowHeightHalf + 100);
 	}
 
 }
+//==================
 
+//Change Enemy Max HP as Phase
 isPhase2Full = 1;
 isPhase3Full = 1;
 void UpdateEnemyHp()
@@ -132,7 +134,9 @@ void UpdateEnemyHp()
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
 	CP_Graphics_DrawRectAdvanced(enemyHP_X, 30, enemyHP, 30, 0.f, 10.f);
 }
+//===========================
 
+//Display HP Bar, DashCoolTime Bar
 void UpdatePlayerHp()
 {
 	if(player.isAlive)
@@ -146,7 +150,6 @@ void UpdatePlayerHp()
 		CP_Graphics_DrawRect(playerHP_X, playerHP_Y, playerHP, 10.f);
 	}
 }
-
 void UpdatePlayerDash()
 {
 	if (player.isAlive)
@@ -156,11 +159,12 @@ void UpdatePlayerDash()
 		float playerDash_Y = player.coord.y - (player.size / 2.0) + 15;
 		CP_Settings_Fill(CP_Color_Create(255, 0, 255, 255));
 		CP_Graphics_DrawRectAdvanced(playerDash_X, playerDash_Y, playerDash*15, 10, 0.f, 10.f);
+
 		if((int)playerDash == (int)player.dashCoolTimeLimit)
 		{
 			CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255));
 			CP_Graphics_DrawRectAdvanced(playerDash_X, playerDash_Y, playerDash * 15, 10, 0.f, 10.f);
-
 		}
 	}
 }
+//============================

@@ -1,5 +1,30 @@
 #include "EnemyProjectile.h"
 #include "Player.h"
+//Calculate Vector
+CP_Vector CP_VectorSubtract(CP_Vector a, CP_Vector b)
+{
+	CP_Vector result = { a.x - b.x, a.y - b.y };
+	return result;
+}
+CP_Vector CP_VectorNormalize(CP_Vector v)
+{
+	float length = sqrtf(v.x * v.x + v.y * v.y);
+	CP_Vector result = { v.x / length, v.y / length };
+	return result;
+}
+CP_Vector CP_VectorScale(CP_Vector v, float scale)
+{
+	CP_Vector result = { v.x * scale, v.y * scale };
+	return result;
+}
+float CP_VectorDistance(CP_Vector a, CP_Vector b)
+{
+	float dx = a.x - b.x;
+	float dy = a.y - b.y;
+	return sqrtf(dx * dx + dy * dy);
+}
+
+//Circle, Horizon, Vertical
 void CreateEnemyProjectile(float x, float y, float velocity, int direction)
 {
 	for (int i = 0; i < MAX_ENEMYPROJECTIES; i++)
@@ -17,27 +42,6 @@ void CreateEnemyProjectile(float x, float y, float velocity, int direction)
 		}
 	}
 }
-
-void CreateEnemyProjectile_2(float x, float y, float velocity, int direction)
-{
-	for (int i = 0; i < MAX_ENEMYPROJECTIES; i++)
-	{
-		if (!enemyProjectile_2[i].active)
-		{
-			enemyProjectile_2[i].position.x = x;
-			enemyProjectile_2[i].position.y = y;
-			enemyProjectile_2[i].size = 10;
-			enemyProjectile_2[i].velocity = velocity;
-			enemyProjectile_2[i].active = 1;
-			enemyProjectile_2[i].shape = Circle;
-			enemyProjectile_2[i].direction = direction;
-
-			enemyProjectile_2[i].target = player.coord;
-			break;
-		}
-	}
-}
-
 void DrawEnemyProjectile() // 원형 수평 수직
 {
 	for (int i = 0; i < MAX_ENEMYPROJECTIES; ++i) {
@@ -87,29 +91,26 @@ void DrawEnemyProjectile() // 원형 수평 수직
 	}
 }
 
-CP_Vector CP_VectorSubtract(CP_Vector a, CP_Vector b)
+//Guided
+void CreateEnemyProjectile_2(float x, float y, float velocity, int direction)
 {
-	CP_Vector result = { a.x - b.x, a.y - b.y };
-	return result;
-}
-CP_Vector CP_VectorNormalize(CP_Vector v)
-{
-	float length = sqrtf(v.x * v.x + v.y * v.y);
-	CP_Vector result = { v.x / length, v.y / length };
-	return result;
-}
-CP_Vector CP_VectorScale(CP_Vector v, float scale)
-{
-	CP_Vector result = { v.x * scale, v.y * scale };
-	return result;
-}
-float CP_VectorDistance(CP_Vector a, CP_Vector b)
-{
-	float dx = a.x - b.x;
-	float dy = a.y - b.y;
-	return sqrtf(dx * dx + dy * dy);
-}
+	for (int i = 0; i < MAX_ENEMYPROJECTIES; i++)
+	{
+		if (!enemyProjectile_2[i].active)
+		{
+			enemyProjectile_2[i].position.x = x;
+			enemyProjectile_2[i].position.y = y;
+			enemyProjectile_2[i].size = 10;
+			enemyProjectile_2[i].velocity = velocity;
+			enemyProjectile_2[i].active = 1;
+			enemyProjectile_2[i].shape = Circle;
+			enemyProjectile_2[i].direction = direction;
 
+			enemyProjectile_2[i].target = player.coord;
+			break;
+		}
+	}
+}
 void DrawEnemyProjectile_2() // 유도
 {
 	for (int i = 0; i < MAX_ENEMYPROJECTIES; ++i) {
