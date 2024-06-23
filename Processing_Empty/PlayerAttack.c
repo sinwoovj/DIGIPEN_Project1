@@ -8,6 +8,7 @@
 #include <math.h>
 #include "Calculate.h"
 #include "EnemyProjectile.h"
+#include "Sound.h"
 
 void PlayerAttack(int num)
 {

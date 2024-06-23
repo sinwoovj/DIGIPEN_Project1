@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Standard.h"
+#include "Roughly.h"
 
 const float HpSize = 30.f;
 
@@ -72,9 +73,9 @@ void UpdatePhase()
 			CP_Engine_SetNextGameState(Roughly_game_init, Roughly_game_update, Roughly_game_exit);
 		}
 		CP_Settings_TextSize(200.f);
-		CP_Font_DrawText("The End", phaseX, windowY);
+		CP_Font_DrawText("The End", phaseX, WindowHeightHalf);
 		CP_Settings_TextSize(100.f);
-		CP_Font_DrawText("Press R to Restart", phaseX, windowY + 100);
+		CP_Font_DrawText("Press R to Restart", phaseX, WindowHeightHalf + 100);
 	}
 
 }

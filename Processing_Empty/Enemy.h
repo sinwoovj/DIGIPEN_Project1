@@ -40,11 +40,11 @@ bool isCloseAttackCool;
 bool isPatternAttackCool;
 
 int currentPhaseTerm;
+int currentPatternPhaseTerm;
 
 int currentEnemyFrame1;
 int currentEnemyFrame2;
 int currentEnemyFrame3;
-int limitEnemyFrame;
 
 int EnemyCloseAttackNum; 
 // 1 : ¿ìÇÏ, 2 : ¿ì»ó, 3 : ÁÂÇÏ, 4 : ÁÂ»ó

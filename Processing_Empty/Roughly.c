@@ -31,7 +31,7 @@ void Init()
 		enemyProjectile[i].active = 0;
 		enemyProjectile_2[i].active = 0;
 	}
-	CP_System_SetWindowSize((int)WindowWidth, (int)WindowHeight);
+	CP_System_SetWindowSize((int)WindowWidthSize, (int)WindowHeightSize);
 
 	InitWeaponData();
 	EnemyInit(BossLocationX, BossLocationY);
@@ -64,10 +64,7 @@ void Roughly_game_update(void)
 		Init();
 		CP_Engine_SetNextGameState(Roughly_game_init, Roughly_game_update, Roughly_game_exit);
 	}
-	CP_Image_Draw(BG, BossLocationX, BossLocationY, WindowWidth, WindowHeight, 255); //Draw BG
-
-	EnemyDraw(BossLocationX, BossLocationY); //Draw Boss
-	PlayerDraw();
+	CP_Image_Draw(BG, BossLocationX, BossLocationY, WindowWidthSize, WindowHeightSize, 255); //Draw BG
 
 	PlayerMove();
 	PlayerUpdatePosition(); //Accel
@@ -79,6 +76,10 @@ void Roughly_game_update(void)
 		DrawEnemyProjectile(); //보스 투사체 출력
 		DrawEnemyProjectile_2();
 	}
+
+
+	EnemyDraw(BossLocationX, BossLocationY); //Draw Boss
+	PlayerDraw();
 
 	PlayerAttack(player.weapon.num);
 	Draw_PlayerProjectile(); //플레이어 투사체 출력

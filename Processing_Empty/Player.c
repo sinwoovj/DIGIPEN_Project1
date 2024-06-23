@@ -2,6 +2,8 @@
 #include "Player.h"
 #include "Roughly.h"
 #include "Image.h"
+#include "Enemy.h"
+#include "Sound.h"
 
 void PlayerInit()
 {

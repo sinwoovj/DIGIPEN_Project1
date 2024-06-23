@@ -7,6 +7,8 @@
 #include "Roughly.h"
 #include <math.h>
 
+float checkPatternWidthHeight = 120;
+
 void SignDanagerZone(float x, float y, float w, float h)
 {
 	CP_Settings_NoStroke();
@@ -107,16 +109,12 @@ bool isPlayerIncludeRange()
 			rectY = enemy.size / 2 + enemy.recognizeRange;
 			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
 				return 1;
-			if (player.coord.x < WindowWidthHalf && player.coord.y < WindowHeightHalf)
-				return 1;
 		case 2:
 			rangeRect.x = enemy.coord.x;
 			rangeRect.y = enemy.range.y - enemy.recognizeRange;
 			rectX = enemy.size / 2 + enemy.recognizeRange;
 			rectY = enemy.size / 2 + enemy.recognizeRange;
 			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
-				return 1;
-			if (player.coord.x >= WindowWidthHalf && player.coord.y < WindowHeightHalf)
 				return 1;
 			break;
 		case 3:
@@ -125,8 +123,6 @@ bool isPlayerIncludeRange()
 			rectX = enemy.size / 2 + enemy.recognizeRange;
 			rectY = enemy.size / 2 + enemy.recognizeRange;
 			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
-				return 1;
-			if (player.coord.x < WindowWidthHalf && player.coord.y >= WindowHeightHalf)
 				return 1;
 			break;
 		 case 4:
@@ -221,7 +217,7 @@ void EnemyProjectileRandomAttack3() // 유도
 // 1 : 우하, 2 : 우상, 3 : 좌하, 4 : 좌상
 void EnemyPatternAttack1()
 {
-	if (currentEnemyFrame3 <= FRAME * 2) {
+	if (currentEnemyFrame3 <= FRAME) {
 
 		if (player.coord.x >= WindowWidthHalf)
 		{
@@ -234,7 +230,7 @@ void EnemyPatternAttack1()
 		}
 	}
 
-	if (!isCloseAttackCool)
+	if (!isPatternAttackCool)
 	{
 		switch (EnemyPatternAttackNum)
 		{
@@ -257,7 +253,7 @@ void EnemyPatternAttack1()
 void EnemyPatternAttack2()
 {
 	// 수평 수직을 둘 중에서 랜덤으로 고르고 플레이어 위치를 기준으로 채택한다.
-	if (currentEnemyFrame3 <= FRAME * 2)
+	if (currentEnemyFrame3 <= FRAME)
 	{
 		switch (enemy.patternRandomNum)
 		{
@@ -271,7 +267,7 @@ void EnemyPatternAttack2()
 				break;
 		}
 	}
-	if (!isCloseAttackCool)
+	if (!isPatternAttackCool)
 	{
 		switch (EnemyPatternAttackNum)
 		{
@@ -293,7 +289,6 @@ void EnemyPatternAttack2()
 // 9 : 체크1, 10 : 체크2
 void EnemyPatternAttack3()
 {
-	float checkPatternWidthHeight = 120;
 	// 한 블럭의 크기 120, 비율은 16 : 9
 	switch (enemy.patternRandomNum)
 	{
@@ -305,28 +300,50 @@ void EnemyPatternAttack3()
 			break;
 	}
 
-	if (!isCloseAttackCool)
+	if (!isPatternAttackCool)
 	{
 		switch (EnemyPatternAttackNum)
 		{
 			case 9: // 왼쪽 위 타격
-				for (int i = 1; i <= 16; i++) {
-					for (int j = 1; j <= 9; j++) {
-						if (j % 2 == 0)
-							SignDanagerPatternZone(0, j * checkPatternWidthHeight, WindowWidthSize, checkPatternWidthHeight);
+				for (int i = 0; i < 16; i++) {
+					for (int j = 0; j < 9; j++) {
+
+						if (i % 2 == 0)
+						{
+							if (j % 2 == 1) {
+								SignDanagerPatternZone(i * checkPatternWidthHeight, j * checkPatternWidthHeight,
+									checkPatternWidthHeight, checkPatternWidthHeight);
+							}
+						}
+						else
+						{
+							if (j % 2 == 0) {
+								SignDanagerPatternZone(i * checkPatternWidthHeight, j * checkPatternWidthHeight,
+									checkPatternWidthHeight, checkPatternWidthHeight);
+							}
+						}
 					}
-					if(i % 2 == 0)
-						SignDanagerPatternZone(i * checkPatternWidthHeight, 0, checkPatternWidthHeight, WindowHeightSize);
 				}
 				break;
 			case 10: // 왼쪽 위 비타격
-				for (int i = 1; i <= 16; i++) {
-					for (int j = 1; j <= 9; j++) {
-						if (j % 2 == 0)
-							SignDanagerPatternZone(0, j * checkPatternWidthHeight, WindowWidthSize, checkPatternWidthHeight);
+				for (int i = 0; i < 16; i++) {
+					for (int j = 0; j < 9; j++) {
+						
+						if (i % 2 == 1)
+						{
+							if (j % 2 == 1) {
+								SignDanagerPatternZone(i * checkPatternWidthHeight, j * checkPatternWidthHeight,
+									checkPatternWidthHeight, checkPatternWidthHeight);
+							}
+						}
+						else
+						{
+							if (j % 2 == 0) {
+								SignDanagerPatternZone(i * checkPatternWidthHeight, j * checkPatternWidthHeight,
+									checkPatternWidthHeight, checkPatternWidthHeight);
+							}
+						}
 					}
-					if (i % 2 == 0)
-						SignDanagerPatternZone(i * checkPatternWidthHeight, 0, checkPatternWidthHeight, WindowHeightSize);
 				}
 				break;
 		}
@@ -349,55 +366,122 @@ bool isPlayerIncludePatternRange()
 	float rectY = 0;
 	switch (EnemyPatternAttackNum)
 	{
-		case 1:
+		case 1: // 우하
 			rangeRect = enemy.coord;
-			rectX = enemy.coord.x;
-			rectY = enemy.size / 2 + enemy.recognizeRange;
+			rectX = WindowWidthHalf;
+			rectY = WindowHeightHalf;
 			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
 				return 1;
-			if (player.coord.x < WindowWidthHalf && player.coord.y < WindowHeightHalf)
-				return 1;
-		case 2:
+		case 2: // 우상
 			rangeRect.x = enemy.coord.x;
-			rangeRect.y = enemy.range.y - enemy.recognizeRange;
-			rectX = enemy.size / 2 + enemy.recognizeRange;
-			rectY = enemy.size / 2 + enemy.recognizeRange;
+			rangeRect.y = 0;
+			rectX = WindowWidthHalf;
+			rectY = WindowHeightHalf;
 			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
 				return 1;
-			if (player.coord.x >= WindowWidthHalf && player.coord.y < WindowHeightHalf)
-				return 1;
 			break;
-		case 3:
-			rangeRect.x = enemy.range.x - enemy.recognizeRange;
+		case 3: // 좌하
+			rangeRect.x = 0;
 			rangeRect.y = enemy.coord.y;
-			rectX = enemy.size / 2 + enemy.recognizeRange;
-			rectY = enemy.size / 2 + enemy.recognizeRange;
+			rectX = WindowWidthHalf;
+			rectY = WindowHeightHalf;
 			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
 				return 1;
-			if (player.coord.x < WindowWidthHalf && player.coord.y >= WindowHeightHalf)
-				return 1;
-			break;
-		case 4:
-			rangeRect.x = enemy.range.x - enemy.recognizeRange;
-			rangeRect.y = enemy.range.y - enemy.recognizeRange;
-			rectX = enemy.size / 2 + enemy.recognizeRange;
-			rectY = enemy.size / 2 + enemy.recognizeRange;
+		case 4: // 좌상
+			rangeRect.x = 0;
+			rangeRect.y = 0;
+			rectX = WindowWidthHalf;
+			rectY = WindowHeightHalf;
 			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
 				return 1;
 			break;
-		case 5:
-			rangeRect.x = enemy.range.x - enemy.recognizeRange;
-			rangeRect.y = enemy.range.y - enemy.recognizeRange;
-			rectX = enemy.size + enemy.recognizeRange * 2;
-			rectY = enemy.recognizeRange;
+		case 5: // 우
+			rangeRect.x = enemy.coord.x;
+			rangeRect.y = 0;
+			rectX = WindowWidthHalf;
+			rectY = WindowHeightSize;
 			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
 				return 1;
-			rangeRect.x = enemy.range.x - enemy.recognizeRange;
-			rangeRect.y = enemy.range.y + enemy.size;
-			rectX = enemy.size + enemy.recognizeRange * 2;
-			rectY = enemy.recognizeRange;
+			break;
+		case 6: // 좌
+			rangeRect.x = 0;
+			rangeRect.y = 0;
+			rectX = WindowWidthHalf;
+			rectY = WindowHeightSize;
 			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
 				return 1;
+			break;
+		case 7: // 하
+			rangeRect.x = 0;
+			rangeRect.y = enemy.coord.y;
+			rectX = WindowWidthSize;
+			rectY = WindowHeightHalf;
+			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
+				return 1;
+			break;
+		case 8: // 상
+			rangeRect.x = 0;
+			rangeRect.y = 0;
+			rectX = WindowWidthSize;
+			rectY = WindowHeightHalf;
+			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
+				return 1;
+			break;
+		case 9: // 체크 1 (왼쪽 위 O)
+			for (int i = 0; i < 16; i++) {
+				for (int j = 0; j < 9; j++) {
+					if (i % 2 == 0)
+					{
+						if (j % 2 == 1) {
+							rangeRect.x = i * checkPatternWidthHeight;
+							rangeRect.y = j * checkPatternWidthHeight;
+							rectX = checkPatternWidthHeight;
+							rectY = checkPatternWidthHeight;
+							if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
+								return 1;
+						}
+					}
+					else
+					{
+						if (j % 2 == 0) {
+							rangeRect.x = i * checkPatternWidthHeight;
+							rangeRect.y = j * checkPatternWidthHeight;
+							rectX = checkPatternWidthHeight;
+							rectY = checkPatternWidthHeight;
+							if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
+								return 1;
+						}
+					}
+				}
+			}
+			break;
+		case 10: // 체크 2 (왼쪽 위 X)
+			for (int i = 0; i < 16; i++) {
+				for (int j = 0; j < 9; j++) {
+					if (i % 2 == 1)
+					{
+						if (j % 2 == 1) {
+							rangeRect.x = i * checkPatternWidthHeight;
+							rangeRect.y = j * checkPatternWidthHeight;
+							rectX = checkPatternWidthHeight;
+							rectY = checkPatternWidthHeight;
+							if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
+								return 1;
+						}
+					}
+					else
+					{
+						if (j % 2 == 0) {
+							rangeRect.x = i * checkPatternWidthHeight;
+							rangeRect.y = j * checkPatternWidthHeight;
+							rectX = checkPatternWidthHeight;
+							rectY = checkPatternWidthHeight;
+							if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
+								return 1;
+						}
+					}
+				}
+			}
 			break;
 	}
 	return 0;
