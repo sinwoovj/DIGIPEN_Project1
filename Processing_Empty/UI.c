@@ -9,6 +9,9 @@
 
 const float HpSize = 30.f;
 
+bool isPhase2Full = true;
+bool isPhase3Full = true;
+
 void Text(char* text, float x, float y) 
 {
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
@@ -80,8 +83,6 @@ void UpdatePhase()
 
 }
 
-isPhase2Full = 1;
-isPhase3Full = 1;
 void UpdateEnemyHp()
 {
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 0));
@@ -154,7 +155,7 @@ void UpdatePlayerDash()
 	{
 		float playerDash = player.dashCoolTime;
 		float playerDash_X = player.coord.x;
-		float playerDash_Y = player.coord.y - (player.size / 2.0) + 15;
+		float playerDash_Y = player.coord.y - (player.size / 2.0f) + 15;
 		CP_Settings_Fill(CP_Color_Create(255, 0, 255, 255));
 		CP_Graphics_DrawRectAdvanced(playerDash_X, playerDash_Y, playerDash*15, 10, 0.f, 10.f);
 		if((int)playerDash == (int)player.dashCoolTimeLimit)

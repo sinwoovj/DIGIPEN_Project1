@@ -176,7 +176,7 @@ void EnemyProjectileRandomAttack1() // 원형
 	int direction = 0;
 	for (int i = 0; i < 16; i++)
 	{
-		CreateEnemyProjectile(WindowWidthHalf + (enemy.size / 2.0) * cosf(CP_Math_Radians(degree)), WindowHeightHalf + (enemy.size / 2.0) * sinf(CP_Math_Radians(degree)), velocity, direction);
+		CreateEnemyProjectile(WindowWidthHalf + (enemy.size / 2.0f) * cosf(CP_Math_Radians(degree)), WindowHeightHalf + (enemy.size / 2.0f) * sinf(CP_Math_Radians(degree)), velocity, direction);
 		direction++;
 		if (direction == 8) direction = 0;
 		degree -= 45;
@@ -192,7 +192,7 @@ void EnemyProjectileRandomAttack2() // 수평 수직
 	int direction = 0;
 	for (int i = 0; i < 8; i++)
 	{
-		CreateEnemyProjectile(WindowWidthHalf + (enemy.size / 2.0) * cosf(CP_Math_Radians(degree)), WindowHeightHalf + (enemy.size / 2.0) * sinf(CP_Math_Radians(degree)), velocity, direction);
+		CreateEnemyProjectile(WindowWidthHalf + (enemy.size / 2.0f) * cosf(CP_Math_Radians(degree)), WindowHeightHalf + (enemy.size / 2.0f) * sinf(CP_Math_Radians(degree)), velocity, direction);
 		direction += 2;
 		if (direction == 8) direction = 0;
 		degree -= 90;
@@ -206,7 +206,7 @@ void EnemyProjectileRandomAttack3() // 유도
 	int direction = 0;
 	for (int i = 0; i < 4; i++)
 	{
-		CreateEnemyProjectile_2(WindowWidthHalf + (enemy.size / 2.0) * cosf(CP_Math_Radians(degree)), WindowHeightHalf + (enemy.size / 2.0) * sinf(CP_Math_Radians(degree)), velocity, direction);
+		CreateEnemyProjectile_2(WindowWidthHalf + (enemy.size / 2.0f) * cosf(CP_Math_Radians(degree)), WindowHeightHalf + (enemy.size / 2.0f) * sinf(CP_Math_Radians(degree)), velocity, direction);
 		direction += 2;
 		if (direction == 4) direction = 0;
 		degree -= 90;

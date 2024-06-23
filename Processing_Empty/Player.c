@@ -127,7 +127,6 @@ void PlayerCheck()
 	float dieY = 1080 / 2.0;
 	float restartX = 1920 / 2.0 - 300;
 	float restartY = 1080 / 2.0 + 200;
-	bool playonce = true;
 	if (player.health <= 0)
 	{
 		//여러번 울리는 상황 해결

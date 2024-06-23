@@ -40,8 +40,8 @@ void Init()
 	UpdateEnemyHp();
 	UpdatePlayerDash();
 	isGameOver = 0;
-	isPhase2Full = 1;
-	isPhase3Full = 1;
+	isPhase2Full = true;
+	isPhase3Full = true;
 	ImageLoad();
 	SoundLoad();
 }

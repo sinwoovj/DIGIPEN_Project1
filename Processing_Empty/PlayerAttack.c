@@ -46,7 +46,7 @@ bool isSwordReach(int direction, float swordWidth, float swordHeight, float swor
 {
 	if (direction == 0) //right
 	{
-		float r = enemy.size / 2.0;
+		float r = enemy.size / 2.0f;
 		float x1 = player.coord.x + player.size + swordHeight;
 		float y1 = player.coord.y - swordHand;
 		float y2 = player.coord.y + player.size + swordHand;
@@ -59,7 +59,7 @@ bool isSwordReach(int direction, float swordWidth, float swordHeight, float swor
 	}
 	else if (direction == 1) //left
 	{
-		float r = enemy.size / 2.0;
+		float r = enemy.size / 2.0f;
 		float x1 = player.coord.x - swordHeight;
 		float y1 = player.coord.y - swordHand;
 		float y2 = player.coord.y - swordHand + swordWidth;
@@ -72,7 +72,7 @@ bool isSwordReach(int direction, float swordWidth, float swordHeight, float swor
 	}
 	else if (direction == 2) //up
 	{
-		float r = enemy.size / 2.0;
+		float r = enemy.size / 2.0f;
 		float x1 = player.coord.x - swordHand;
 		float x2 = player.coord.x + player.size + swordHand;
 		float y1 = player.coord.y - swordHeight;
@@ -85,7 +85,7 @@ bool isSwordReach(int direction, float swordWidth, float swordHeight, float swor
 	}
 	else if (direction == 3)
 	{
-		float r = enemy.size / 2.0;
+		float r = enemy.size / 2.0f;
 		float x1 = player.coord.x - swordHand;
 		float x2 = player.coord.x + player.size + swordHand;
 		float y1 = player.coord.y + player.size + swordHeight;
@@ -110,9 +110,9 @@ int AttackCoolTime()
 }
 void PlayerCloseAttack()
 {
-	float swordWidth = (sword.range * 2.0);
-	float swordHeight = (sword.range * 3 / 2.0);
-	float swordHand = (sword.range / 2.0);
+	float swordWidth = (sword.range * 2.0f);
+	float swordHeight = (sword.range * 3 / 2.0f);
+	float swordHand = (sword.range / 2.0f);
 	if (CP_Input_KeyDown(KEY_RIGHT) && player.isAlive)
 	{
 		player.direction = 1;
