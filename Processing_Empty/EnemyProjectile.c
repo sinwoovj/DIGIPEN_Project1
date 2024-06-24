@@ -1,5 +1,6 @@
 #include "EnemyProjectile.h"
 #include "Player.h"
+#include <math.h>
 void CreateEnemyProjectile(float x, float y, float velocity, int direction)
 {
 	for (int i = 0; i < MAX_ENEMYPROJECTIES; i++)
