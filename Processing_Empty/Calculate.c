@@ -32,15 +32,15 @@ bool RangeTest(CP_Vector v1, float v1_size, Shape v1_shape, CP_Vector v2, float 
 	else if (v1_shape == Square && v2_shape == Circle)
 	{
 		// 사각형의 가장 가까운 점 찾기
-		float closestX = fmax(v1.x, fmin(v2.x, v1.x + v1_size));
-		float closestY = fmax(v1.y, fmin(v2.y, v1.y + v1_size));
+		float closestX = fmaxf(v1.x, fminf(v2.x, v1.x + v1_size));
+		float closestY = fmaxf(v1.y, fminf(v2.y, v1.y + v1_size));
 
 		// 가장 가까운 점과 원의 중심 사이의 거리 계산
 		float distanceX = v2.x - closestX;
 		float distanceY = v2.y - closestY;
 
 		// 유클리드 거리 계산
-		float distance = sqrt((distanceX * distanceX) + (distanceY * distanceY));
+		float distance = sqrtf((distanceX * distanceX) + (distanceY * distanceY));
 
 		// 거리가 원의 반지름보다 작거나 같으면 충돌
 		if (distance <= v2_size / 2) {
@@ -50,8 +50,8 @@ bool RangeTest(CP_Vector v1, float v1_size, Shape v1_shape, CP_Vector v2, float 
 	else if (v1_shape == Circle && v2_shape == Rect)
 	{
 		// 기존 코드 유지
-		float x = abs(v1.x - v2.x) <= abs(v1.x - (v2.x + w)) ? v2.x : v2.x + w;
-		float y = abs(v1.y - v2.y) <= abs(v1.y - (v2.y + h)) ? v2.y : v2.y + h;
+		float x = fabsf(v1.x - v2.x) <= fabsf(v1.x - (v2.x + w)) ? v2.x : v2.x + w;
+		float y = fabsf(v1.y - v2.y) <= fabsf(v1.y - (v2.y + h)) ? v2.y : v2.y + h;
 		float diffX = v1.x >= x ? v1.x - x : x - v1.x;
 		float diffy = v1.y >= y ? v1.y - y : y - v1.y;
 		float diffF = sqrtf((diffX * diffX) + (diffy * diffy));

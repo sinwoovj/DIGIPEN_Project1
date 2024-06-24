@@ -343,8 +343,6 @@ void EnemyRandomAttack()
 
 void EnemyRandomPatternAttack()
 {
-	EnemyPatternAttack3();
-		/*
 	switch (enemyRandomPatternNum)
 	{
 		case 1:
@@ -362,5 +360,5 @@ void EnemyRandomPatternAttack()
 		case 5:
 			EnemyPatternAttack5(); // 체크 순차,광역 공격
 			break;
-	}*/
+	}
 }

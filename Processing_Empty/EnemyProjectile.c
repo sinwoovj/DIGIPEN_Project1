@@ -54,39 +54,39 @@ void DrawEnemyProjectile() // 원형 수평 수직
 			{
 			case 0:
 				enemyProjectile[i].position.x += enemyProjectile[i].velocity;
-				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, spitDegree * enemyProjectile[i].direction);
+				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, (float)(spitDegree * enemyProjectile[i].direction));
 				break;
 			case 1:
 				enemyProjectile[i].position.x += enemyProjectile[i].velocity;
 				enemyProjectile[i].position.y -= enemyProjectile[i].velocity;
-				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, spitDegree * enemyProjectile[i].direction);
+				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, (float)(spitDegree * enemyProjectile[i].direction));
 				break;
 			case 2:
 				enemyProjectile[i].position.y -= enemyProjectile[i].velocity;
-				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, spitDegree * enemyProjectile[i].direction);
+				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, (float)(spitDegree * enemyProjectile[i].direction));
 				break;
 			case 3:
 				enemyProjectile[i].position.x -= enemyProjectile[i].velocity;
 				enemyProjectile[i].position.y -= enemyProjectile[i].velocity;
-				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, spitDegree * enemyProjectile[i].direction);
+				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, (float)(spitDegree * enemyProjectile[i].direction));
 				break;
 			case 4:
 				enemyProjectile[i].position.x -= enemyProjectile[i].velocity;
-				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, spitDegree * enemyProjectile[i].direction);
+				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, (float)(spitDegree * enemyProjectile[i].direction));
 				break;
 			case 5:
 				enemyProjectile[i].position.x -= enemyProjectile[i].velocity;
 				enemyProjectile[i].position.y += enemyProjectile[i].velocity;
-				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, spitDegree * enemyProjectile[i].direction);
+				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, (float)(spitDegree * enemyProjectile[i].direction));
 				break;
 			case 6:
 				enemyProjectile[i].position.y += enemyProjectile[i].velocity;
-				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, spitDegree * enemyProjectile[i].direction);
+				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, (float)(spitDegree * enemyProjectile[i].direction));
 				break;
 			case 7:
 				enemyProjectile[i].position.x += enemyProjectile[i].velocity;
 				enemyProjectile[i].position.y += enemyProjectile[i].velocity;
-				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, spitDegree * enemyProjectile[i].direction);
+				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, (float)(spitDegree * enemyProjectile[i].direction));
 			}
 			// 화면밖에 나가는 지 체크
 			if (enemyProjectile[i].position.y < 0

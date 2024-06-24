@@ -55,6 +55,7 @@ void UpdatePhase()
 	float textSize = 200.f;
 
 	if (currentTime - phaseStartTime < displayDuration) {
+		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 		CP_Settings_TextSize(textSize);
 		if (enemy.phase == 2)
 		{
@@ -75,6 +76,7 @@ void UpdatePhase()
 			Init();
 			CP_Engine_SetNextGameState(Roughly_game_init, Roughly_game_update, Roughly_game_exit);
 		}
+		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 		CP_Settings_TextSize(200.f);
 		CP_Font_DrawText("The End", phaseX, WindowHeightHalf);
 		CP_Settings_TextSize(100.f);
@@ -161,7 +163,7 @@ void UpdatePlayerDash()
 		CP_Settings_Fill(CP_Color_Create(255, 0, 255, 255));
 		CP_Graphics_DrawRectAdvanced(playerDash_X, playerDash_Y, playerDash * 78, 10, 0.f, 10.f);
 
-		if((int)playerDash == (int)player.dashCoolTimeLimit)
+		if(playerDash >= player.dashCoolTimeLimit) 
 		{
 			CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255));
 			CP_Graphics_DrawRectAdvanced(playerDash_X, playerDash_Y, playerDash * 78, 10, 0.f, 10.f);

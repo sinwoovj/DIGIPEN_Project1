@@ -21,7 +21,7 @@ void PlayerInit()
 	player.dashAccel = 100.f;
 	player.dashCoolTimeLimit = 1.25f;
 	player.shape = Circle;
-	player.health = 1000000.f;
+	player.health = 100.f;
 	player.moveSpeed = 0.5f;
 	player.maxSpeed = 10.f;
 	player.isAlive = 1;
@@ -177,7 +177,7 @@ void PlayerCheck()
 	float dieY = 1080 / 2.0;
 	float restartX = 1920 / 2.0 - 300;
 	float restartY = 1080 / 2.0 + 200;
-	bool playonce = true;
+	//bool playonce = true;
 	if (player.health <= 0)
 	{
 		//여러번 울리는 상황 해결

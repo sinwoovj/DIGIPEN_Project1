@@ -1,5 +1,6 @@
 #pragma once
 #include "cprocessing.h"
+CP_Sound bgmSound;
 
 CP_Sound swordSound;
 CP_Sound arrowSound;
@@ -11,6 +12,7 @@ CP_Sound dashSound;
 
 CP_Sound playerHurt;
 CP_Sound bossHurt;
+CP_Sound bossPunch;
 
 
 CP_Sound changePhase;

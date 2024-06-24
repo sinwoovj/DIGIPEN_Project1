@@ -98,6 +98,8 @@ bool isSwordReach(int direction, float swordWidth, float swordHeight, float swor
 		if (distance1 < r || distance2 < r)
 			return true;
 	}
+
+	return false;
 }
 int frameCount = 0;
 const int frameLimit = 10;
@@ -140,7 +142,7 @@ void PlayerCloseAttack()
 			if (isSwordReach(right, swordWidth, swordHeight, swordHand))
 				SuccessAttack(player.weapon.num);
 		}
-		CP_Image_Draw(SwordImg[swordFrame], player.coord.x + (player.size * 2.0), player.coord.y + (player.size /2.0), 100, 150, 255);
+		CP_Image_Draw(SwordImg[swordFrame], player.coord.x + (player.size * 2.0f), player.coord.y + (player.size /2.0f), 100, 150, 255);
 
 	}
 	else if (CP_Input_KeyDown(KEY_LEFT) && player.isAlive)
@@ -152,7 +154,7 @@ void PlayerCloseAttack()
 			if (isSwordReach(left, swordWidth, swordHeight, swordHand))
 				SuccessAttack(player.weapon.num);
 		}
-		CP_Image_Draw(SwordImg[swordFrame], player.coord.x - player.size, player.coord.y + (player.size / 2.0), 100, 150, 255);
+		CP_Image_Draw(SwordImg[swordFrame], player.coord.x - player.size, player.coord.y + (player.size / 2.0f), 100, 150, 255);
 	}
 	else if (CP_Input_KeyDown(KEY_UP) && player.isAlive)
 	{
@@ -163,7 +165,7 @@ void PlayerCloseAttack()
 			if (isSwordReach(up, swordWidth, swordHeight, swordHand))
 				SuccessAttack(player.weapon.num);
 		}
-		CP_Image_DrawAdvanced(SwordImg[swordFrame], player.coord.x + (player.size / 2.0), player.coord.y - (player.size), 100, 150, 255, 90);
+		CP_Image_DrawAdvanced(SwordImg[swordFrame], player.coord.x + (player.size / 2.0f), player.coord.y - (player.size), 100, 150, 255, 90);
 	}
 	else if (CP_Input_KeyDown(KEY_DOWN) && player.isAlive)
 	{
@@ -174,7 +176,7 @@ void PlayerCloseAttack()
 			if (isSwordReach(up, swordWidth, swordHeight, swordHand))
 				SuccessAttack(player.weapon.num);
 		}
-		CP_Image_DrawAdvanced(SwordImg[swordFrame], player.coord.x + (player.size / 2.0), player.coord.y + (player.size * 2.0), 100, 150, 255, -90);
+		CP_Image_DrawAdvanced(SwordImg[swordFrame], player.coord.x + (player.size / 2.0f), player.coord.y + (player.size * 2.0f), 100, 150, 255, -90);
 	}
 }
 
@@ -184,7 +186,7 @@ void PlayerCloseAttack()
 /// </summary>
 bool isArrowReach(float* position_x, float* position_y, int* active)
 {
-	float distance = sqrtf(powf((enemy.coord.x - *position_x), 2.0) + powf((enemy.coord.y - *position_y), 2.0));
+	float distance = sqrtf(powf((enemy.coord.x - *position_x), 2.0f) + powf((enemy.coord.y - *position_y), 2.0f));
 	if (distance <= (enemy.size / 2.0f))
 	{
 		*position_x = 0;
@@ -250,8 +252,6 @@ void PlayerLongAttack()
 /// <summary>
 /// Wand(Magical) Attack
 /// </summary>
-float wand_x = 0.0f;
-float wand_y = 0.0f;
 int thunderFrame = 0;
 float thunderAnimationTime = 0.0f;
 float thunderDuration = 0.1f;
@@ -259,10 +259,10 @@ void PlayerWandAttack()
 {
 	if ((CP_Input_KeyDown(KEY_RIGHT) || CP_Input_KeyDown(KEY_LEFT) || CP_Input_KeyDown(KEY_UP) || CP_Input_KeyDown(KEY_DOWN)) && player.isAlive)
 	{
+		float wand_x = CP_Random_RangeFloat(860, 1060);
+		float wand_y = CP_Random_RangeFloat(440, 640);
 		if (CloseAttackCoolTime())
 		{
-			wand_x = CP_Random_RangeFloat(860, 1060);
-			wand_y = CP_Random_RangeFloat(440, 640);
 			CP_Sound_PlayAdvanced(wandSound, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 			thunderFrame = 0;
 			thunderAnimationTime = 0.0f;
@@ -280,6 +280,6 @@ void PlayerWandAttack()
 				thunderFrame = 0;
 			}
 		}
-		CP_Image_Draw(ThunderImg[thunderFrame], wand_x, wand_y, CP_Random_RangeInt(40,100), CP_Random_RangeInt(100, 250), 255);
+		CP_Image_Draw(ThunderImg[thunderFrame], wand_x, wand_y, (float)CP_Random_RangeInt(40,100), (float)CP_Random_RangeInt(100, 250), 255);
 	}
 }

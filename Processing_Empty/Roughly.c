@@ -13,7 +13,7 @@
 #include "Enemy.h"
 #include "Sound.h"
 #include "Standard.h"
-
+int isplaying = 0;
 //Initialize Setting
 void Init()
 {
@@ -41,6 +41,8 @@ void Init()
 	isPhase3Full = true;
 	ImageLoad();
 	SoundLoad();
+	isplaying = 0;
+	CP_Sound_StopAll();
 }
 
 void Roughly_game_init(void)
@@ -59,6 +61,11 @@ void Roughly_game_update(void)
 	}
 	CP_Image_Draw(BG, WindowWidthHalf, WindowHeightHalf, WindowWidthSize, WindowHeightSize, 255); //Draw BG
 
+	if (isplaying == 0)
+	{
+		CP_Sound_PlayMusic(bgmSound);
+		isplaying = 1;
+	}
 	//****About the Player****//
 	PlayerMove();
 	PlayerUpdatePosition(); //Accel
@@ -78,7 +85,7 @@ void Roughly_game_update(void)
 	PlayerAttack(player.weapon.num);
 	Draw_PlayerProjectile(); //플레이어 투사체 출력
 
-	ShowUI();
+	//ShowUI();
 
 	EnemyCheck();
 	PlayerCheck();

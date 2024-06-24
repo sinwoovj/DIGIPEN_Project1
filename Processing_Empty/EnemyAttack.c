@@ -7,6 +7,7 @@
 #include "Roughly.h"
 #include "EnemyProjectile.h"
 #include "Image.h"
+#include "Sound.h"
 #include <math.h>
 
 float checkPatternWidthHeight = 120;
@@ -108,73 +109,74 @@ void EnemyCloseAttack3() // Àü¹æÇâ
 
 bool isPlayerIncludeRange()
 {
+	CP_Vector rangeRect;
+	float rectX = 0;
+	float rectY = 0;
 	switch (EnemyCloseAttackNum)
 	{
-		CP_Vector rangeRect;
-		float rectX = 0;
-		float rectY = 0;
-		case 1:
-			rangeRect = enemy.coord;
-			rectX = enemy.coord.x;
-			rectY = enemy.size / 2 + enemy.recognizeRange;
-			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
-				return 1;
-		case 2:
-			rangeRect.x = enemy.coord.x;
-			rangeRect.y = enemy.range.y - enemy.recognizeRange;
-			rectX = enemy.size / 2 + enemy.recognizeRange;
-			rectY = enemy.size / 2 + enemy.recognizeRange;
-			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
-				return 1;
-			break;
-		case 3:
-			rangeRect.x = enemy.range.x - enemy.recognizeRange;
-			rangeRect.y = enemy.coord.y;
-			rectX = enemy.size / 2 + enemy.recognizeRange;
-			rectY = enemy.size / 2 + enemy.recognizeRange;
-			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
-				return 1;
-			break;
-		 case 4:
-			rangeRect.x = enemy.range.x - enemy.recognizeRange;
-			rangeRect.y = enemy.range.y - enemy.recognizeRange;
-			rectX = enemy.size / 2 + enemy.recognizeRange;
-			rectY = enemy.size / 2 + enemy.recognizeRange;
-			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
-				return 1;
-			break;
-		case 5:
-			rangeRect.x = enemy.range.x - enemy.recognizeRange;
-			rangeRect.y = enemy.range.y - enemy.recognizeRange;
-			rectX = enemy.size + enemy.recognizeRange * 2;
-			rectY = enemy.recognizeRange;
-			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
-				return 1;
-			rangeRect.x = enemy.range.x - enemy.recognizeRange;
-			rangeRect.y = enemy.range.y + enemy.size;
-			rectX = enemy.size + enemy.recognizeRange * 2;
-			rectY = enemy.recognizeRange;
-			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
-				return 1;
-			break;
-		case 6:
-			rangeRect.x = enemy.range.x - enemy.recognizeRange;
-			rangeRect.y = enemy.range.y - enemy.recognizeRange;
-			rectX = enemy.recognizeRange;
-			rectY = enemy.size + enemy.recognizeRange * 2;
-			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
-				return 1;
-			rangeRect.x = enemy.range.x + enemy.size;
-			rangeRect.y = enemy.range.y - enemy.recognizeRange;
-			rectX = enemy.recognizeRange; 
-			rectY = enemy.size + enemy.recognizeRange * 2;
-			if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
-				return 1;
-			break;
-		case 7:
-			if (isPlayerInsideRange)
-				return 1;
-			break;
+
+	case 1:
+		rangeRect = enemy.coord;
+		rectX = enemy.coord.x;
+		rectY = enemy.size / 2 + enemy.recognizeRange;
+		if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
+			return 1;
+	case 2:
+		rangeRect.x = enemy.coord.x;
+		rangeRect.y = enemy.range.y - enemy.recognizeRange;
+		rectX = enemy.size / 2 + enemy.recognizeRange;
+		rectY = enemy.size / 2 + enemy.recognizeRange;
+		if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
+			return 1;
+		break;
+	case 3:
+		rangeRect.x = enemy.range.x - enemy.recognizeRange;
+		rangeRect.y = enemy.coord.y;
+		rectX = enemy.size / 2 + enemy.recognizeRange;
+		rectY = enemy.size / 2 + enemy.recognizeRange;
+		if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
+			return 1;
+		break;
+	case 4:
+		rangeRect.x = enemy.range.x - enemy.recognizeRange;
+		rangeRect.y = enemy.range.y - enemy.recognizeRange;
+		rectX = enemy.size / 2 + enemy.recognizeRange;
+		rectY = enemy.size / 2 + enemy.recognizeRange;
+		if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
+			return 1;
+		break;
+	case 5:
+		rangeRect.x = enemy.range.x - enemy.recognizeRange;
+		rangeRect.y = enemy.range.y - enemy.recognizeRange;
+		rectX = enemy.size + enemy.recognizeRange * 2;
+		rectY = enemy.recognizeRange;
+		if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
+			return 1;
+		rangeRect.x = enemy.range.x - enemy.recognizeRange;
+		rangeRect.y = enemy.range.y + enemy.size;
+		rectX = enemy.size + enemy.recognizeRange * 2;
+		rectY = enemy.recognizeRange;
+		if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
+			return 1;
+		break;
+	case 6:
+		rangeRect.x = enemy.range.x - enemy.recognizeRange;
+		rangeRect.y = enemy.range.y - enemy.recognizeRange;
+		rectX = enemy.recognizeRange;
+		rectY = enemy.size + enemy.recognizeRange * 2;
+		if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
+			return 1;
+		rangeRect.x = enemy.range.x + enemy.size;
+		rangeRect.y = enemy.range.y - enemy.recognizeRange;
+		rectX = enemy.recognizeRange;
+		rectY = enemy.size + enemy.recognizeRange * 2;
+		if (RangeTest(player.coord, player.size, player.shape, rangeRect, 0, Rect, rectX, rectY))
+			return 1;
+		break;
+	case 7:
+		if (isPlayerInsideRange)
+			return 1;
+		break;
 	}
 	return 0;
 }
@@ -524,6 +526,7 @@ void EnemyCheckPatternAnim()
 				if (j % 2 == 1) {
 					SignCheckPatternZone(i * checkPatternWidthHeight + 30, j * checkPatternWidthHeight + checkPatternWidthHeight - (checkPatternWidthHeight / 4),
 						90, 45);
+					CP_Sound_PlayAdvanced(bossPunch, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 				}
 			}
 			else
@@ -531,6 +534,7 @@ void EnemyCheckPatternAnim()
 				if (j % 2 == 0) {
 					SignCheckPatternZone(i * checkPatternWidthHeight + 30, j * checkPatternWidthHeight + checkPatternWidthHeight - (checkPatternWidthHeight / 4),
 						90, 45);
+					CP_Sound_PlayAdvanced(bossPunch, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 				}
 			}
 		}
