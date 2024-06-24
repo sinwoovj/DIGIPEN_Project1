@@ -1,6 +1,8 @@
 #include "EnemyProjectile.h"
 #include "Player.h"
 #include <math.h>
+#include "Image.h"
+
 //Calculate Vector
 CP_Vector CP_VectorSubtract(CP_Vector a, CP_Vector b)
 {
@@ -43,6 +45,7 @@ void CreateEnemyProjectile(float x, float y, float velocity, int direction)
 		}
 	}
 }
+int spitDegree = -45;
 void DrawEnemyProjectile() // 원형 수평 수직
 {
 	for (int i = 0; i < MAX_ENEMYPROJECTIES; ++i) {
@@ -51,31 +54,39 @@ void DrawEnemyProjectile() // 원형 수평 수직
 			{
 			case 0:
 				enemyProjectile[i].position.x += enemyProjectile[i].velocity;
+				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, spitDegree * enemyProjectile[i].direction);
 				break;
 			case 1:
 				enemyProjectile[i].position.x += enemyProjectile[i].velocity;
 				enemyProjectile[i].position.y -= enemyProjectile[i].velocity;
+				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, spitDegree * enemyProjectile[i].direction);
 				break;
 			case 2:
 				enemyProjectile[i].position.y -= enemyProjectile[i].velocity;
+				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, spitDegree * enemyProjectile[i].direction);
 				break;
 			case 3:
 				enemyProjectile[i].position.x -= enemyProjectile[i].velocity;
 				enemyProjectile[i].position.y -= enemyProjectile[i].velocity;
+				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, spitDegree * enemyProjectile[i].direction);
 				break;
 			case 4:
 				enemyProjectile[i].position.x -= enemyProjectile[i].velocity;
+				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, spitDegree * enemyProjectile[i].direction);
 				break;
 			case 5:
 				enemyProjectile[i].position.x -= enemyProjectile[i].velocity;
 				enemyProjectile[i].position.y += enemyProjectile[i].velocity;
+				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, spitDegree * enemyProjectile[i].direction);
 				break;
 			case 6:
 				enemyProjectile[i].position.y += enemyProjectile[i].velocity;
+				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, spitDegree * enemyProjectile[i].direction);
 				break;
 			case 7:
 				enemyProjectile[i].position.x += enemyProjectile[i].velocity;
 				enemyProjectile[i].position.y += enemyProjectile[i].velocity;
+				CP_Image_DrawAdvanced(SpitImg, enemyProjectile[i].position.x, enemyProjectile[i].position.y, 75, 20, 255, spitDegree * enemyProjectile[i].direction);
 			}
 			// 화면밖에 나가는 지 체크
 			if (enemyProjectile[i].position.y < 0
@@ -85,9 +96,6 @@ void DrawEnemyProjectile() // 원형 수평 수직
 			{
 				enemyProjectile[i].active = 0;
 			}
-			CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
-			CP_Settings_EllipseMode(CP_POSITION_CENTER);
-			CP_Graphics_DrawCircle(enemyProjectile[i].position.x, enemyProjectile[i].position.y, enemyProjectile[i].size);
 		}
 	}
 }
@@ -106,7 +114,6 @@ void CreateEnemyProjectile_2(float x, float y, float velocity, int direction)
 			enemyProjectile_2[i].active = 1;
 			enemyProjectile_2[i].shape = Circle;
 			enemyProjectile_2[i].direction = direction;
-
 			enemyProjectile_2[i].target = player.coord;
 			break;
 		}
@@ -143,9 +150,7 @@ void DrawEnemyProjectile_2()
 				enemyProjectile_2[i].active = 0;
 			}
 
-			CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
-			CP_Settings_EllipseMode(CP_POSITION_CENTER);
-			CP_Graphics_DrawCircle(enemyProjectile_2[i].position.x, enemyProjectile_2[i].position.y, enemyProjectile_2[i].size);
+			CP_Image_Draw(SpitImg_2, enemyProjectile_2[i].position.x, enemyProjectile_2[i].position.y, 20, 20, 255);
 		}
 	}
 }

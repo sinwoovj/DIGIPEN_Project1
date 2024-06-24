@@ -19,9 +19,9 @@ void PlayerInit()
 	player.velocity.x = 0;
 	player.velocity.y = 0;
 	player.dashAccel = 100.f;
-	player.dashCoolTimeLimit = 3.f;
+	player.dashCoolTimeLimit = 1.25f;
 	player.shape = Circle;
-	player.health = 100.f;
+	player.health = 1000000.f;
 	player.moveSpeed = 0.5f;
 	player.maxSpeed = 10.f;
 	player.isAlive = 1;
@@ -183,6 +183,7 @@ void PlayerCheck()
 		//여러번 울리는 상황 해결
 		//CP_Sound_PlayAdvanced(gameOver, 0.1f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 		player.isAlive = 0;
+		player.health = 0;
 		CP_Settings_TextSize(200.f);
 		CP_Font_DrawText("You Died", dieX, dieY);
 

@@ -14,6 +14,6 @@ void InitWeaponData() {
 
 	wand.num = 3;
 	wand.range = 0;
-	wand.damage = 5;
+	wand.damage = 100;
 	wand.isAttack = false;
 };

@@ -19,7 +19,7 @@ typedef enum EnemyPattern {
 
 // Function
 void SignDanagerZone(float x, float y, float w, float h);
-void SignDanagerPatternZone(float x, float y, float w, float h);
+void SignDanagerPatternZone(float x, float y, float w, float h, int num);
 
 void EnemyCloseAttack1();
 void EnemyCloseAttack2();

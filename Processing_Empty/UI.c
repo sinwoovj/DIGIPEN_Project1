@@ -148,7 +148,7 @@ void UpdatePlayerHp()
 		CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
 		CP_Graphics_DrawRectAdvanced(playerHP_X, playerHP_Y, playerHP, 10, 0.f, 10.f);
 		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 0));
-		CP_Graphics_DrawRect(playerHP_X, playerHP_Y, playerHP, 10.f);
+		CP_Graphics_DrawRectAdvanced(playerHP_X, playerHP_Y, 100, 10.f, 0.f, 10.f);
 	}
 }
 void UpdatePlayerDash()
@@ -156,16 +156,19 @@ void UpdatePlayerDash()
 	if (player.isAlive)
 	{
 		float playerDash = player.dashCoolTime;
-		float playerDash_X = player.coord.x;
+		float playerDash_X = player.coord.x - (player.size / 2.0f);
 		float playerDash_Y = player.coord.y - (player.size / 2.0f) + 15;
 		CP_Settings_Fill(CP_Color_Create(255, 0, 255, 255));
-		CP_Graphics_DrawRectAdvanced(playerDash_X, playerDash_Y, playerDash*15, 10, 0.f, 10.f);
+		CP_Graphics_DrawRectAdvanced(playerDash_X, playerDash_Y, playerDash * 78, 10, 0.f, 10.f);
 
 		if((int)playerDash == (int)player.dashCoolTimeLimit)
 		{
 			CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255));
-			CP_Graphics_DrawRectAdvanced(playerDash_X, playerDash_Y, playerDash * 15, 10, 0.f, 10.f);
+			CP_Graphics_DrawRectAdvanced(playerDash_X, playerDash_Y, playerDash * 78, 10, 0.f, 10.f);
 		}
+
+		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 0));
+		CP_Graphics_DrawRectAdvanced(playerDash_X, playerDash_Y, 100, 10.f, 0.f, 10.f);
 	}
 }
 //============================

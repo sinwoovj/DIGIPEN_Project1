@@ -113,6 +113,8 @@ bool EnemyFrameCheck2() {
 	currentEnemyFrame2++;
 	return false;
 }
+
+
 bool EnemyFrameCheck3() {
 	if (currentEnemyFrame3 == currentPatternPhaseTerm + (FRAME * 2)) {
 		currentEnemyFrame3 = 0;
@@ -125,6 +127,8 @@ bool EnemyFrameCheck3() {
 		if (isPlayerIncludePatternRange())
 			player.health -= enemy.patternDamage;
 	}
+
+	// isPatternAttackCool == 1 -> alpha 0
 	dangerZonePatternOpacity = isPatternAttackCool ? 0 : (int)(((currentEnemyFrame3 / 2) * MaxDangerZoneOpacity) / currentPatternPhaseTerm);
 	currentEnemyFrame3++;
 	return false;
@@ -177,7 +181,10 @@ void EnemyPhaseSet() {
 }
 
 void EnemyDraw(float BossLocationX, float BossLocationY) {
-	CP_Image_Draw(BossFace, BossLocationX, BossLocationY, enemy.size, enemy.size, 255); //Draw BG
+	if(enemy.phase == 3)
+		CP_Image_Draw(BossFace_Phase3, BossLocationX, BossLocationY, enemy.size, enemy.size, 255); //Draw BG
+	else
+		CP_Image_Draw(BossFace, BossLocationX, BossLocationY, enemy.size, enemy.size, 255); //Draw BG
 }
 
 int invincibleCount = 0;
@@ -257,9 +264,12 @@ void EnemyAttack() {
 			EnemyRandomCloseAttack();
 		}
 	}
+
+	// return 1 means the current pattern ends 
 	if (EnemyFrameCheck3())
 	{
 		srand((unsigned int)(time(NULL)));
+		// resetting the current pattern
 		enemyRandomPatternNum = enemy.phase < 2 ? 1 : (rand() % 3) + 1;
 		//enemyRandomPatternNum = enemy.phase == 2 ? 1 : enemy.phase == 3 ? (rand() % 3) + 1 : (rand() % 5) + 1;
 		enemy.patternRandomNum = (rand() % 2) + 1; // 1 > 수직 / 2 > 수평

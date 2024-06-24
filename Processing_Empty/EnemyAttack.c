@@ -6,9 +6,12 @@
 #include "Calculate.h"
 #include "Roughly.h"
 #include "EnemyProjectile.h"
+#include "Image.h"
 #include <math.h>
 
 float checkPatternWidthHeight = 120;
+
+int punchFrame = 0;
 
 void SignDanagerZone(float x, float y, float w, float h)
 {
@@ -19,12 +22,17 @@ void SignDanagerZone(float x, float y, float w, float h)
 	CP_Settings_Stroke(CP_Color_Create(0, 0, 0, 255));
 }
 
+
+void SignCheckPatternZone(float x, float y, float w, float h, int num, int punchFrmae)
+{
+	CP_Image_Draw(Punch[punchFrame], x + (w / 2.f), y + h - (h / 4.f), 90, 190, 255);
+}
+
 void SignDanagerPatternZone(float x, float y, float w, float h)
 {
 	CP_Settings_NoStroke();
 	CP_Settings_Fill(CP_Color_Create(255, 255, 0, dangerZonePatternOpacity >= MaxDangerZoneOpacity ? MaxDangerZoneOpacity : dangerZonePatternOpacity));
 	CP_Graphics_DrawRect(x, y, w, h);
-
 	CP_Settings_Stroke(CP_Color_Create(0, 0, 0, 255));
 }
 
@@ -64,7 +72,6 @@ void EnemyCloseAttack1() // 한방향
 				break;
 		}
 	}
-	
 }
 void EnemyCloseAttack2() // 수직 수평
 {
@@ -179,7 +186,7 @@ void EnemyProjectileRandomAttack1() // 원형
 	float degree = 0.f;
 	float velocity = 10.0f;
 	int direction = 0;
-	for (int i = 0; i < 16; i++)
+	for (int i = 0; i < 16 * enemy.phase; i++)
 	{
 		CreateEnemyProjectile(WindowWidthHalf + (enemy.size / 2.0f) * cosf(CP_Math_Radians(degree)), WindowHeightHalf + (enemy.size / 2.0f) * sinf(CP_Math_Radians(degree)), velocity, direction);
 		direction++;
@@ -195,7 +202,7 @@ void EnemyProjectileRandomAttack2() // 수평 수직
 	float degree = 0.f;
 	float velocity = 10.0f;
 	int direction = 0;
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 8 * enemy.phase; i++)
 	{
 		CreateEnemyProjectile(WindowWidthHalf + (enemy.size / 2.0f) * cosf(CP_Math_Radians(degree)), WindowHeightHalf + (enemy.size / 2.0f) * sinf(CP_Math_Radians(degree)), velocity, direction);
 		direction += 2;
@@ -209,7 +216,7 @@ void EnemyProjectileRandomAttack3() // 유도
 	float degree = 0.f;
 	float velocity = 150.0f * enemy.phase ;
 	int direction = 0;
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 4 * enemy.phase; i++)
 	{
 		CreateEnemyProjectile_2(WindowWidthHalf + (enemy.size / 2.0f) * cosf(CP_Math_Radians(degree)), WindowHeightHalf + (enemy.size / 2.0f) * sinf(CP_Math_Radians(degree)), velocity, direction);
 		direction += 2;
@@ -239,18 +246,18 @@ void EnemyPatternAttack1()
 	{
 		switch (EnemyPatternAttackNum)
 		{
-			case 1:
-				SignDanagerPatternZone(WindowWidthHalf, WindowHeightHalf, WindowWidthHalf, WindowHeightHalf);
-				break;
-			case 2:
-				SignDanagerPatternZone(WindowWidthHalf, 0, WindowWidthHalf, WindowHeightHalf);
-				break;
-			case 3:
-				SignDanagerPatternZone(0, WindowHeightHalf, WindowWidthHalf, WindowHeightHalf);
-				break;
-			case 4:
-				SignDanagerPatternZone(0, 0, WindowWidthHalf, WindowHeightHalf);
-				break;
+		case 1:
+			SignDanagerPatternZone(WindowWidthHalf, WindowHeightHalf, WindowWidthHalf, WindowHeightHalf);
+			break;
+		case 2:
+			SignDanagerPatternZone(WindowWidthHalf, 0, WindowWidthHalf, WindowHeightHalf);
+			break;
+		case 3:
+			SignDanagerPatternZone(0, WindowHeightHalf, WindowWidthHalf, WindowHeightHalf);
+			break;
+		case 4:
+			SignDanagerPatternZone(0, 0, WindowWidthHalf, WindowHeightHalf);
+			break;
 		}
 	}
 }
@@ -262,14 +269,14 @@ void EnemyPatternAttack2()
 	{
 		switch (enemy.patternRandomNum)
 		{
-			case 1: // 수직
-				if (player.coord.x >= WindowWidthHalf) EnemyPatternAttackNum = 5;
-				else EnemyPatternAttackNum = 6;
-				break;
-			case 2: // 수평
-				if (player.coord.y >= WindowHeightHalf) EnemyPatternAttackNum = 7;
-				else EnemyPatternAttackNum = 8;
-				break;
+		case 1: // 수직
+			if (player.coord.x >= WindowWidthHalf) EnemyPatternAttackNum = 5;
+			else EnemyPatternAttackNum = 6;
+			break;
+		case 2: // 수평
+			if (player.coord.y >= WindowHeightHalf) EnemyPatternAttackNum = 7;
+			else EnemyPatternAttackNum = 8;
+			break;
 		}
 	}
 	if (!isPatternAttackCool)
@@ -286,7 +293,7 @@ void EnemyPatternAttack2()
 			SignDanagerPatternZone(0, WindowHeightHalf, WindowWidthSize, WindowHeightSize);
 			break;
 		case 8: // 상
-			SignDanagerPatternZone(0,0,WindowWidthSize,WindowHeightHalf);
+			SignDanagerPatternZone(0, 0, WindowWidthSize, WindowHeightHalf);
 			break;
 		}
 	}
@@ -297,60 +304,60 @@ void EnemyPatternAttack3()
 	// 한 블럭의 크기 120, 비율은 16 : 9
 	switch (enemy.patternRandomNum)
 	{
-		case 1:
-			EnemyPatternAttackNum = 9;
-			break;
-		case 2:
-			EnemyPatternAttackNum = 10;
-			break;
+	case 1:
+		EnemyPatternAttackNum = 9;
+		break;
+	case 2:
+		EnemyPatternAttackNum = 10;
+		break;
 	}
 
 	if (!isPatternAttackCool)
 	{
 		switch (EnemyPatternAttackNum)
 		{
-			case 9: // 왼쪽 위 타격
-				for (int i = 0; i < 16; i++) {
-					for (int j = 0; j < 9; j++) {
+		case 9: // 왼쪽 위 타격
+			for (int i = 0; i < 16; i++) {
+				for (int j = 0; j < 9; j++) {
 
-						if (i % 2 == 0)
-						{
-							if (j % 2 == 1) {
-								SignDanagerPatternZone(i * checkPatternWidthHeight, j * checkPatternWidthHeight,
-									checkPatternWidthHeight, checkPatternWidthHeight);
-							}
+					if (i % 2 == 0)
+					{
+						if (j % 2 == 1) {
+							SignDanagerPatternZone(i * checkPatternWidthHeight, j * checkPatternWidthHeight,
+								checkPatternWidthHeight, checkPatternWidthHeight);
 						}
-						else
-						{
-							if (j % 2 == 0) {
-								SignDanagerPatternZone(i * checkPatternWidthHeight, j * checkPatternWidthHeight,
-									checkPatternWidthHeight, checkPatternWidthHeight);
-							}
+					}
+					else
+					{
+						if (j % 2 == 0) {
+							SignDanagerPatternZone(i * checkPatternWidthHeight, j * checkPatternWidthHeight,
+								checkPatternWidthHeight, checkPatternWidthHeight);
 						}
 					}
 				}
-				break;
-			case 10: // 왼쪽 위 비타격
-				for (int i = 0; i < 16; i++) {
-					for (int j = 0; j < 9; j++) {
-						
-						if (i % 2 == 1)
-						{
-							if (j % 2 == 1) {
-								SignDanagerPatternZone(i * checkPatternWidthHeight, j * checkPatternWidthHeight,
-									checkPatternWidthHeight, checkPatternWidthHeight);
-							}
+			}
+			break;
+		case 10: // 왼쪽 위 비타격
+			for (int i = 0; i < 16; i++) {
+				for (int j = 0; j < 9; j++) {
+
+					if (i % 2 == 1)
+					{
+						if (j % 2 == 1) {
+							SignDanagerPatternZone(i * checkPatternWidthHeight, j * checkPatternWidthHeight,
+								checkPatternWidthHeight, checkPatternWidthHeight);
 						}
-						else
-						{
-							if (j % 2 == 0) {
-								SignDanagerPatternZone(i * checkPatternWidthHeight, j * checkPatternWidthHeight,
-									checkPatternWidthHeight, checkPatternWidthHeight);
-							}
+					}
+					else
+					{
+						if (j % 2 == 0) {
+							SignDanagerPatternZone(i * checkPatternWidthHeight, j * checkPatternWidthHeight,
+								checkPatternWidthHeight, checkPatternWidthHeight);
 						}
 					}
 				}
-				break;
+			}
+			break;
 		}
 	}
 }

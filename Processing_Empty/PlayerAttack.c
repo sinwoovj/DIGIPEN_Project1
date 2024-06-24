@@ -8,7 +8,9 @@
 #include <math.h>
 #include "Calculate.h"
 #include "EnemyProjectile.h"
+#include "Image.h"
 #include "Sound.h"
+
 
 void PlayerAttack(int num)
 {
@@ -99,6 +101,10 @@ bool isSwordReach(int direction, float swordWidth, float swordHeight, float swor
 }
 int frameCount = 0;
 const int frameLimit = 10;
+
+int swordFrame = 0;
+float swordAnimationTime = 0.0f;
+float swordDuration = 0.05f;
 int CloseAttackCoolTime()
 {
 	if (++frameCount == frameLimit) 
@@ -113,58 +119,62 @@ void PlayerCloseAttack()
 	float swordWidth = (sword.range * 2.0f);
 	float swordHeight = (sword.range * 3 / 2.0f);
 	float swordHand = (sword.range / 2.0f);
+
+	swordAnimationTime += CP_System_GetDt();
+	if (swordAnimationTime >= swordDuration)
+	{
+		swordAnimationTime = 0.0f;
+		swordFrame++;
+		if (swordFrame >= swordFrameNum)
+		{
+			swordFrame = 0;
+		}
+	}
+
 	if (CP_Input_KeyDown(KEY_RIGHT) && player.isAlive)
 	{
-		player.direction = 1;
 		if (CloseAttackCoolTime())
 		{
 			CP_Sound_PlayAdvanced(swordSound, 0.5f, 1.0f, FALSE, CP_SOUND_GROUP_1);
-			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-			CP_Graphics_DrawRect(player.coord.x + player.size, player.coord.y - swordHand, swordHeight, swordWidth); //Draw trajectory
 			int right = 0;
 			if (isSwordReach(right, swordWidth, swordHeight, swordHand))
 				SuccessAttack(player.weapon.num);
 		}
+		CP_Image_Draw(SwordImg[swordFrame], player.coord.x + (player.size * 2.0), player.coord.y + (player.size /2.0), 100, 150, 255);
 
 	}
 	else if (CP_Input_KeyDown(KEY_LEFT) && player.isAlive)
 	{
-		player.direction = 3;
 		if (CloseAttackCoolTime())
 		{
 			CP_Sound_PlayAdvanced(swordSound, 0.5f, 1.0f, FALSE, CP_SOUND_GROUP_1);
-			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-			CP_Graphics_DrawRect(player.coord.x - swordHeight, player.coord.y - swordHand, swordHeight, swordWidth); //Draw trajectory
 			int left = 1;
 			if (isSwordReach(left, swordWidth, swordHeight, swordHand))
 				SuccessAttack(player.weapon.num);
 		}
+		CP_Image_Draw(SwordImg[swordFrame], player.coord.x - player.size, player.coord.y + (player.size / 2.0), 100, 150, 255);
 	}
 	else if (CP_Input_KeyDown(KEY_UP) && player.isAlive)
 	{
-		player.direction = 2;
 		if (CloseAttackCoolTime())
 		{
 			CP_Sound_PlayAdvanced(swordSound, 0.5f, 1.0f, FALSE, CP_SOUND_GROUP_1);
-			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-			CP_Graphics_DrawRect(player.coord.x - swordHand, player.coord.y - swordHeight, swordWidth, swordHeight); //Draw trajectory
 			int up = 2;
 			if (isSwordReach(up, swordWidth, swordHeight, swordHand))
 				SuccessAttack(player.weapon.num);
 		}
+		CP_Image_DrawAdvanced(SwordImg[swordFrame], player.coord.x + (player.size / 2.0), player.coord.y - (player.size), 100, 150, 255, 90);
 	}
 	else if (CP_Input_KeyDown(KEY_DOWN) && player.isAlive)
 	{
-		player.direction = 0;
 		if (CloseAttackCoolTime())
 		{
 			CP_Sound_PlayAdvanced(swordSound, 0.5f, 1.0f, FALSE, CP_SOUND_GROUP_1);
-			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-			CP_Graphics_DrawRect(player.coord.x - swordHand, player.coord.y + sword.range, swordWidth, swordHeight); //Draw trajectory
 			int up = 3;
 			if (isSwordReach(up, swordWidth, swordHeight, swordHand))
 				SuccessAttack(player.weapon.num);
 		}
+		CP_Image_DrawAdvanced(SwordImg[swordFrame], player.coord.x + (player.size / 2.0), player.coord.y + (player.size * 2.0), 100, 150, 255, -90);
 	}
 }
 
@@ -240,18 +250,36 @@ void PlayerLongAttack()
 /// <summary>
 /// Wand(Magical) Attack
 /// </summary>
+float wand_x = 0.0f;
+float wand_y = 0.0f;
+int thunderFrame = 0;
+float thunderAnimationTime = 0.0f;
+float thunderDuration = 0.1f;
 void PlayerWandAttack()
 {
-	float wand_x = CP_Random_RangeFloat(860, 1060);
-	float wand_y = CP_Random_RangeFloat(440, 640);
 	if ((CP_Input_KeyDown(KEY_RIGHT) || CP_Input_KeyDown(KEY_LEFT) || CP_Input_KeyDown(KEY_UP) || CP_Input_KeyDown(KEY_DOWN)) && player.isAlive)
 	{
 		if (CloseAttackCoolTime())
 		{
+			wand_x = CP_Random_RangeFloat(860, 1060);
+			wand_y = CP_Random_RangeFloat(440, 640);
 			CP_Sound_PlayAdvanced(wandSound, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
-			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-			CP_Graphics_DrawRect(wand_x, wand_y, player.size, player.size); //Draw Thunder
+			thunderFrame = 0;
+			thunderAnimationTime = 0.0f;
 			SuccessAttack(player.weapon.num);
 		}
+
+		thunderAnimationTime += CP_System_GetDt();
+		if (thunderAnimationTime >= thunderDuration)
+		{
+
+			thunderAnimationTime = 0.0f;
+			thunderFrame++;
+			if (thunderFrame >= thunderFrameNum)
+			{
+				thunderFrame = 0;
+			}
+		}
+		CP_Image_Draw(ThunderImg[thunderFrame], wand_x, wand_y, CP_Random_RangeInt(40,100), CP_Random_RangeInt(100, 250), 255);
 	}
 }
