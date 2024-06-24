@@ -85,8 +85,8 @@ void UpdatePhase()
 
 void UpdateEnemyHp()
 {
-	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 0));
-	CP_Graphics_DrawRect(1920 / 4.0, 30, 980, 30);
+	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+	CP_Graphics_DrawRect(1920 / 4.0f, 30, 980, 30);
 
 	if (enemy.phase == 1)
 	{

@@ -14,6 +14,8 @@ void SignDanagerZone(float x, float y, float w, float h)
 	CP_Settings_NoStroke();
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, dangerZoneOpacity >= MaxDangerZoneOpacity ? MaxDangerZoneOpacity : dangerZoneOpacity));
 	CP_Graphics_DrawRect(x, y, w, h);
+
+	CP_Settings_Stroke(CP_Color_Create(0, 0, 0, 255));
 }
 
 void SignDanagerPatternZone(float x, float y, float w, float h)
@@ -21,6 +23,8 @@ void SignDanagerPatternZone(float x, float y, float w, float h)
 	CP_Settings_NoStroke();
 	CP_Settings_Fill(CP_Color_Create(255, 255, 0, dangerZonePatternOpacity >= MaxDangerZoneOpacity ? MaxDangerZoneOpacity : dangerZonePatternOpacity));
 	CP_Graphics_DrawRect(x, y, w, h);
+
+	CP_Settings_Stroke(CP_Color_Create(0, 0, 0, 255));
 }
 
 // 기본적으로 근접공격은 3초에서 1초 사이에 빨간색으로 공격 범위만큼 표시하고 공격한다.
