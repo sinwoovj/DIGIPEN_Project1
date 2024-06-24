@@ -1,5 +1,6 @@
 #include "EnemyProjectile.h"
 #include "Player.h"
+#include <math.h>
 //Calculate Vector
 CP_Vector CP_VectorSubtract(CP_Vector a, CP_Vector b)
 {
