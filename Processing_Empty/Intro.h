@@ -1,5 +1,5 @@
 #pragma once
-void goMain();
-void intro_init();
-void intro_update();
-void intro_exit();
+void goMain(void);
+void intro_init(void);
+void intro_update(void);
+void intro_exit(void);

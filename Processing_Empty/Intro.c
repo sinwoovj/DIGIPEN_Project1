@@ -29,15 +29,15 @@ bool introFrameCheck()
 CP_Image Digipen_logo;
 CP_Image Team_logo;
 
-void intro_init()
+void intro_init(void)
 {
 	Digipen_logo = CP_Image_Load("./Assets/DigiPen_WHITE.png");
 	Team_logo = CP_Image_Load("./Assets/Team_Logo.png");
 	StandardInit();
-	CP_System_SetWindowSize(WindowWidthSize, WindowHeightSize);
+	CP_System_SetWindowSize((int)WindowWidthSize, (int)WindowHeightSize);
 }
 
-void intro_update()
+void intro_update(void)
 {
 
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 0, 0, 255));
@@ -71,7 +71,7 @@ void intro_update()
 	}
 }
 
-void intro_exit()
+void intro_exit(void)
 {
 	CP_Image_Free(&Digipen_logo);
 	CP_Image_Free(&Team_logo);
