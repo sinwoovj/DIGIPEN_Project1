@@ -19,7 +19,8 @@ typedef enum EnemyPattern {
 
 // Function
 void SignDanagerZone(float x, float y, float w, float h);
-void SignDanagerPatternZone(float x, float y, float w, float h, int num);
+void SignDanagerPatternZone(float x, float y, float w, float h);
+void SignCheckPatternZone(float x, float y, float w, float h);
 
 void EnemyCloseAttack1();
 void EnemyCloseAttack2();
@@ -41,4 +42,13 @@ void EnemyPatternAttack3(); // check
 void EnemyPatternAttack4(); // slide linear
 void EnemyPatternAttack5(); // slide diagonal
 
+void EnemyCheckPatternAnim();
+void EnemyCheckPatternFrameCheck();
+
 // Variable
+
+int punchFrame;
+int punchState;
+
+int EnemyCheckPatternFrame;
+int EnemyCheckPatternFrameLimit;

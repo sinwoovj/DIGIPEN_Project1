@@ -39,6 +39,9 @@ bool isPlayerInsideRange;
 bool isCloseAttackCool;
 bool isPatternAttackCool;
 
+bool iscurrentEnemyFrame2;
+bool iscurrentEnemyFrame3;
+
 int currentPhaseTerm;
 int currentPatternPhaseTerm;
 
@@ -54,8 +57,12 @@ int EnemyCloseAttackNum;
 // 15 : 슬라이드 체크 우하>좌상, 16 : 슬라이드 체크 우상>좌하, 17 : 슬라이드 좌하>우상, 18 : 슬라이드 좌상>우하
 int EnemyPatternAttackNum;
 
+int patternInterval;
+
 int dangerZoneOpacity;
 int dangerZonePatternOpacity;
+
+bool isPunchAnim;
 
 void EnemyInit(float x, float y);
 

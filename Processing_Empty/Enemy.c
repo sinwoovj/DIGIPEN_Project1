@@ -84,6 +84,16 @@ void EnemyInit(float x, float y) {
 
 	dangerZoneOpacity = 0;
 	dangerZonePatternOpacity = 0;
+
+	patternInterval = (FRAME * 2);
+	punchFrame = 0;
+	punchState = 0;
+	isPunchAnim = false;
+	EnemyCheckPatternFrame = 0;
+	EnemyCheckPatternFrameLimit = 0;
+
+	iscurrentEnemyFrame2 = false;
+	iscurrentEnemyFrame3 = false;
 }
 
 bool EnemyFrameCheck1() {
@@ -97,37 +107,45 @@ bool EnemyFrameCheck1() {
 bool EnemyFrameCheck2() {
 	if (currentEnemyFrame2 >= currentPhaseTerm + FRAME) {
 		currentEnemyFrame2 = 0;
+		iscurrentEnemyFrame2 = false;
 		dangerZoneOpacity = 0;
 		isCloseAttackCool = false;
 		return true;
 	}
-	if (currentEnemyFrame2 == currentPhaseTerm) {
-		isCloseAttackCool = true;
-		if (isPlayerIncludeRange())
-		{
-			player.health -= enemy.closeDamage;
-			CP_Sound_PlayAdvanced(playerHurt, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
+	if (!iscurrentEnemyFrame2) {
+		if (currentEnemyFrame2 >= currentPhaseTerm) {
+			iscurrentEnemyFrame2 = true;
+			isCloseAttackCool = true;
+			if (isPlayerIncludeRange())
+			{
+				player.health -= enemy.closeDamage;
+				CP_Sound_PlayAdvanced(playerHurt, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
+			}
 		}
 	}
 	dangerZoneOpacity = (int)((currentEnemyFrame2 * MaxDangerZoneOpacity) / currentPhaseTerm);
 	currentEnemyFrame2++;
 	return false;
 }
-
-
 bool EnemyFrameCheck3() {
-	if (currentEnemyFrame3 == currentPatternPhaseTerm + (FRAME * 2)) {
+	if (currentEnemyFrame3 >= currentPatternPhaseTerm + patternInterval) {
 		currentEnemyFrame3 = 0;
+		iscurrentEnemyFrame3 = false;
 		dangerZonePatternOpacity = 0;
 		isPatternAttackCool = false;
 		return true;
 	}
-	if (currentEnemyFrame3 == currentPatternPhaseTerm) {
-		isPatternAttackCool = true;
-		if (isPlayerIncludePatternRange())
-			player.health -= enemy.patternDamage;
+	if (!iscurrentEnemyFrame3) {
+		if (currentEnemyFrame3 >= currentPatternPhaseTerm) {
+			iscurrentEnemyFrame3 = true;
+			isPatternAttackCool = true;
+			if (isPlayerIncludePatternRange())
+				player.health -= enemy.patternDamage;
+		}
+		if (currentEnemyFrame3 >= currentPatternPhaseTerm && (EnemyPatternAttackNum == 9 || EnemyPatternAttackNum == 10)) {
+			isPunchAnim = true;
+		}
 	}
-
 	// isPatternAttackCool == 1 -> alpha 0
 	dangerZonePatternOpacity = isPatternAttackCool ? 0 : (int)(((currentEnemyFrame3 / 2) * MaxDangerZoneOpacity) / currentPatternPhaseTerm);
 	currentEnemyFrame3++;
@@ -278,6 +296,9 @@ void EnemyAttack() {
 	else {
 		EnemyRandomPatternAttack();
 	}
+
+	if (isPunchAnim)
+		EnemyCheckPatternAnim();
 }
 
 void EnemyRandomCloseAttack()
@@ -322,6 +343,8 @@ void EnemyRandomAttack()
 
 void EnemyRandomPatternAttack()
 {
+	EnemyPatternAttack3();
+		/*
 	switch (enemyRandomPatternNum)
 	{
 		case 1:
@@ -339,5 +362,5 @@ void EnemyRandomPatternAttack()
 		case 5:
 			EnemyPatternAttack5(); // 체크 순차,광역 공격
 			break;
-	}
+	}*/
 }

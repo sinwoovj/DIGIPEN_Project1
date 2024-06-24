@@ -11,8 +11,6 @@
 
 float checkPatternWidthHeight = 120;
 
-int punchFrame = 0;
-
 void SignDanagerZone(float x, float y, float w, float h)
 {
 	CP_Settings_NoStroke();
@@ -23,9 +21,9 @@ void SignDanagerZone(float x, float y, float w, float h)
 }
 
 
-void SignCheckPatternZone(float x, float y, float w, float h, int num, int punchFrmae)
+void SignCheckPatternZone(float x, float y, float w, float h)
 {
-	CP_Image_Draw(Punch[punchFrame], x + (w / 2.f), y + h - (h / 4.f), 90, 190, 255);
+	CP_Image_Draw(Punch[punchFrame], x + (w / 2.f), y + h - (h / 4.f) + (punchState == 6 ? 40 : 0), 90, 190, 255);
 }
 
 void SignDanagerPatternZone(float x, float y, float w, float h)
@@ -304,60 +302,34 @@ void EnemyPatternAttack3()
 	// 한 블럭의 크기 120, 비율은 16 : 9
 	switch (enemy.patternRandomNum)
 	{
-	case 1:
-		EnemyPatternAttackNum = 9;
-		break;
-	case 2:
-		EnemyPatternAttackNum = 10;
-		break;
+		case 1:
+			EnemyPatternAttackNum = 9;
+			break;
+		case 2:
+			EnemyPatternAttackNum = 10;
+			break;
 	}
 
 	if (!isPatternAttackCool)
 	{
-		switch (EnemyPatternAttackNum)
-		{
-		case 9: // 왼쪽 위 타격
-			for (int i = 0; i < 16; i++) {
-				for (int j = 0; j < 9; j++) {
+		for (int i = 0; i < 16; i++) {
+			for (int j = 0; j < 9; j++) {
 
-					if (i % 2 == 0)
-					{
-						if (j % 2 == 1) {
-							SignDanagerPatternZone(i * checkPatternWidthHeight, j * checkPatternWidthHeight,
-								checkPatternWidthHeight, checkPatternWidthHeight);
-						}
+				if (i % 2 == (EnemyPatternAttackNum == 9 ? 0 : 1))
+				{
+					if (j % 2 == 1) {
+						SignDanagerPatternZone(i * checkPatternWidthHeight, j * checkPatternWidthHeight,
+							checkPatternWidthHeight, checkPatternWidthHeight);
 					}
-					else
-					{
-						if (j % 2 == 0) {
-							SignDanagerPatternZone(i * checkPatternWidthHeight, j * checkPatternWidthHeight,
-								checkPatternWidthHeight, checkPatternWidthHeight);
-						}
+				}
+				else
+				{
+					if (j % 2 == 0) {
+						SignDanagerPatternZone(i * checkPatternWidthHeight, j * checkPatternWidthHeight,
+							checkPatternWidthHeight, checkPatternWidthHeight);
 					}
 				}
 			}
-			break;
-		case 10: // 왼쪽 위 비타격
-			for (int i = 0; i < 16; i++) {
-				for (int j = 0; j < 9; j++) {
-
-					if (i % 2 == 1)
-					{
-						if (j % 2 == 1) {
-							SignDanagerPatternZone(i * checkPatternWidthHeight, j * checkPatternWidthHeight,
-								checkPatternWidthHeight, checkPatternWidthHeight);
-						}
-					}
-					else
-					{
-						if (j % 2 == 0) {
-							SignDanagerPatternZone(i * checkPatternWidthHeight, j * checkPatternWidthHeight,
-								checkPatternWidthHeight, checkPatternWidthHeight);
-						}
-					}
-				}
-			}
-			break;
 		}
 	}
 }
@@ -497,4 +469,70 @@ bool isPlayerIncludePatternRange()
 			break;
 	}
 	return 0;
+}
+
+void EnemyCheckPatternFrameCheck() {
+	if (EnemyCheckPatternFrame++ >= EnemyCheckPatternFrameLimit)
+	{
+		if (punchState > 6)
+		{
+			punchState = 0;
+			isPunchAnim = false;
+		}
+		EnemyCheckPatternFrame = 0;
+		punchState++;
+	}
+}
+void EnemyCheckPatternAnim()
+{
+	switch (punchState) {
+		case 0:
+			EnemyCheckPatternFrameLimit = 3;
+			punchFrame = 0;
+			break;
+		case 1:
+			EnemyCheckPatternFrameLimit = 2;
+			punchFrame = 1;
+			break;
+		case 2:
+			EnemyCheckPatternFrameLimit = 2;
+			punchFrame = 2;
+			break;
+		case 3:
+			EnemyCheckPatternFrameLimit = 20;
+			punchFrame = 3;
+			break;
+		case 4:
+			EnemyCheckPatternFrameLimit = 2;
+			punchFrame = 2;
+			break;
+		case 5:
+			EnemyCheckPatternFrameLimit = 2;
+			punchFrame = 1;
+			break;
+		case 6:
+			EnemyCheckPatternFrameLimit = 3;
+			punchFrame = 0;
+			break;
+	}
+	EnemyCheckPatternFrameCheck();
+	for (int i = 0; i < 16; i++) {
+		for (int j = 0; j < 9; j++) {
+
+			if (i % 2 == (EnemyPatternAttackNum == 9 ? 1 : 0))
+			{
+				if (j % 2 == 1) {
+					SignCheckPatternZone(i * checkPatternWidthHeight + 30, j * checkPatternWidthHeight + checkPatternWidthHeight - (checkPatternWidthHeight / 4),
+						90, 45);
+				}
+			}
+			else
+			{
+				if (j % 2 == 0) {
+					SignCheckPatternZone(i * checkPatternWidthHeight + 30, j * checkPatternWidthHeight + checkPatternWidthHeight - (checkPatternWidthHeight / 4),
+						90, 45);
+				}
+			}
+		}
+	}
 }
