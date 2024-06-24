@@ -20,6 +20,12 @@ void SoundLoad()
 
 void SoundFree()
 {
+	CP_Sound_Free(swordSound);
 	CP_Sound_Free(arrowSound);
+	CP_Sound_Free(wandSound);
+	CP_Sound_Free(dashSound);
+	CP_Sound_Free(playerHurt);
 	CP_Sound_Free(bossHurt);
+	CP_Sound_Free(changePhase);
+	CP_Sound_Free(gameOver);
 }

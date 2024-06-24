@@ -1,6 +1,4 @@
 #pragma once
-
-#include "EnemyProjectile.h"
 #include <stdbool.h>
 
 // Enum
@@ -35,8 +33,6 @@ bool isPlayerIncludePatternRange();
 void EnemyProjectileRandomAttack1();// 원형
 void EnemyProjectileRandomAttack2();// 수평 수직
 void EnemyProjectileRandomAttack3();// 유도
-
-
 
 
 void EnemyPatternAttack1(); // 1/4

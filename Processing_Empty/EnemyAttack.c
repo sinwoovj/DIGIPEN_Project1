@@ -5,6 +5,7 @@
 #include "Standard.h"
 #include "Calculate.h"
 #include "Roughly.h"
+#include "EnemyProjectile.h"
 #include <math.h>
 
 float checkPatternWidthHeight = 120;
@@ -206,7 +207,7 @@ void EnemyProjectileRandomAttack2() // 수평 수직
 void EnemyProjectileRandomAttack3() // 유도
 {
 	float degree = 0.f;
-	float velocity = 200.0f * enemy.phase ;
+	float velocity = 150.0f * enemy.phase ;
 	int direction = 0;
 	for (int i = 0; i < 4; i++)
 	{

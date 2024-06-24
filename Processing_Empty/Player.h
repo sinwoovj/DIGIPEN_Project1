@@ -26,12 +26,13 @@ typedef struct Player
 Player player;
 
 void PlayerInit();
-void PlayerMove();
-void PlayerCheck();
 void PlayerDraw();
-void PlayerUpdatePosition();
-void CheckWallCollision();
 
 int DashCoolTime();
+void PlayerMove();
+void CheckWallCollision();
+void PlayerUpdatePosition();
 
+
+void PlayerCheck();
 void SelectWeapon();

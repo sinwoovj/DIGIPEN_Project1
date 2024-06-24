@@ -9,7 +9,9 @@
 #include "Calculate.h"
 #include "Image.h"
 #include "Player.h"
-#include "Sound.h "
+#include "Sound.h"
+#include "EnemyProjectile.h"
+
 
 bool isReached;
 bool isRecognize;
@@ -104,7 +106,7 @@ bool EnemyFrameCheck2() {
 		if (isPlayerIncludeRange())
 		{
 			player.health -= enemy.closeDamage;
-			CP_Sound_PlayAdvanced(dashSound, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
+			CP_Sound_PlayAdvanced(playerHurt, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 		}
 	}
 	dangerZoneOpacity = (int)((currentEnemyFrame2 * MaxDangerZoneOpacity) / currentPhaseTerm);
@@ -198,7 +200,7 @@ void EnemyAttack() {
 	if (RangeTest(enemy.coord, enemy.size, enemy.shape, player.coord, player.size, player.shape, 0, 0)) {
 		if (InvincibleTime()) {
 			player.health -= enemy.reachDamage;
-			CP_Sound_PlayAdvanced(dashSound, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
+			CP_Sound_PlayAdvanced(playerHurt, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 		}
 	}
 	// 보스와 플레이어의 위치가 일정 범위 내로 가까우면 근접공격, 아니면 랜덤으로 공격함.
@@ -219,7 +221,7 @@ void EnemyAttack() {
 			enemyProjectile[i].position.y = 0;
 			enemyProjectile[i].active = 0;
 			player.health -= enemy.projectileDamage;
-			CP_Sound_PlayAdvanced(dashSound, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
+			CP_Sound_PlayAdvanced(playerHurt, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 		}
 		if (RangeTest(enemyProjectile_2[i].position, enemyProjectile_2[i].size, enemyProjectile_2[i].shape, playerRange, player.size, player.shape, 0, 0))
 		{
@@ -227,7 +229,7 @@ void EnemyAttack() {
 			enemyProjectile_2[i].position.y = 0;
 			enemyProjectile_2[i].active = 0;
 			player.health -= enemy.projectileDamage;
-			CP_Sound_PlayAdvanced(dashSound, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
+			CP_Sound_PlayAdvanced(playerHurt, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 		}
 	}
 	if (RangeTest(enemyRange, enemy.size + enemy.recognizeRange * 2, Square, player.coord , player.size, player.shape, 0, 0))

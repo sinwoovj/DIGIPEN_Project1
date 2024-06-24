@@ -2,8 +2,11 @@
 #include "Player.h"
 #include "Roughly.h"
 #include "Image.h"
-#include "Enemy.h"
 #include "Sound.h"
+#include "Enemy.h"
+#include "UI.h"
+bool isDash;
+time_t dashStartTime;
 
 void PlayerInit()
 {
@@ -38,8 +41,6 @@ void PlayerDraw()
 	CP_Image_Draw(PlayerDir[player.direction], player.coord.x + player.size / 2, player.coord.y + player.size / 2, player.size, player.size, 255); //Draw BG
 }
 
-bool isDash;
-time_t dashStartTime;
 int DashCoolTime()
 {
 	time_t currentTime = clock();
@@ -119,50 +120,6 @@ void PlayerMove()
 
 	CheckWallCollision();
 }
-
-
-void PlayerCheck()
-{
-	float dieX = (1920 / 2.0) - 300;
-	float dieY = 1080 / 2.0;
-	float restartX = 1920 / 2.0 - 300;
-	float restartY = 1080 / 2.0 + 200;
-	if (player.health <= 0)
-	{
-		//여러번 울리는 상황 해결
-		//CP_Sound_PlayAdvanced(gameOver, 0.1f, 1.0f, FALSE, CP_SOUND_GROUP_1);
-		player.isAlive = 0;
-		CP_Settings_TextSize(200.f);
-		CP_Font_DrawText("You Died", dieX, dieY);
-
-		CP_Settings_TextSize(100.f);
-		CP_Font_DrawText("Press R to Restart", restartX, restartY);
-
-	}
-}
-
-float friction = 0.95f;
-void PlayerUpdatePosition()
-{
-	//속도에 가속도를 더함
-	player.velocity.x += player.accel.x;
-	player.velocity.y += player.accel.y;
-
-	//마찰력 적용
-	player.velocity.x *= friction;
-	player.velocity.y *= friction;
-
-	//속도에 위치를 더함
-	player.coord.x += player.velocity.x;
-	player.coord.y += player.velocity.y;
-
-	//최대 속도 제한
-	
-	if (player.velocity.x > player.maxSpeed) player.velocity.x = player.maxSpeed;
-	if (player.velocity.x < -player.maxSpeed) player.velocity.x = -player.maxSpeed;
-	if (player.velocity.y > player.maxSpeed) player.velocity.y = player.maxSpeed;
-	if (player.velocity.y < -player.maxSpeed) player.velocity.y = -player.maxSpeed;
-}
 void CheckWallCollision()
 {
 	if (player.coord.x <= 0)
@@ -191,6 +148,49 @@ void CheckWallCollision()
 		player.accel.y = 0;
 	}
 }
+float friction = 0.95f;
+void PlayerUpdatePosition()
+{
+	//속도에 가속도를 더함
+	player.velocity.x += player.accel.x;
+	player.velocity.y += player.accel.y;
+
+	//마찰력 적용
+	player.velocity.x *= friction;
+	player.velocity.y *= friction;
+
+	//속도에 위치를 더함
+	player.coord.x += player.velocity.x;
+	player.coord.y += player.velocity.y;
+
+	//최대 속도 제한
+	if (player.velocity.x > player.maxSpeed) player.velocity.x = player.maxSpeed;
+	if (player.velocity.x < -player.maxSpeed) player.velocity.x = -player.maxSpeed;
+	if (player.velocity.y > player.maxSpeed) player.velocity.y = player.maxSpeed;
+	if (player.velocity.y < -player.maxSpeed) player.velocity.y = -player.maxSpeed;
+}
+
+
+void PlayerCheck()
+{
+	float dieX = (1920 / 2.0) - 300;
+	float dieY = 1080 / 2.0;
+	float restartX = 1920 / 2.0 - 300;
+	float restartY = 1080 / 2.0 + 200;
+	bool playonce = true;
+	if (player.health <= 0)
+	{
+		//여러번 울리는 상황 해결
+		//CP_Sound_PlayAdvanced(gameOver, 0.1f, 1.0f, FALSE, CP_SOUND_GROUP_1);
+		player.isAlive = 0;
+		CP_Settings_TextSize(200.f);
+		CP_Font_DrawText("You Died", dieX, dieY);
+
+		CP_Settings_TextSize(100.f);
+		CP_Font_DrawText("Press R to Restart", restartX, restartY);
+
+	}
+}
 void SelectWeapon()
 {
 	if (enemy.phase == 1)
@@ -215,6 +215,7 @@ void SelectWeapon()
 			player.weapon.num = 3;
 	}
 
+	//관리자용
 	if (CP_Input_KeyTriggered(KEY_1) && CP_Input_KeyDown(KEY_LEFT_SHIFT))
 		player.weapon.num = 1;
 	else if (CP_Input_KeyTriggered(KEY_2) && CP_Input_KeyDown(KEY_LEFT_SHIFT))

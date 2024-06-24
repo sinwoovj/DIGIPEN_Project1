@@ -99,7 +99,7 @@ bool isSwordReach(int direction, float swordWidth, float swordHeight, float swor
 }
 int frameCount = 0;
 const int frameLimit = 10;
-int AttackCoolTime() 
+int CloseAttackCoolTime()
 {
 	if (++frameCount == frameLimit) 
 	{
@@ -116,7 +116,7 @@ void PlayerCloseAttack()
 	if (CP_Input_KeyDown(KEY_RIGHT) && player.isAlive)
 	{
 		player.direction = 1;
-		if (AttackCoolTime())
+		if (CloseAttackCoolTime())
 		{
 			CP_Sound_PlayAdvanced(swordSound, 0.5f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
@@ -130,7 +130,7 @@ void PlayerCloseAttack()
 	else if (CP_Input_KeyDown(KEY_LEFT) && player.isAlive)
 	{
 		player.direction = 3;
-		if (AttackCoolTime())
+		if (CloseAttackCoolTime())
 		{
 			CP_Sound_PlayAdvanced(swordSound, 0.5f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
@@ -143,7 +143,7 @@ void PlayerCloseAttack()
 	else if (CP_Input_KeyDown(KEY_UP) && player.isAlive)
 	{
 		player.direction = 2;
-		if (AttackCoolTime())
+		if (CloseAttackCoolTime())
 		{
 			CP_Sound_PlayAdvanced(swordSound, 0.5f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
@@ -156,7 +156,7 @@ void PlayerCloseAttack()
 	else if (CP_Input_KeyDown(KEY_DOWN) && player.isAlive)
 	{
 		player.direction = 0;
-		if (AttackCoolTime())
+		if (CloseAttackCoolTime())
 		{
 			CP_Sound_PlayAdvanced(swordSound, 0.5f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
@@ -246,7 +246,7 @@ void PlayerWandAttack()
 	float wand_y = CP_Random_RangeFloat(440, 640);
 	if ((CP_Input_KeyDown(KEY_RIGHT) || CP_Input_KeyDown(KEY_LEFT) || CP_Input_KeyDown(KEY_UP) || CP_Input_KeyDown(KEY_DOWN)) && player.isAlive)
 	{
-		if (AttackCoolTime())
+		if (CloseAttackCoolTime())
 		{
 			CP_Sound_PlayAdvanced(wandSound, 1.0f, 1.0f, FALSE, CP_SOUND_GROUP_1);
 			CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
