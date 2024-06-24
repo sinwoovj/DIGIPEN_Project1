@@ -13,7 +13,6 @@ typedef struct EnemyProjectile
 	int active;
 	int direction; // 0: right, 1: left, 2: up, 3: down
 
-
 }EnemyProject;
 EnemyProject enemyProjectile[MAX_ENEMYPROJECTIES];
 EnemyProject enemyProjectile_2[MAX_ENEMYPROJECTIES];

@@ -9,6 +9,7 @@
 #include "Weapon.h"
 #include "Image.h"
 #include "EnemyAttack.h"
+#include "EnemyProjectile.h"
 #include "Enemy.h"
 #include "Sound.h"
 #include "Standard.h"
@@ -22,11 +23,6 @@ void Init()
 	for (int i = 0; i < MAX_PROJECTILES; i++)
 	{
 		projectile[i].active = 0;
-	}
-	for (int i = 0; i < MAX_ENEMYPROJECTIES; i++)
-	{
-		enemyProjectile[i].active = 0;
-		enemyProjectile_2[i].active = 0;
 	}
 	CP_System_SetWindowSize((int)WindowWidthSize, (int)WindowHeightSize);
 
@@ -72,18 +68,16 @@ void Roughly_game_update(void)
 	SelectWeapon();
 
 	PlayerAttack(player.weapon.num);
-	Draw_PlayerProjectile(); //플레이어 투사체 출력
+	Draw_PlayerProjectile();
 	PlayerCheck();
 	//=============================================
 	
 
 	//****About the Enemy****//
-	if(enemy.isAlive)
-	{
-		EnemyAttack();
-		DrawEnemyProjectile(); //보스 투사체 출력
-		DrawEnemyProjectile_2();
-	}
+	EnemyAttack();
+	DrawEnemyProjectile();
+	DrawEnemyProjectile_2();
+	
 	EnemyCheck();
 	UpdatePhase();
 	UpdateEnemyHp();

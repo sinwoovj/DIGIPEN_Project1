@@ -111,7 +111,7 @@ void CreateEnemyProjectile_2(float x, float y, float velocity, int direction)
 		}
 	}
 }
-void DrawEnemyProjectile_2() // 유도
+void DrawEnemyProjectile_2()
 {
 	for (int i = 0; i < MAX_ENEMYPROJECTIES; ++i) {
 		if (enemyProjectile_2[i].active) {
@@ -141,6 +141,7 @@ void DrawEnemyProjectile_2() // 유도
 			{
 				enemyProjectile_2[i].active = 0;
 			}
+
 			CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
 			CP_Settings_EllipseMode(CP_POSITION_CENTER);
 			CP_Graphics_DrawCircle(enemyProjectile_2[i].position.x, enemyProjectile_2[i].position.y, enemyProjectile_2[i].size);

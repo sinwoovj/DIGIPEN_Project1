@@ -10,6 +10,7 @@
 #include "Image.h"
 #include "Player.h"
 #include "Sound.h"
+#include "EnemyProjectile.h"
 
 
 bool isReached;
