@@ -27,6 +27,9 @@ void PlayerInit()
 	player.isAlive = 1;
 	player.weapon = sword; // 1 > Sword // 2 > Arrow // 3 > Wand
 	player.direction = 0;
+	isDash = false;
+	player.accel.y = player.dashAccel;
+	dashStartTime = clock();
 }
 void PlayerDraw()
 {
