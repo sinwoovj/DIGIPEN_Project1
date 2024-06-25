@@ -35,6 +35,7 @@ void intro_init(void)
 	Team_logo = CP_Image_Load("./Assets/Team_Logo.png");
 	StandardInit();
 	CP_System_SetWindowSize((int)WindowWidthSize, (int)WindowHeightSize);
+	CP_System_SetWindowTitle("Roguhly");
 }
 
 void intro_update(void)
